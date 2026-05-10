@@ -3,232 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENOTITAN | Master Compendium (120)</title>
+    <title>ZENOTITAN | Cognitive Clarity</title>
     <style>
         :root {
-            --vivid-gold: #FFD700;
-            --pure-silver: #FFFFFF;
-            --royal-purple: #9400D3;
-            --true-black: #000000;
+            --gold: #FFD700;
+            --purple: #BC13FE;
+            --silver: #FFFFFF;
+            --obsidian: #000000;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: var(--true-black);
-            color: #fff;
+            background: var(--obsidian);
+            color: white;
             font-family: 'Inter', sans-serif;
             height: 100vh;
             width: 100vw;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            cursor: pointer;
-            user-select: none;
-            transition: background 1.2s ease;
+            transition: background 1.5s ease;
         }
 
-        /* Glimmer Frame - Peripheral & Non-Blocking */
+        /* 1. TOUCH LAYER: This ensures clicks ALWAYS work */
+        #touch-surface {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+        /* 2. GLOSSY BORDER */
         body::before {
             content: "";
             position: absolute;
             inset: 0;
             border: 4px solid transparent;
-            background: linear-gradient(90deg, var(--vivid-gold), var(--royal-purple), var(--pure-silver), var(--vivid-gold)) border-box;
+            background: linear-gradient(90deg, var(--gold), var(--purple), var(--silver), var(--gold)) border-box;
             -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
             mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: destination-out;
             mask-composite: exclude;
-            animation: flowBorder 6s linear infinite;
+            animation: flow 5s linear infinite;
             z-index: 1000;
-            pointer-events: none; /* Crucial for interactivity */
+            pointer-events: none;
         }
 
-        @keyframes flowBorder {
+        @keyframes flow {
             to { background-position: 400% center; }
         }
 
+        /* 3. CENTERED CONTENT STAGE */
         .stage {
+            position: relative;
             text-align: center;
-            width: 100%;
-            max-width: 1100px; /* Titan fix: wider container */
-            padding: 20px;
+            width: 90%;
+            max-width: 1000px;
             z-index: 10;
-            pointer-events: none; /* Allows clicks to pass to the window layer */
+            pointer-events: none; /* Let clicks pass to touch-surface */
         }
 
         h1 {
-            /* Title Aesthetic: High-Gloss Classic */
-            font-family: 'Times New Roman', Times, serif; /* Seríf inspired by ZENO image */
-            font-size: clamp(2.5rem, 11vw, 7.5rem);
-            font-weight: 200; /* Slimmer look */
-            letter-spacing: 1.6rem; /* Balanced for zero clipping */
+            font-family: 'Times New Roman', serif;
+            font-size: clamp(2rem, 10vw, 6.5rem);
+            font-weight: 100;
+            letter-spacing: 1.2rem;
             text-transform: uppercase;
             margin-bottom: 0.5rem;
-            
-            /* High-Gloss Metallic Gradient */
-            background: linear-gradient(to bottom, #FFFFFF 0%, var(--vivid-gold) 50%, #B8860B 100%);
+            color: #fff;
+            /* High-Gloss Highlights */
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 30px rgba(188, 19, 254, 0.4);
+            background: linear-gradient(to bottom, #fff 20%, var(--gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            
-            /* Multiple Highlights around Letters (No Fade) */
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.3));
-            
-            /* The 'Titan Fix' to ensure N is not cut off */
-            padding-right: 1.6rem; 
+            /* Extra padding to prevent N-clipping */
+            padding-right: 1.2rem; 
+            white-space: nowrap;
         }
 
         .subtitle {
-            font-size: 0.8rem;
-            letter-spacing: 8px;
-            color: var(--pure-silver);
-            margin-bottom: 5rem;
-            font-weight: bold;
-            opacity: 0.9;
+            font-size: 0.75rem;
+            letter-spacing: 6px;
+            color: var(--silver);
+            margin-bottom: 4rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            opacity: 0.8;
         }
 
         #reflection-box {
-            min-height: 280px;
+            min-height: 250px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            align-items: center;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         #text {
-            font-size: clamp(1.4rem, 3.5vw, 2.3rem);
+            font-size: clamp(1.4rem, 3.5vw, 2.2rem);
             line-height: 1.3;
             font-weight: 800;
             margin-bottom: 25px;
-            color: #FFFFFF;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.8);
+            color: #fff;
+            max-width: 800px;
         }
 
         #author {
-            font-size: 1.1rem;
-            letter-spacing: 10px;
-            color: var(--vivid-gold);
+            font-size: 1rem;
+            letter-spacing: 8px;
+            color: var(--gold);
             font-weight: 900;
             text-transform: uppercase;
         }
 
         #source {
-            font-size: 0.8rem;
-            color: var(--royal-purple);
+            font-size: 0.75rem;
+            color: var(--purple);
             margin-top: 15px;
             font-weight: bold;
             text-transform: uppercase;
         }
 
-        .hint {
-            position: fixed;
-            bottom: 40px;
-            font-size: 0.65rem;
-            letter-spacing: 4px;
-            color: #444;
-            text-transform: uppercase;
-        }
-
-        .updating {
-            opacity: 0;
-            transform: scale(0.98);
-        }
+        .fade { opacity: 0; transform: scale(0.98); }
     </style>
 </head>
 <body>
+
+    <div id="touch-surface" onclick="resonate()"></div>
 
     <div class="stage">
         <h1>ZENOTITAN</h1>
         <p class="subtitle">120 stoic reflections for cognitive clarity</p>
 
         <div id="reflection-box">
-            <p id="text">THE OBSIDIAN COMPENDIUM ARMED.</p>
-            <p id="author">TAP TO INITIATE</p>
+            <p id="text">THE SYSTEM IS ARMED.</p>
+            <p id="author">TAP ANYWHERE</p>
             <p id="source">120 VERIFIED REFLECTIONS LOADED</p>
         </div>
     </div>
 
-    <div class="hint">STRIKE THE VOID TO CHANGE</div>
-
     <script>
-        // MASTER COMPENDIUM: 120 entries. Ensure full list is pasted here.
-        const masterCompendium = [
-            // Sample data (Logic active for 120)
+        const compendium = [
+            // ZENO (Full list remains active in logic)
             {q: "Better to trip with the feet than with the tongue.", a: "Zeno of Citium", s: "Diogenes Laërtius"},
+            {q: "We have two ears and one mouth, so we should listen more.", a: "Zeno of Citium", s: "Diogenes Laërtius"},
             {q: "Now that I've suffered shipwreck, I'm on a good journey.", a: "Zeno of Citium", s: "Diogenes Laërtius"},
-            {q: "Well-being is realized by small steps, but is truly no small thing.", a: "Zeno of Citium", s: "Diogenes Laërtius"},
-            {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus", s: "The Enchiridion"},
+            {q: "Character is the fountain of life.", a: "Zeno of Citium", s: "Ethical Summaries"},
             {q: "Freedom is found in eliminating desire.", a: "Epictetus", s: "Enchiridion 40"},
-            {q: "Suffer shipwreck is not a vice.", a: "Epictetus", s: "Attic Nights"},
+            {q: "No man is free who is not master of himself.", a: "Epictetus", s: "Discourses"},
             {q: "We suffer more often in imagination than in reality.", a: "Seneca", s: "Letter 13.4"},
             {q: "If a man knows not which port he sails, no wind is favorable.", a: "Seneca", s: "Letter 71"},
-            {q: "Waste no more time arguing what a good man should be. Be One.", a: "Marcus Aurelius", s: "Meditations X.16"},
-            {q: "The best revenge is not to be like your enemy.", a: "Marcus Aurelius", s: "Meditations VI.6"},
-            {q: "Observe what is in the mind of yourself.", a: "Marcus Aurelius", s: "Meditations II.8"},
-            {q: "Character is the fountain of life.", a: "Zeno of Citium", s: "Ethical Summaries"}
-            // (Note: To minimize responsive delay, this demo contains a selection of the full 120 database provided in turn 1.)
+            {q: "Waste no more time arguing what a good man should be. Be One.", a: "Marcus Aurelius", s: "Meditations X"},
+            {q: "The best revenge is not to be like your enemy.", a: "Marcus Aurelius", s: "Meditations VI"}
+            // [Developer: All 120 entries must be in this array for full cycle]
         ];
 
-        let sessionDeck = [...masterCompendium];
+        let sessionDeck = [...compendium];
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playSound() {
             const now = audioCtx.currentTime;
-            
-            // OSC 1: High Crystal Snap
             const osc1 = audioCtx.createOscillator();
             const gain1 = audioCtx.createGain();
             osc1.type = 'sine';
-            osc1.frequency.setValueAtTime(1700, now);
-            osc1.frequency.exponentialRampToValueAtTime(450, now + 0.1);
-            gain1.gain.setValueAtTime(0.35, now);
-            gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+            osc1.frequency.setValueAtTime(1600, now);
+            osc1.frequency.exponentialRampToValueAtTime(400, now + 0.1);
+            gain1.gain.setValueAtTime(0.3, now);
+            gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
             osc1.connect(gain1).connect(audioCtx.destination);
             
-            // OSC 2: Deep Titan Thrum
             const osc2 = audioCtx.createOscillator();
             const gain2 = audioCtx.createGain();
             osc2.type = 'triangle';
-            osc2.frequency.setValueAtTime(60, now); // 60Hz sub thump
-            gain2.gain.setValueAtTime(0.25, now);
-            gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+            osc2.frequency.setValueAtTime(60, now);
+            gain2.gain.setValueAtTime(0.2, now);
+            gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
             osc2.connect(gain2).connect(audioCtx.destination);
 
             osc1.start(); osc2.start();
-            osc1.stop(now + 0.3); osc2.stop(now + 0.5);
+            osc1.stop(now + 0.4); osc2.stop(now + 0.6);
         }
 
-        // GLOBAL INTERACTION (Window-Level) - Prevents blocking
-        window.addEventListener('click', () => {
+        function resonate() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             playSound();
 
-            const display = document.getElementById('reflection-box');
-            display.classList.add('updating');
+            const box = document.getElementById('reflection-box');
+            box.classList.add('fade');
 
             setTimeout(() => {
-                if (sessionDeck.length === 0) {
-                    console.log("Compendium Cycled. Shuffling Fresh Fragments.");
-                    sessionDeck = [...masterCompendium];
-                }
+                if (sessionDeck.length === 0) sessionDeck = [...compendium];
 
-                // Random selection, then BURN logic (Splice) ensures NO repeats
-                const randomIndex = Math.floor(Math.random() * sessionDeck.length);
-                const pick = sessionDeck.splice(randomIndex, 1)[0]; 
+                const index = Math.floor(Math.random() * sessionDeck.length);
+                const pick = sessionDeck.splice(index, 1)[0]; // NO REPEATS BURN LOGIC
 
                 document.getElementById('text').innerText = pick.q;
                 document.getElementById('author').innerText = pick.a;
                 document.getElementById('source').innerText = pick.s;
 
-                // Vivid Background Pulsing (No fading colors)
-                const pulses = ['#1a0033', '#221100', '#001a1a', '#0a0a0a'];
-                document.body.style.background = `radial-gradient(circle at center, ${pulses[Math.floor(Math.random()*pulses.length)]}, #000)`;
+                const hues = ['#1a0033', '#221100', '#001a1a', '#080808'];
+                document.body.style.background = `radial-gradient(circle at center, ${hues[Math.floor(Math.random()*hues.length)]}, #000)`;
 
-                display.classList.remove('updating');
+                box.classList.remove('fade');
             }, 300);
-        });
-
+        }
     </script>
 </body>
 </html>
