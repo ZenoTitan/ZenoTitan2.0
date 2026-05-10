@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ZenoTitan 2.0 | Titan Codex</title>
+    <title>ZenoTitan 2.0 | Absolute Clarity</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,27 +13,28 @@
             --text: #ffffff;
         }
 
-        /* Prevent all scrolling and accidental selections */
+        /* 1. LAYER RESET - FORCE INTERACTION */
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent;
             user-select: none;
+            touch-action: manipulation;
         }
         
         body, html { 
             margin: 0; padding: 0; height: 100%; width: 100%; 
             background-color: var(--bg); color: var(--text);
             font-family: 'Inter', sans-serif; overflow: hidden;
+            position: fixed; /* Prevents bounce scrolling on mobile */
         }
 
-        /* Layer -1: The Visual Backdrop */
         #bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 30%, #1a1a1a 0%, #020202 100%);
-            z-index: -1; pointer-events: none;
+            z-index: 1; pointer-events: none;
         }
 
-        /* Layer 1: Header (Non-blocking) */
+        /* 2. HEADER - GLIMMER TITAN */
         header { 
             position: absolute; top: 5%; width: 100%;
             text-align: center; z-index: 10; pointer-events: none;
@@ -41,17 +42,21 @@
 
         .glimmer-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2.2rem, 8vw, 4.5rem);
-            letter-spacing: clamp(8px, 3vw, 18px); margin: 0;
+            font-size: clamp(2rem, 8vw, 4.5rem);
+            letter-spacing: 15px; margin: 0;
             background: linear-gradient(90deg, #111, #fff, var(--gold), #fff, #111);
             background-size: 200% auto; background-clip: text;
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: shine 6s linear infinite; filter: drop-shadow(0 0 15px rgba(197, 160, 89, 0.4));
-            pointer-events: auto; /* Title can be touched, but doesn't block buttons */
         }
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* Layer 2: The Card (Middle Stack) */
+        .subtitle {
+            color: var(--gold); font-family: 'Cinzel', serif; font-size: 0.65rem;
+            letter-spacing: 3px; margin-top: 5px; text-transform: uppercase;
+        }
+
+        /* 3. CENTER CARD STAGE */
         main { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center; 
@@ -59,9 +64,10 @@
         }
 
         .card-container {
-            width: 85%; max-width: 450px; height: 350px;
-            position: relative; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 85%; max-width: 450px; height: 320px;
+            position: relative; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d; cursor: pointer;
+            z-index: 6; pointer-events: auto;
         }
 
         .card-container.is-flipped { transform: rotateY(180deg); }
@@ -70,46 +76,41 @@
             position: absolute; width: 100%; height: 100%;
             backface-visibility: hidden; border-radius: 4px;
             border: 1px solid rgba(197, 160, 89, 0.3);
-            padding: 35px; display: flex; flex-direction: column;
+            padding: 30px; display: flex; flex-direction: column;
             align-items: center; justify-content: center; text-align: center;
             box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            background: var(--card-bg);
         }
 
-        .card-front { background: var(--card-bg); }
-        .card-back { background: #0c0c0c; transform: rotateY(180deg); border-color: var(--gold); }
+        .card-back { transform: rotateY(180deg); border-color: var(--gold); }
 
-        #quote-text { font-size: clamp(1.1rem, 4vw, 1.5rem); line-height: 1.7; font-weight: 200; font-style: italic; }
-        #quote-author { font-family: 'Cinzel', serif; color: var(--gold); margin-top: 15px; font-size: 0.8rem; letter-spacing: 3px; }
+        #quote-text { font-size: clamp(1rem, 4vw, 1.3rem); line-height: 1.6; font-style: italic; font-weight: 200; }
+        #quote-author { font-family: 'Cinzel', serif; color: var(--gold); margin-top: 15px; font-size: 0.8rem; letter-spacing: 2px; }
+        #challenge-desc { font-size: 0.9rem; line-height: 1.4; color: #ccc; }
 
-        .challenge-label { font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 10px; }
-        #challenge-desc { font-size: 0.95rem; line-height: 1.5; color: #ccc; }
-
-        /* Layer 3: Interaction HUD (Highest Priority) */
-        .hud-layer {
-            position: absolute; bottom: 8%; width: 100%;
+        /* 4. THE HUD (BUTTONS) - THE TOP LAYER */
+        .hud {
+            position: absolute; bottom: 10%; width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            z-index: 9999; /* Higher than everything else */
-            pointer-events: none; /* Container itself shouldn't block, but children should */
-        }
-        
-        .btn-shuffle {
-            background: #0a0a0a; border: 1px solid var(--gold);
-            color: var(--gold); padding: 18px 45px;
-            font-family: 'Cinzel', serif; letter-spacing: 5px;
-            cursor: pointer; transition: 0.3s; font-size: 0.9rem;
-            border-radius: 2px; pointer-events: auto; /* Button IS clickable */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            touch-action: manipulation;
+            z-index: 100; /* FORCE TO FRONT */
         }
 
-        .btn-shuffle:hover { background: var(--gold); color: #000; box-shadow: 0 0 40px rgba(197, 160, 89, 0.6); }
-        .btn-shuffle:active { transform: scale(0.95); }
-
-        .stats { 
-            margin-top: 25px; font-size: 0.6rem; color: #555; 
-            letter-spacing: 3px; text-transform: uppercase; 
-            pointer-events: none;
+        .shuffle-btn {
+            background: #000; border: 2px solid var(--gold);
+            color: var(--gold); padding: 16px 50px;
+            font-family: 'Cinzel', serif; letter-spacing: 6px;
+            cursor: pointer; transition: 0.3s; font-size: 1rem;
+            border-radius: 2px; position: relative;
+            box-shadow: 0 0 15px rgba(0,0,0,1);
+            pointer-events: auto !important; /* Absolute priority */
         }
+
+        .shuffle-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 30px var(--gold); }
+        .shuffle-btn:active { transform: scale(0.92); }
+
+        .stats { margin-top: 25px; font-size: 0.6rem; color: #444; letter-spacing: 3px; text-transform: uppercase; }
+
+        .out { opacity: 0; filter: blur(5px); transform: translateY(10px); }
     </style>
 </head>
 <body>
@@ -118,116 +119,44 @@
 
     <header>
         <h1 class="glimmer-title">ZENOTITAN</h1>
+        <div class="subtitle">Compendium of 200 Stoic Quotes for Cognitive Clarity</div>
     </header>
 
     <main>
         <div class="card-container" id="main-card">
             <div class="card-face card-front">
-                <div id="quote-text">The sanctuary is open. Begin your ascent.</div>
+                <div id="quote-text">The path to clarity begins with a single focused thought.</div>
                 <div id="quote-author">— Zeno of Citium</div>
-                <div style="margin-top: 30px; font-size: 0.55rem; color: var(--gold); opacity: 0.4; letter-spacing: 2px;">TOUCH CARD TO FLIP</div>
+                <div style="margin-top: 30px; font-size: 0.5rem; color: var(--gold); opacity: 0.5; letter-spacing: 2px;">CLICK CARD TO FLIP</div>
             </div>
             <div class="card-face card-back">
-                <span class="challenge-label">Daily Challenge</span>
-                <div id="challenge-desc">Identify one "Catastrophizing" thought today. Is this the worst-case, or just an impression?</div>
-                <div style="margin-top: 30px; font-size: 0.55rem; color: var(--gold); opacity: 0.4; letter-spacing: 2px;">TOUCH TO RETURN</div>
+                <div style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.7rem; margin-bottom: 10px;">Daily Challenge</div>
+                <div id="challenge-desc">Identify one "Mind-Reading" distortion today. Ask: "Do I have evidence of their thoughts, or am I projecting?"</div>
+                <div style="margin-top: 30px; font-size: 0.5rem; color: var(--gold); opacity: 0.5; letter-spacing: 2px;">CLICK TO RETURN</div>
             </div>
         </div>
     </main>
 
-    <div class="hud-layer">
-        <button class="btn-shuffle" id="shuffle-trigger">Shuffle</button>
-        <div class="stats">
-            Compendium of Clarity | Unlocked: <span id="count">0</span>
-        </div>
+    <div class="hud">
+        <button class="shuffle-btn" id="shuffle-btn">Shuffle</button>
+        <div class="stats">Insights Unlocked: <span id="count">0</span> / 200</div>
     </div>
 
     <script>
         // High-End Audio Context
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playChime() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const now = audioCtx.currentTime;
-            const freqs = [220, 275, 330, 440];
-            freqs.forEach((f, i) => {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(f + (Math.random() * 10), now);
-                gain.gain.setValueAtTime(0.04, now);
-                gain.gain.exponentialRampToValueAtTime(0.00001, now + 1.5);
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.start(); osc.stop(now + 1.5);
-            });
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
 
-        const quotes = [
-            {q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus"},
-            {q: "The happiness of your life depends upon the quality of your thoughts.", a: "Marcus Aurelius"},
-            {q: "He suffers more than necessary, who suffers before it is necessary.", a: "Seneca"},
-            {q: "Luck is what happens when preparation meets opportunity.", a: "Seneca"},
-            {q: "If it is not right, do not do it; if it is not true, do not say it.", a: "Marcus Aurelius"},
-            {q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius"},
-            {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus"},
-            {q: "Difficulties strengthen the mind, as labor does the body.", a: "Seneca"},
-            {q: "The goal of life is living in agreement with Nature.", a: "Zeno of Citium"},
-            {q: "Self-control is a main element in self-respect.", a: "Zeno of Citium"},
-            {q: "Man conquers the world by conquering himself.", a: "Zeno of Citium"},
-            {q: "Begin at once to live, and count each separate day as a separate life.", a: "Seneca"},
-            {q: "Silence is a lesson learned through the many sufferings of life.", a: "Seneca"},
-            {q: "Associate with people who are likely to improve you.", a: "Seneca"},
-            {q: "Choose not to be harmed and you won't feel harmed.", a: "Marcus Aurelius"},
-            {q: "The mind that is anxious about future events is miserable.", a: "Seneca"},
-            {q: "Very little is needed to make a happy life.", a: "Marcus Aurelius"}
-        ];
-
-        const challenges = [
-            "Digital Fast: Do not check your phone for 1 hour. Sit with the silence.",
-            "Refute Mind-Reading: If you feel judged, ask: 'Is this fact, or my fear?'",
-            "Modern Amor Fati: When a small tech error occurs, say 'Good' and find the win.",
-            "The Poverty Rehearsal: Eat the simplest meal possible today. Joy is internal.",
-            "Non-Judgmental View: Observe a difficult person today as if they were a rainstorm—neutral and natural."
-        ];
-
-        let pool = [...quotes];
-        let viewedCount = 0;
-
-        // UI Element Selection
-        const card = document.getElementById('main-card');
-        const shuffleBtn = document.getElementById('shuffle-trigger');
-        const quoteText = document.getElementById('quote-text');
-        const quoteAuthor = document.getElementById('quote-author');
-        const challengeDesc = document.getElementById('challenge-desc');
-        const countDisplay = document.getElementById('count');
-
-        // Event Listener for Card Flip
-        card.addEventListener('click', () => {
-            playChime();
-            card.classList.toggle('is-flipped');
-        });
-
-        // Event Listener for Shuffle Button
-        shuffleBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Stop the card from flipping when button is pressed
-            playChime();
-            
-            // Revert card to front if it's flipped
-            card.classList.remove('is-flipped');
-
-            setTimeout(() => {
-                if(pool.length === 0) pool = [...quotes];
-                const idx = Math.floor(Math.random() * pool.length);
-                const selection = pool[idx];
-                pool.splice(idx, 1);
-
-                quoteText.innerText = selection.q;
-                quoteAuthor.innerText = `— ${selection.a}`;
-                challengeDesc.innerText = challenges[Math.floor(Math.random() * challenges.length)];
-                
-                viewedCount++;
-                countDisplay.innerText = viewedCount;
-            }, 250);
-        });
-    </script>
-</body>
-</html>
+        function playChime() {
+            initAudio();
+            const now = audioCtx.currentTime;
+            const freqs =
