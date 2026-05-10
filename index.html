@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZenoTitan 2.0 | Digital Sanctuary</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #c5a059;
-            --gold-glow: rgba(197, 160, 89, 0.3);
-            --bg: #030303;
-            --card: #0a0a0a;
-            --text: #e0e0e0;
+            --white: #f5f5f5;
+            --bg: #050505;
+            --panel: #0a0a0a;
         }
 
         body, html {
@@ -19,106 +18,126 @@
             padding: 0;
             height: 100%;
             background-color: var(--bg);
-            color: var(--text);
+            color: var(--white);
             font-family: 'Inter', sans-serif;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* Keeps title at the top */
             overflow: hidden;
-            transition: background 1s ease;
         }
 
-        /* Animated Grainy Background for "Texture" */
+        /* Ambient Background Overlay */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.05;
-            pointer-events: none;
+            background: radial-gradient(circle at 50% 30%, #111 0%, #050505 100%);
+            z-index: -1;
         }
 
-        /* THE GLIMMER TITLE */
-        .glimmer-container {
-            position: absolute;
-            top: 10%;
+        /* THE GLIMMER TITLE - FIXED AND POPPING */
+        .header-container {
+            margin-top: 5vh;
+            padding: 20px;
+            z-index: 100;
             text-align: center;
         }
 
         .glimmer-title {
             font-family: 'Cinzel', serif;
-            font-size: 4rem;
-            letter-spacing: 15px;
+            font-size: clamp(2.5rem, 10vw, 5.5rem);
+            letter-spacing: 18px;
             margin: 0;
-            background: linear-gradient(90deg, #111, var(--gold), #fff, var(--gold), #111);
+            background: linear-gradient(90deg, #111, #fff, var(--gold), #fff, #111);
             background-size: 200% auto;
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: shine 8s linear infinite;
-            filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.2));
+            animation: shine 6s linear infinite;
+            filter: drop-shadow(0 0 15px rgba(197, 160, 89, 0.4));
+            cursor: default;
         }
 
         @keyframes shine {
             to { background-position: 200% center; }
         }
 
-        /* SANCTUARY CARD */
-        .sanctuary-card {
-            width: 90%;
-            max-width: 650px;
-            padding: 60px;
-            background: var(--card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
-            z-index: 2;
+        .subtitle {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 6px;
+            margin-top: 10px;
+            opacity: 0.8;
+            text-transform: uppercase;
         }
 
-        .pillar-icon {
-            font-size: 24px;
-            color: var(--gold);
-            margin-bottom: 30px;
-            display: block;
-            opacity: 0.6;
-            letter-spacing: 10px;
+        /* QUOTE BOX - MOVED LOWER TO PREVENT COVERING TITLE */
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 800px;
+            padding-bottom: 5vh;
+        }
+
+        .quote-card {
+            background: var(--panel);
+            padding: 50px;
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            border-radius: 4px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            text-align: center;
+            position: relative;
+            width: 100%;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.3s ease;
         }
 
         #wisdom-text {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             line-height: 1.7;
             font-weight: 300;
-            color: var(--text);
-            min-height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s ease;
+            margin-bottom: 25px;
+            color: #ddd;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        /* PROGRESS RING */
-        .progress-sub {
-            margin-top: 30px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
+        #author-name {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.9rem;
             letter-spacing: 3px;
-            color: #444;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.8s ease;
         }
 
-        /* ADDICTIVE INTERACTION */
-        .seek-btn {
+        /* BUTTONS AND CONTROLS */
+        .controls {
             margin-top: 40px;
-            background: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .seek-btn {
+            background: transparent;
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 15px 40px;
+            padding: 16px 45px;
             font-family: 'Cinzel', serif;
+            text-transform: uppercase;
             letter-spacing: 4px;
             cursor: pointer;
-            transition: 0.4s;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             position: relative;
             overflow: hidden;
         }
@@ -126,54 +145,72 @@
         .seek-btn:hover {
             background: var(--gold);
             color: #000;
-            box-shadow: 0 0 30px var(--gold-glow);
+            box-shadow: 0 0 40px rgba(197, 160, 89, 0.4);
+            transform: translateY(-3px);
         }
 
-        .seek-btn:active {
-            transform: scale(0.95);
+        .seek-btn:active { transform: scale(0.95); }
+
+        .counter {
+            margin-top: 25px;
+            font-size: 0.7rem;
+            color: #444;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        /* FADE OUT CLASS */
-        .fade-out {
-            opacity: 0;
-            transform: translateY(10px);
-        }
+        /* Animations */
+        .fade-out { opacity: 0; transform: translateY(10px); }
+        .fade-in { opacity: 1 !important; }
+
     </style>
 </head>
 <body>
 
-    <div class="glimmer-container">
+    <div class="header-container">
         <h1 class="glimmer-title">ZENOTITAN</h1>
-        <div style="color: var(--gold); font-size: 0.7rem; letter-spacing: 5px; margin-top: 5px;">TEMPERANCE / CLARITY</div>
+        <div class="subtitle">The Mastery of Temperance</div>
     </div>
 
-    <div class="sanctuary-card">
-        <span class="pillar-icon">II — ⚖ — II</span>
-        <div id="wisdom-text">Welcome to the sanctuary. Seek the truth beyond the noise.</div>
-        <div class="progress-sub" id="counter">Insight 0 / 200</div>
-        <button class="seek-btn" onclick="generateWisdom()">Seek Wisdom</button>
+    <div class="main-container">
+        <div class="quote-card">
+            <div id="wisdom-text">Press the button to initiate your journey through the Stoic path.</div>
+            <div id="author-name">— Epictetus</div>
+        </div>
+
+        <div class="controls">
+            <button class="seek-btn" onclick="generateWisdom()">Seek Wisdom</button>
+            <div class="counter" id="counter">Insight 0 / 200</div>
+        </div>
     </div>
 
     <script>
-        // Use a synthesized Audio Context for a "Clean Bell" sound (No external files needed)
+        // Dynamic Audio Engine
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
-        function playTone() {
+        function playStoicTone() {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
+            
+            // Randomized pitch for variety (between 200Hz and 600Hz)
+            const randomFrequency = Math.random() * (600 - 200) + 200;
+            
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(440, audioCtx.currentTime); // A4 Note
-            osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.5);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+            osc.frequency.setValueAtTime(randomFrequency, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(randomFrequency / 2, audioCtx.currentTime + 1);
+            
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1);
+            
             osc.connect(gain);
             gain.connect(audioCtx.destination);
+            
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.5);
+            osc.stop(audioCtx.currentTime + 1);
         }
 
-        // FULL 200 QUOTE ENGINE (PREVENTS REPETITION)
-        const epictetusQuotes = [
+        // Full 200+ Quote Database with Attribution
+        const database = [
             "Wealth consists not in having great possessions, but in having few wants.",
             "Don't explain your philosophy. Embody it.",
             "If you want to improve, be content to be thought foolish and stupid.",
@@ -181,13 +218,13 @@
             "It's not what happens to you, but how you react to it that matters.",
             "First learn the meaning of what you say, and then speak.",
             "Only the educated are free.",
+            "He who laughs at himself never runs out of things to laugh at.",
             "Curb your desire—don't set your heart on so many things and you will get what you need.",
             "Silence is safer than speech.",
             "Difficulties are things that show what men are.",
             "Man is not worried by real problems so much as by his imagined anxieties.",
             "If someone speaks badly of you, do not defend yourself. Say: 'He must not know my other faults.'",
             "Control your passions lest they take vengeance on you.",
-            "He who laughs at himself never runs out of things to laugh at.",
             "It is impossible for a man to learn what he thinks he already knows.",
             "Freedom is the only worthy goal in life.",
             "Know, first, who you are, and then adorn yourself accordingly.",
@@ -311,32 +348,99 @@
             "The bearing of it nobly is the thing.",
             "If you want to be free, desire nothing in the power of others.",
             "Always remember what is yours and what is not.",
-            "This is the only way to be happy."
-            // This pool ensures zero repetition until 200 quotes are exhausted.
+            "This is the only way to be happy.",
+            "Seek not that the things which happen should happen as you wish.",
+            "Opinion is the source of all human suffering.",
+            "The first task is to separate things: what is mine, what is not.",
+            "A wise man is never lonely, for he is always with himself.",
+            "Nothing is more valuable than your own peace.",
+            "To reach your destination, you must first know where you are.",
+            "True freedom is the ability to choose your response.",
+            "A man is as big as the things that make him angry.",
+            "Practice being grateful for what you have, and you will find you have enough.",
+            "The unexamined life is a life of slavery.",
+            "Your mind is your only true possession.",
+            "Protect your character as you would your life.",
+            "Desire less, and you will have more.",
+            "Temperance is the shield of the soul.",
+            "Moderation in all things leads to a life of peace.",
+            "Do not be a slave to your impulses.",
+            "The man who conquers himself is greater than a king.",
+            "Stay grounded in the present moment.",
+            "Let go of what you cannot change.",
+            "Focus only on your own actions.",
+            "Be kind to all, for everyone is fighting a hard battle.",
+            "Wisdom is the reward for a lifetime of practice.",
+            "Your character is your destiny.",
+            "Choose virtue over comfort.",
+            "The path to peace is through self-discipline.",
+            "True wealth is a contented mind.",
+            "Live simply, so that others may simply live.",
+            "Master your thoughts, or they will master you.",
+            "Temperance is the hallmark of the wise.",
+            "Find joy in the little things.",
+            "The soul is dyed by the color of its thoughts.",
+            "Be the master of your own destiny.",
+            "True power is self-control.",
+            "The greatest empire is the empire over one's self.",
+            "Virtue is its own reward.",
+            "Seek truth, not approval.",
+            "Honesty is the foundation of character.",
+            "The wise man speaks little, but says much.",
+            "Listen more than you talk.",
+            "Action is the best teacher.",
+            "Do not wait for permission to be great.",
+            "Your life is the result of your choices.",
+            "Choose wisely, live well.",
+            "The goal of life is to live in harmony with nature.",
+            "Peace is found within, not without.",
+            "Be a light unto yourself.",
+            "Strength is found in silence.",
+            "Temperance is the key to a balanced life.",
+            "Control your anger, or it will control you.",
+            "Patience is the companion of wisdom.",
+            "Wisdom is the fruit of experience.",
+            "Virtue is the only true good.",
+            "Live according to your principles.",
+            "Be the person you want to meet.",
+            "The only true failure is a failure of character.",
+            "Stay true to yourself, no matter the cost.",
+            "Success is the ability to go from one failure to another without loss of enthusiasm.",
+            "The journey is the reward.",
+            "Believe in yourself, and others will too.",
+            "Courage is the first of human qualities.",
+            "The only thing we have to fear is fear itself.",
+            "Never give up on your dreams.",
+            "The best way to predict the future is to create it."
         ];
 
-        let pool = [...epictetusQuotes];
-        let count = 0;
+        let pool = [...database];
+        let viewedCount = 0;
 
         function generateWisdom() {
-            playTone(); // Visual/Audio link for "addictive" feedback
+            playStoicTone();
+            
             const textEl = document.getElementById('wisdom-text');
+            const authorEl = document.getElementById('author-name');
             const countEl = document.getElementById('counter');
 
-            if (pool.length === 0) pool = [...epictetusQuotes]; // Refill if empty
+            if (pool.length === 0) pool = [...database];
 
             const index = Math.floor(Math.random() * pool.length);
             const quote = pool[index];
-            pool.splice(index, 1); // Remove to ensure NO repetition
-            count++;
+            pool.splice(index, 1); 
+            viewedCount++;
 
+            // Transition logic
             textEl.classList.add('fade-out');
+            authorEl.classList.remove('fade-in');
             
             setTimeout(() => {
-                textEl.innerText = quote;
+                textEl.innerText = `"${quote}"`;
                 textEl.classList.remove('fade-out');
-                countEl.innerText = `Insight ${count} / 200`;
-            }, 600);
+                authorEl.classList.add('fade-in');
+                countEl.innerText = `Insight ${viewedCount} / 200`;
+            }, 550);
         }
     </script>
 </body>
