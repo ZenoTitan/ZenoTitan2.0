@@ -1,39 +1,65 @@
-/* 1. STREAK & LEVELING LOGIC */
-let unlocked = JSON.parse(localStorage.getItem('zeno_unlocked')) || [];
-function updateProgress(quoteId) {
-    if (!unlocked.includes(quoteId)) {
-        unlocked.push(quoteId);
-        localStorage.setItem('zeno_unlocked', JSON.stringify(unlocked));
-    }
-    const level = Math.floor(unlocked.length / 10);
-    // Logic to change title glimmer intensity based on 'level'
-    document.querySelector('.glimmer-title').style.filter = `drop-shadow(0 0 ${10 + level*5}px var(--gold))`;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenoTitan 2.0 | Compendium of Clarity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@200;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c5a059;
+            --white: #ffffff;
+            --bg: #020202;
+            --glass: rgba(12, 12, 12, 0.75);
+            --glow: rgba(197, 160, 89, 0.15);
+        }
 
-/* 2. GENERATIVE DRONE LOGIC */
-let audioStarted = false;
-function startAmbientDrone() {
-    if (audioStarted) return;
-    audioStarted = true;
-    const baseOsc = audioCtx.createOscillator();
-    const lfo = audioCtx.createOscillator();
-    const lfoGain = audioCtx.createGain();
-    
-    baseOsc.type = 'sine';
-    baseOsc.frequency.setValueAtTime(110, audioCtx.currentTime); // Deep A2
-    
-    lfo.frequency.setValueAtTime(0.1, audioCtx.currentTime); // Slow oscillation
-    lfoGain.gain.setValueAtTime(2, audioCtx.currentTime);
-    
-    lfo.connect(lfoGain);
-    lfoGain.connect(baseOsc.frequency);
-    baseOsc.connect(audioCtx.destination);
-    
-    baseOsc.start();
-    lfo.start();
-}.quote-card {
-    background: rgba(10, 10, 10, 0.7); /* Transparent */
-    backdrop-filter: blur(20px); /* Frosted glass effect */
-    border: 1px solid rgba(197, 160, 89, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-}
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Dynamic Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 35%, #1a1a1a 0%, #020202 100%);
+            z-index: -1;
+        }
+
+        /* 1. THE GLIMMER TITLE - FIXED TOP */
+        .header-container {
+            margin-top: 6vh;
+            text-align: center;
+            z-index: 100;
+        }
+
+        .glimmer-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 10vw, 5.8rem);
+            letter-spacing: 22px;
+            margin: 0;
+            background: linear-gradient(90deg, #111, #fff, var(--gold), #fff, #111);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 8s linear infinite, float 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px var(--glow));
+        }
+
+        @keyframes shine { to { background-position: 200% center; } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .subtitle {
+            color: var(--gold);
