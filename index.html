@@ -3,101 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENO | TITAN v6.0</title>
+    <title>ZENO | TITAN v6.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Cinzel:wght@400;900&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --gold: #d4af37;
-            --gold-glow: #fcf6ba;
-            --bg: #020202;
-            --glass: rgba(10, 10, 10, 0.9);
-            --accent: #1a1a1a;
+        :root { --gold: #d4af37; --bg: #050505; --accent: #1a1a1a; }
+        body { background: var(--bg); color: var(--gold); font-family: 'Space Mono', monospace; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        
+        /* The Shell - Ensured Visibility */
+        .shell { 
+            width: 90vw; max-width: 1000px; border: 1px solid var(--gold); 
+            background: rgba(10,10,10,0.95); padding: 40px; border-radius: 10px; 
+            box-shadow: 0 0 50px #000; position: relative; z-index: 100;
         }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            background: var(--bg);
-            color: var(--gold);
-            font-family: 'Space Mono', monospace;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* Particle Background Canvas */
-        #bgCanvas {
-            position: fixed;
-            top: 0; left: 0;
-            z-index: -1;
-            filter: blur(1px);
-        }
-
-        .os-shell {
-            max-width: 1200px;
-            margin: 40px auto;
-            border: 1px solid var(--gold);
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 0 100px rgba(0,0,0,1), inset 0 0 20px rgba(212,175,55,0.05);
-            padding: 40px;
-            position: relative;
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* High-End Glimmer Title */
-        .glimmer-header {
-            font-family: 'Cinzel', serif;
-            font-size: 5rem;
-            text-align: center;
+        .glimmer {
+            font-family: 'Cinzel', serif; font-size: clamp(2rem, 8vw, 4rem); text-align: center;
             background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: shine 6s linear infinite;
-            letter-spacing: 25px;
-            margin: 0;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-size: 200% auto; animation: shine 5s linear infinite; letter-spacing: 15px; margin: 0;
         }
-
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* Memento Mori Clock */
-        .memento-clock {
-            text-align: right;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            border-bottom: 1px solid var(--accent);
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-            color: #555;
-        }
+        textarea { width: 100%; height: 150px; background: #000; border: 1px solid var(--gold); color: #fff; padding: 15px; font-family: 'Space Mono'; margin: 20px 0; box-sizing: border-box; }
+        
+        .btn { background: linear-gradient(135deg, #d4af37, #fcf6ba); color: #000; padding: 20px 40px; font-family: 'Orbitron'; font-weight: 900; border: none; cursor: pointer; width: 100%; letter-spacing: 3px; clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%); }
 
-        /* Layout */
-        .grid-layout {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 30px;
-        }
+        .phase { display: none; }
+        .active { display: block; }
 
-        /* Interaction Zone */
-        .main-deck {
-            border-right: 1px solid var(--accent);
-            padding-right: 30px;
-        }
+        .v-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .v-card { border: 1px solid #333; padding: 15px; background: rgba(255,255,255,0.02); text-align: left; }
+    </style>
+</head>
+<body>
 
-        textarea {
-            width: 100%;
-            height: 180px;
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 20px;
-            font-family: 'Space Mono';
-            font-size: 1.1rem;
-            margin: 20px 0;
-            outline: none;
-            transition: 0.3s;
-        }
+<div class="shell">
+    <div id="p1" class="phase active">
+        <h1 class="glimmer">ZENO</h1>
+        <p style="text-align:center; letter-spacing:10px; opacity:0.6;">SOVEREIGNTY_OS v6.1</p>
+        <textarea id="userInput" placeholder="DEFINE THE CHAOS..."></textarea>
+        <button class="btn" onclick="goLogic()">EXECUTE SOVEREIGNTY</button>
+    </div>
 
-        textarea:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(212,175,55,
+    <div id="p2" class="phase" style="text-align:center;">
+        <h2 style="font-family:'Orbitron'; letter-spacing:10px;">SCANNING...</h2>
+    </div>
+
+    <div id="p3" class="phase">
+        <h2 id="outQuote" style="font-family:'Cinzel'; color:#fff; text-align:center;"></h2>
+        <p id="outAuthor" style="text-align:center; letter-spacing:5px;"></p>
+        <div class="v-grid" id="vDeck"></div>
+        <button class="btn" style="margin-top:30px; font-size:0.7rem;" onclick="location.reload()">REBOOT</button>
+    </div>
+</div>
+
+<script>
+    const db = [
+        {q: "We suffer more in imagination than in reality.", a: "Seneca", k: ["fear", "worry", "future"]},
+        {q: "The best revenge is to be unlike him who caused the injury.", a: "Marcus Aurelius", k: ["angry", "revenge", "mad"]},
+        {q: "You have power over your mind - not outside events.", a: "Marcus Aurelius", k: ["control", "stress", "others"]}
+    ];
+
+    function goLogic() {
+        const val = document.getElementById('userInput').value;
+        if(!val) return;
+        
+        document.getElementById('p1').classList.remove('active');
+        document.getElementById('p2').classList.add('active');
+
+        setTimeout(() => {
+            let match = db.find(i => i.k.some(k => val.toLowerCase().includes(k))) || db[Math.floor(Math.random()*db.length)];
+            document.getElementById('outQuote').innerText = `"${match.q}"`;
+            document.getElementById('outAuthor').innerText = match.a.toUpperCase();
+            
+            const virtues = [
+                {v: "WISDOM", t: "Identify what is in your control."},
+                {v: "COURAGE", t: "Do the hard thing first."},
+                {v: "JUSTICE", t: "Be kind despite the chaos."},
+                {v: "TEMPERANCE", t: "Breathe. Stop. Observe."}
+            ];
+            
+            const deck = document.getElementById('vDeck');
+            deck.innerHTML = virtues.map(v => `<div class="v-card"><b style="color:var(--gold)">${v.v}</b><br>${v.t}</div>`).join("");
+            
+            document.getElementById('p2').classList.remove('active');
+            document.getElementById('p3').classList.add('active');
+        }, 1500);
+    }
+</script>
+</body>
+</html>
