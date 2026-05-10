@@ -3,169 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENO TITAN | ARCHON OS v13</title>
+    <title>ZENO TITAN | COLOSSUS v14</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* HIGH-GLOSS GOLD PALETTE */
-            --gold-gloss: linear-gradient(to bottom, #cfc09f 22%, #634f2c 24%, #cfc09f 26%, #cfc09f 27%, #ffecb3 40%, #3a2c0f 78%);
-            --gold-solid: #d4af37;
-            --gold-soft: #f3e5ab;
+            --gold-gloss: linear-gradient(135deg, #cfc09f 0%, #634f2c 25%, #cfc09f 50%, #f3e5ab 75%, #cfc09f 100%);
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --gold-text: #d4af37;
             --bg: #030303;
-            --panel: rgba(10, 10, 10, 0.98);
+            --obsidian: rgba(12, 12, 12, 0.98);
         }
 
         body, html {
-            margin: 0; padding: 0; background: var(--bg); color: var(--gold-soft);
+            margin: 0; padding: 0; background: var(--bg); color: var(--gold-text);
             font-family: 'Space Mono', monospace; overflow-x: hidden; scroll-behavior: smooth;
         }
 
-        /* LIQUID GOLD HEADER */
+        /* The Breathing Sanctuary */
+        .sanctuary-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #111 0%, #030303 100%);
+            z-index: -1; animation: breathe 10s ease-in-out infinite;
+        }
+        @keyframes breathe { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.03); } }
+
+        /* Liquid Gold Header */
         .header {
-            padding: 40px; text-align: center; border-bottom: 1px solid rgba(212,175,55,0.2);
-            background: #000; position: sticky; top: 0; z-index: 1000;
+            padding: 30px; text-align: center; border-bottom: 2px solid var(--gold-text);
+            background: #000; box-shadow: 0 5px 30px rgba(0,0,0,1); sticky; top: 0; z-index: 1000;
         }
 
         .glimmer {
-            font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900;
+            font-family: 'Cinzel', serif; font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 900;
             background: var(--gold-gloss); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-size: 200% auto; animation: shine 6s linear infinite; letter-spacing: 12px; margin: 0;
-            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+            filter: drop-shadow(0 0 10px var(--gold-glow));
         }
         @keyframes shine { to { background-position: 200% center; } }
 
-        .container {
-            max-width: 1200px; margin: 40px auto; display: grid;
-            grid-template-columns: 320px 1fr; gap: 40px; padding: 20px;
+        .dashboard {
+            max-width: 1400px; margin: 40px auto; padding: 20px;
+            display: grid; grid-template-columns: 340px 1fr; gap: 40px;
         }
 
-        /* SIDEBAR NAV */
+        /* Sidebar Navigation */
         .sidebar {
-            background: var(--panel); border: 1px solid rgba(212,175,55,0.3);
+            background: var(--obsidian); border: 1px solid rgba(212,175,55,0.3);
             padding: 30px; border-radius: 4px; height: fit-content; position: sticky; top: 150px;
         }
 
-        /* GLOSSY BUTTONS */
         .btn-gold {
             background: var(--gold-gloss); color: #000; border: none;
-            padding: 15px; font-family: 'Orbitron'; font-weight: 900;
+            padding: 18px; font-family: 'Orbitron'; font-weight: 900;
             cursor: pointer; width: 100%; letter-spacing: 3px; margin-bottom: 15px;
-            text-transform: uppercase; transition: 0.3s; display: block;
-            text-shadow: 0 1px 1px rgba(255,255,255,0.3);
+            text-transform: uppercase; transition: 0.4s; border-radius: 2px;
+            box-shadow: 0 4px 10px #000;
         }
-        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(212,175,55,0.4); }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--gold-glow); }
 
-        /* MAIN STAGE */
-        .main-deck {
-            background: var(--panel); border: 1px solid rgba(212,175,55,0.3);
-            padding: 50px; border-radius: 4px; box-shadow: 0 0 60px #000; min-height: 700px;
+        /* Main Dialogue Engine */
+        .main-stage {
+            background: var(--obsidian); border: 1px solid rgba(212,175,55,0.3);
+            padding: 50px; border-radius: 4px; box-shadow: 0 0 60px #000; min-height: 800px;
         }
 
         textarea {
-            width: 100%; height: 150px; background: #000; border: 1px solid #333;
+            width: 100%; height: 140px; background: #000; border: 1px solid #222;
             color: #fff; padding: 25px; font-family: 'Space Mono'; font-size: 1.1rem;
-            margin-bottom: 25px; outline: none; transition: 0.5s; box-sizing: border-box;
+            margin: 20px 0; outline: none; transition: 0.3s; box-sizing: border-box;
         }
-        textarea:focus { border-color: var(--gold-solid); box-shadow: 0 0 20px rgba(212,175,55,0.2); }
+        textarea:focus { border-color: var(--gold-text); box-shadow: 0 0 20px rgba(212,175,55,0.1); }
 
-        /* DIALOGUE OUTPUT */
-        .response-box { margin-top: 50px; display: none; animation: slideUp 0.8s ease; }
+        /* Logic Output */
+        .output-zone { display: none; animation: slideUp 1s ease; margin-top: 50px; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        .quote-text {
-            font-family: 'Cinzel'; font-size: 2.2rem; color: #fff; line-height: 1.4;
-            margin: 30px 0; border-left: 5px solid var(--gold-solid); padding-left: 30px;
+        .quote-panel {
+            font-family: 'Cinzel'; font-size: 2.3rem; color: #fff; line-height: 1.3;
+            margin: 30px 0; border-left: 6px solid var(--gold-text); padding-left: 30px;
         }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
-        .card { background: #0a0a0a; border: 1px solid #222; padding: 25px; border-radius: 2px; }
-        .card b { color: var(--gold-solid); font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 2px; display: block; margin-bottom: 10px; }
-        .card p { font-size: 0.9rem; line-height: 1.7; color: #bbb; margin: 0; }
+        .logic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-top: 40px; }
+        .card { background: #080808; border: 1px solid #1a1a1a; padding: 30px; position: relative; }
+        .card b { font-family: 'Orbitron'; color: var(--gold-text); font-size: 0.75rem; letter-spacing: 2px; display: block; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .card p { font-size: 0.95rem; line-height: 1.8; color: #aaa; margin: 0; }
 
-        /* MODALS & OVERLAYS */
+        /* Progress System */
+        .progress-tray { margin-top: 40px; padding: 25px; border-top: 1px solid #222; text-align: left; }
+        .xp-bar { width: 100%; height: 4px; background: #111; margin: 15px 0; overflow: hidden; }
+        .xp-fill { width: 0%; height: 100%; background: var(--gold-gloss); transition: 1.5s ease; }
+
+        /* Overlay */
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 2000; display: none;
-            justify-content: center; align-items: center; backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.98); z-index: 9999; display: flex;
+            justify-content: center; align-items: center; text-align: center;
         }
-        .popup {
-            background: #000; border: 1px solid var(--gold-solid); padding: 50px;
-            max-width: 600px; text-align: center; border-radius: 4px;
-        }
-
-        .progress-indicator { margin-top: 40px; padding: 20px; border-top: 1px solid #222; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-<div id="welcome-overlay" class="overlay" style="display:flex;">
-    <div class="popup">
-        <h2 style="font-family: 'Cinzel'; color: #fff;">WHO ENTERS THE ARCHIVE?</h2>
-        <input type="text" id="user-name" placeholder="Enter your name..." style="width: 100%; padding: 15px; background: #111; border: 1px solid #333; color: #fff; margin: 25px 0; font-family: 'Space Mono';">
-        <button class="btn-gold" onclick="initSystem()">INITIALIZE ASCENSION</button>
+<div id="init-modal" class="overlay">
+    <div style="padding: 60px; border: 2px solid var(--gold-text); background: #000; max-width: 500px;">
+        <h2 style="font-family: 'Cinzel'; letter-spacing: 5px;">WHO ENTERS THE SANCTUARY?</h2>
+        <input type="text" id="user-name" placeholder="Enter your name..." style="width: 100%; padding: 15px; background: #0a0a0a; border: 1px solid #333; color: #fff; margin: 25px 0; font-family: 'Space Mono'; font-size: 1.2rem; text-align: center;">
+        <button class="btn-gold" onclick="bootSovereign()">INITIALIZE ARCHIVE</button>
     </div>
 </div>
 
-<div id="stat-overlay" class="overlay" onclick="closePop()">
-    <div class="popup" id="stat-content" onclick="event.stopPropagation()"></div>
-</div>
+<div class="sanctuary-bg"></div>
 
 <header class="header">
     <h1 class="glimmer">ZENO TITAN</h1>
-    <div style="font-size: 0.7rem; letter-spacing: 10px; opacity: 0.6; margin-top: 10px;">SOVEREIGNTY OS v13.0</div>
+    <div style="font-size: 0.75rem; letter-spacing: 12px; opacity: 0.5; margin-top: 15px;">COLOSSUS INTELLIGENCE v14.0</div>
 </header>
 
-<div class="container">
+<div class="dashboard">
     <div class="sidebar">
-        <h3 style="font-family: 'Orbitron'; font-size: 0.7rem; border-bottom: 1px solid #333; padding-bottom: 10px;">TITAN COMMANDS</h3>
-        <button class="btn-gold" onclick="showOracle()">The Oracle</button>
-        <button class="btn-gold" onclick="showStats()">Track Progress</button>
-        <button class="btn-gold" onclick="showVirtues()">The Virtues</button>
-        <div style="margin-top: 50px; padding: 20px; border: 1px solid #1a1a1a; font-size: 0.7rem; color: #444;">
-            "The soul is dyed with the color of its thoughts."
+        <h3 style="font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 3px; border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 20px;">SYSTEM_CORE</h3>
+        <button class="btn-gold" onclick="window.scrollTo(0,0)">THE ORACLE</button>
+        <button class="btn-gold" onclick="toggleArchive()">THE VAULT</button>
+        <button class="btn-gold" onclick="showVirtues()">VIRTUE_PROTOCOL</button>
+        
+        <div class="progress-tray">
+            <span id="rank-text" style="font-family: 'Orbitron'; font-size: 0.6rem;">RANK: INITIATE</span>
+            <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
+            <div id="virtue-list" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
         </div>
     </div>
 
-    <div class="main-deck">
-        <div id="oracle-view">
-            <h2 style="font-family: 'Cinzel'; color: #fff; letter-spacing: 5px;">COMMUNE WITH THE SAGE</h2>
-            <p>Speak your disturbance. The Archon will scan the 200+ records to find the specific logic to comfort and empower your spirit.</p>
-            <textarea id="chaos-input" placeholder="Type here... e.g. 'I feel like I am falling behind in life'"></textarea>
-            <button class="btn-gold" id="consult-btn" onclick="executeTitan()">CONSULT THE SOVEREIGN</button>
+    <div class="main-stage">
+        <div id="oracle-ui">
+            <h2 style="font-family: 'Cinzel'; color: #fff; letter-spacing: 6px;">COMMUNE WITH THE COLOSSUS</h2>
+            <p>Reveal your disturbance. The Archon will interpret your words through the 200+ ancient logic gates.</p>
+            <textarea id="titan-input" placeholder="Speak, Titan... (e.g. 'I am failing', 'I feel angry', 'I want more from life')"></textarea>
+            <button class="btn-gold" style="border: 2px solid #fff;" onclick="consultArchive()">EXECUTE SOVEREIGNTY</button>
 
-            <div id="response" class="response-box">
-                <span style="font-family: 'Orbitron'; color: var(--gold-solid); letter-spacing: 5px; font-size: 0.8rem;" id="resAuthor"></span>
-                <div class="quote-text" id="resQuote"></div>
+            <div id="output" class="output-zone">
+                <span id="author-label" style="font-family: 'Orbitron'; letter-spacing: 8px; font-size: 0.8rem; color: #fff;"></span>
+                <div class="quote-panel" id="quote-text"></div>
                 
-                <div class="grid">
-                    <div class="card">
-                        <b>DEEP_MEANING</b>
-                        <p id="resMeaning"></p>
-                    </div>
-                    <div class="card">
-                        <b>TITAN_COUNSEL</b>
-                        <p id="resCounsel"></p>
-                    </div>
-                    <div class="card">
-                        <b>CBT_REFRAME</b>
-                        <p id="resCBT"></p>
-                    </div>
-                    <div class="card">
-                        <b>ACTION_PLAN</b>
-                        <p id="resAction"></p>
-                    </div>
+                <div class="logic-grid">
+                    <div class="card"><b>THE_DEEP_MEANING</b><p id="mean-text"></p></div>
+                    <div class="card"><b>TITAN_COUNSEL</b><p id="counsel-text"></p></div>
+                    <div class="card"><b>CBT_REFRAME</b><p id="cbt-text"></p></div>
+                    <div class="card"><b>SOVEREIGNTY_TASK</b><p id="task-text"></p></div>
                 </div>
-                <button class="btn-gold" style="margin-top: 40px; background: #111; color: #fff;" onclick="applyLesson()">APPLY LESSON (+20 XP)</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // MASSIVE ARCHIVE (Sample of the 200+ Epictetus, Marcus, Seneca, Socrates)
-    const library = [
-        {a: "Epictetus", q: "It's not what happens to you, but how you react to it that matters.", k: ["react", "event", "happened"], m: "Events are neutral until your mind assigns them a value.", c: "Titan, don't let a random event dictate your mood. You are the architect of your peace.", cbt: "Stop the 'Emotional Reasoning.' Just because you feel hurt doesn't mean you have been harmed.", act: "List 3 ways this event could actually benefit you in the long run."},
-        {a: "Epictetus", q: "Don't explain your philosophy. Embody it.", k: ["talk", "action", "lazy"], m: "Wisdom is proven through character, not through arguments.", c: "You don't need to prove anything to anyone but yourself. Focus on your work.", cbt: "Behavioral Activation: Action is the only cure for doubt. Stop thinking; start moving.", act: "Complete one difficult task right now without telling anyone about it."},
-        {a: "Marcus Aurelius", q: "The happiness of your life depends upon the quality of your thoughts.", k: ["happy", "think", "mind"], m: "Your mind is the filter for your entire existence.", c: "Clean the filter. If you find yourself in darkness, look at the stories you are telling yourself.", cbt: "Thought Challenging: Is your current negative thought 100% true? Find the evidence against it.", act: "Write down 5 positive facts about your current situation."},
-        {a: "Seneca", q: "We suffer more in imagination than in reality.", k: ["fear", "scared", "future", "anxious"], m: "Anxiety is interest paid on a debt of pain that hasn't arrived yet.", c: "The ghost of the future has no teeth. It cannot bite you unless you let it live in your head.", cbt: "De-catastrophizing: What is the absolute worst that could happen? Could you survive it? Yes.", act: "Sit in silence for 2 minutes and focus only on your breath. The future does not exist here."},
-        {a: "Socrates", q: "The unexamined life is not worth living.", k: ["lost", "purpose", "who
+                <button class="btn-gold" style="margin-
