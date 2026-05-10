@@ -3,257 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENO TITAN | SANCTUARY v10.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Orbitron:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <title>ZENO TITAN | THE SOVEREIGN V12</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #c5a059;
-            --gold-bright: #f3e5ab;
+            --gold-gloss: linear-gradient(135deg, #fbf5b7 0%, #d4af37 25%, #fbf5b7 50%, #d4af37 75%, #fbf5b7 100%);
+            --gold-text: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.5);
             --bg: #050505;
-            --panel: rgba(12, 12, 12, 0.98);
-            --border: rgba(197, 160, 89, 0.3);
+            --glass: rgba(15, 15, 15, 0.95);
         }
 
         body, html {
-            margin: 0; padding: 0; background: var(--bg); color: var(--gold);
-            font-family: 'Space Mono', monospace; overflow-x: hidden; scroll-behavior: smooth;
+            margin: 0; padding: 0; background: var(--bg); color: var(--gold-text);
+            font-family: 'Montserrat', sans-serif; overflow-x: hidden; scroll-behavior: smooth;
         }
 
-        /* The Sanctuary Atmosphere */
-        .ambient-bg {
+        /* Ambient Glossy Background */
+        .ambient-glow {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #111 0%, #050505 100%);
-            z-index: -1; opacity: 0.8;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #050505 100%);
+            z-index: -1;
         }
 
         .header {
-            padding: 30px; text-align: center; border-bottom: 1px solid var(--border);
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); sticky; top: 0; z-index: 100;
+            padding: 40px; text-align: center; border-bottom: 2px solid var(--gold-text);
+            background: rgba(0,0,0,0.9); box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
         }
 
-        .glimmer {
-            font-family: 'Cinzel', serif; font-size: 3.5rem; font-weight: 900; margin: 0;
-            background: linear-gradient(90deg, #8e793e, #f3e5ab, #8e793e);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-size: 200% auto; animation: shine 8s linear infinite; letter-spacing: 12px;
+        .glimmer-title {
+            font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900;
+            background: var(--gold-gloss); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-size: 200% auto; animation: shine 5s linear infinite; letter-spacing: 15px; margin: 0;
+            filter: drop-shadow(0 0 10px var(--gold-glow));
         }
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* Dashboard Layout */
         .container {
-            max-width: 1300px; margin: 50px auto; display: grid;
-            grid-template-columns: 320px 1fr; gap: 40px; padding: 20px;
+            max-width: 1200px; margin: 40px auto; padding: 20px;
+            display: grid; grid-template-columns: 1fr; gap: 30px;
         }
 
-        .sidebar {
-            background: var(--panel); border: 1px solid var(--border); padding: 30px;
-            height: fit-content; position: sticky; top: 120px; border-radius: 4px;
+        /* The AI Interface */
+        .ai-shell {
+            background: var(--glass); border: 1px solid var(--gold-text);
+            padding: 40px; border-radius: 4px; position: relative;
+            box-shadow: 0 0 50px #000, inset 0 0 20px rgba(212, 175, 55, 0.05);
         }
 
-        .main-stage {
-            background: var(--panel); border: 1px solid var(--border); padding: 60px;
-            border-radius: 4px; box-shadow: 0 0 40px rgba(0,0,0,1); min-height: 700px;
+        .memory-tag {
+            font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 3px;
+            margin-bottom: 20px; color: #fff; opacity: 0.7; display: block;
         }
 
-        /* Typography & Elements */
-        h2 { font-family: 'Cinzel'; letter-spacing: 4px; color: #fff; margin-top: 0; }
-        p { line-height: 1.8; color: #aaa; font-size: 1rem; }
-        
         textarea {
-            width: 100%; height: 140px; background: #000; border: 1px solid var(--border);
-            color: #fff; padding: 20px; font-family: 'Space Mono'; font-size: 1.1rem;
-            margin: 20px 0; outline: none; transition: 0.3s; box-sizing: border-box;
+            width: 100%; height: 120px; background: #000; border: 1px solid #333;
+            color: #fff; padding: 20px; font-family: 'Montserrat'; font-size: 1.1rem;
+            margin-bottom: 20px; outline: none; transition: 0.3s; box-sizing: border-box;
+            border-radius: 4px;
         }
-        textarea:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(197, 160, 89, 0.2); }
+        textarea:focus { border-color: var(--gold-text); box-shadow: 0 0 15px var(--gold-glow); }
 
-        .titan-btn {
-            background: none; border: 1px solid var(--gold); color: var(--gold);
-            padding: 15px 30px; font-family: 'Orbitron'; font-weight: 700; cursor: pointer;
-            width: 100%; letter-spacing: 3px; transition: 0.3s; margin-bottom: 10px;
-            text-transform: uppercase; font-size: 0.8rem;
+        .btn-gold {
+            background: var(--gold-gloss); color: #000; border: none;
+            padding: 18px 40px; font-family: 'Orbitron'; font-weight: 900;
+            cursor: pointer; width: 100%; letter-spacing: 3px; border-radius: 4px;
+            text-transform: uppercase; transition: 0.3s;
         }
-        .titan-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px rgba(197, 160, 89, 0.4); }
+        .btn-gold:hover { transform: scale(1.01); box-shadow: 0 0 30px var(--gold-glow); }
 
-        /* Dialogue Box */
-        .dialogue-box {
-            margin-top: 40px; padding: 30px; border-top: 1px solid var(--border);
-            background: rgba(255,255,255,0.02); display: none; animation: fadeIn 1s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Output / Dialogue */
+        #response-box { display: none; margin-top: 40px; animation: fadeInUp 0.8s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .author-tag {
-            font-family: 'Orbitron'; color: var(--gold); font-size: 0.7rem; 
-            letter-spacing: 5px; margin-bottom: 10px; display: block;
+        .quote-display {
+            font-family: 'Cinzel'; font-size: 2.2rem; color: #fff; line-height: 1.3;
+            margin: 30px 0; padding-left: 20px; border-left: 4px solid var(--gold-text);
         }
 
-        .quote-text {
-            font-family: 'Cinzel'; font-size: 2rem; color: #fff; line-height: 1.3; margin: 20px 0;
-        }
+        .author-label { font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 5px; color: var(--gold-text); }
 
-        .counsel-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;
-        }
+        .counsel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px; }
+        .card { background: #0c0c0c; border: 1px solid #222; padding: 25px; border-radius: 4px; }
+        .card b { font-family: 'Orbitron'; color: var(--gold-text); display: block; margin-bottom: 10px; font-size: 0.7rem; letter-spacing: 2px; }
+        .card p { font-size: 0.9rem; line-height: 1.6; color: #bbb; margin: 0; }
 
-        .info-card {
-            background: #000; border: 1px solid #222; padding: 20px; font-size: 0.85rem;
+        /* Gamification / Progress Bar */
+        .progress-bar {
+            margin-top: 60px; padding: 20px; border: 1px solid #222; background: #0a0a0a;
+            text-align: center; border-radius: 4px;
         }
-        .info-card b { color: var(--gold); display: block; margin-bottom: 10px; font-family: 'Orbitron'; letter-spacing: 2px; }
+        .xp-track { width: 100%; height: 5px; background: #222; margin: 15px 0; overflow: hidden; }
+        .xp-fill { width: 0%; height: 100%; background: var(--gold-gloss); transition: 1s ease-in-out; }
+        .virtue-tag { display: inline-block; padding: 5px 15px; border: 1px solid var(--gold-text); font-size: 0.6rem; margin: 5px; color: #fff; border-radius: 20px; }
 
-        .virtue-pill {
-            display: inline-block; padding: 5px 15px; border: 1px solid var(--gold);
-            border-radius: 20px; font-size: 0.7rem; margin: 5px; cursor: help;
-        }
-
-        /* Overlay/Popups */
-        #overlay {
+        #name-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 1000; display: none;
-            justify-content: center; align-items: center; backdrop-filter: blur(5px);
-        }
-        .popup {
-            background: #0a0a0a; border: 1px solid var(--gold); padding: 50px;
-            max-width: 600px; text-align: center; box-shadow: 0 0 50px #000;
+            background: rgba(0,0,0,0.95); z-index: 2000; display: flex;
+            justify-content: center; align-items: center; text-align: center;
         }
     </style>
 </head>
 <body>
 
-<div class="ambient-bg"></div>
+<div id="name-modal" style="display:none;">
+    <div style="max-width: 400px; padding: 40px; border: 1px solid var(--gold-text); background: #0a0a0a;">
+        <h2 style="font-family: 'Cinzel'; color: #fff;">WHO ENTERS THE ARCHIVE?</h2>
+        <input type="text" id="user-name-input" placeholder="Enter your name..." style="width: 100%; padding: 15px; background: #000; border: 1px solid #333; color: #fff; margin: 20px 0;">
+        <button class="btn-gold" onclick="saveName()">BEGIN ASCENSION</button>
+    </div>
+</div>
+
+<div class="ambient-glow"></div>
 
 <div class="header">
-    <h1 class="glimmer">ZENO TITAN</h1>
-    <div style="font-size: 0.7rem; opacity: 0.6; letter-spacing: 8px;">SOVEREIGNTY SYSTEM v10.0</div>
+    <h1 class="glimmer-title">ZENO TITAN</h1>
+    <div style="font-size: 0.7rem; color: #fff; opacity: 0.5; letter-spacing: 8px; margin-top: 10px;">SOVEREIGNTY_AI v12.0</div>
 </div>
 
 <div class="container">
-    <div class="sidebar">
-        <h2>NAV_CORE</h2>
-        <button class="titan-btn" onclick="switchMode('oracle')">The Oracle</button>
-        <button class="titan-btn" onclick="switchMode('archive')">The Archive</button>
-        <button class="titan-btn" onclick="showPopup('virtues')">The Virtues</button>
-        <button class="titan-btn" onclick="showPopup('cbt')">CBT Protocol</button>
-        <div style="margin-top: 40px; padding: 15px; border: 1px solid #222; font-size: 0.7rem; color: #555;">
-            "Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth."
-        </div>
-    </div>
+    <div class="ai-shell">
+        <span class="memory-tag" id="welcome-msg">INITIALIZING SYSTEM...</span>
+        <textarea id="user-input" placeholder="Speak your chaos, Titan... (e.g. 'I am anxious about work' or 'I feel unmotivated')"></textarea>
+        <button class="btn-gold" onclick="consultTitan()">CONSULT THE SOVEREIGN</button>
 
-    <div class="main-stage">
-        <div id="oracle" class="mode">
-            <h2>COMMUNE WITH THE ARCHIVE</h2>
-            <p>Speak your disturbance. The system will cross-reference 200+ ancient records to find your specific logic shield.</p>
-            <textarea id="chaosInput" placeholder="Describe your chaos... (e.g. 'I am afraid of failing', 'I feel lonely', 'Someone insulted me')"></textarea>
-            <button class="titan-btn" style="background: var(--gold); color: #000;" onclick="consultOracle()">CONSULT THE TITANS</button>
-
-            <div id="responseArea" class="dialogue-box">
-                <span class="author-tag" id="resAuthor"></span>
-                <div class="quote-text" id="resQuote"></div>
-                
-                <div class="counsel-grid">
-                    <div class="info-card" id="meaningCard">
-                        <b>SEEK_MEANING</b>
-                        <span id="meaningText"></span>
-                    </div>
-                    <div class="info-card" id="counselCard">
-                        <b>TITAN_COUNSEL</b>
-                        <span id="counselText"></span>
-                    </div>
+        <div id="response-box">
+            <span class="author-label" id="resAuthor"></span>
+            <div class="quote-display" id="resQuote"></div>
+            
+            <div class="counsel-grid">
+                <div class="card">
+                    <b>TITAN_INTERPRETATION</b>
+                    <p id="resMeaning"></p>
                 </div>
-                <div class="counsel-grid">
-                    <div class="info-card" style="grid-column: span 2;">
-                        <b>SOVEREIGNTY_ACTION</b>
-                        <span id="actionText"></span>
-                    </div>
+                <div class="card">
+                    <b>COMFORT_PROTOCOL</b>
+                    <p id="resComfort"></p>
+                </div>
+                <div class="card">
+                    <b>CBT_REFRAME</b>
+                    <p id="resCBT"></p>
+                </div>
+                <div class="card">
+                    <b>VIRTUE_APPLICATION</b>
+                    <p id="resVirtue"></p>
                 </div>
             </div>
-        </div>
-
-        <div id="archive" class="mode" style="display:none;">
-            <h2>THE VAULT OF 200</h2>
-            <p>Direct access to the primary records. Explore wisdom by author.</p>
-            <div id="vaultList" style="max-height: 500px; overflow-y: auto; padding-right: 10px;"></div>
+            
+            <div style="margin-top: 30px; display: flex; gap: 10px;">
+                <button class="btn-gold" style="font-size: 0.6rem; padding: 12px;" onclick="applyLesson()">APPLY THIS LESSON (+10 XP)</button>
+                <button class="btn-gold" style="font-size: 0.6rem; padding: 12px; background: #222; color: #fff;" onclick="location.reload()">REBOOT</button>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="overlay" onclick="closePopup()">
-    <div class="popup" id="popupContent"></div>
+    <div class="progress-bar">
+        <div style="font-family: 'Orbitron'; font-size: 0.8rem;">SOVEREIGNTY LEVEL: <span id="user-level">1</span></div>
+        <div class="xp-track"><div class="xp-fill" id="user-xp"></div></div>
+        <div id="virtue-list">
+            <span class="virtue-tag">INITIATE</span>
+        </div>
+    </div>
 </div>
 
 <script>
-    // MASSIVE DATABASE (Sample of the 200+ Logic)
-    const records = [
-        {a: "Marcus Aurelius", q: "The soul is dyed the color of its thoughts.", k: ["thoughts", "mind", "think", "negative"], m: "Your reality is not what happens, but the internal narrative you repeat.", c: "Watch your mental workspace as a guard watches a gate. Do not let intruders in.", act: "List 3 recurring thoughts today and label them as 'helpful' or 'toxic'."},
-        {a: "Seneca", q: "We suffer more in imagination than in reality.", k: ["fear", "anxious", "future", "scared"], m: "Most things you worry about haven't happened and likely never will.", c: "Stop paying interest on a debt of pain you haven't even incurred yet.", act: "Write down your biggest fear. Now, write down exactly how you would survive if it came true."},
-        {a: "Epictetus", q: "No man is free who is not master of himself.", k: ["control", "freedom", "habits", "lazy"], m: "Freedom isn't doing what you want; it's being able to resist your impulses.", c: "If your emotions control you, you are a slave to whoever can trigger them.", act: "Practice 'The Pause.' Wait 5 minutes before checking your phone next time you feel the urge."},
-        {a: "Zeno of Citium", q: "Well-being is attained by little rendering, but it is no little thing itself.", k: ["success", "habits", "small", "progress"], m: "Greatness is the sum of tiny, consistent virtuous choices.", c: "Do not look for the mountain top. Look at your next footstep.", act: "Identify one tiny habit you can do perfectly for the next 10 minutes."},
-        {a: "Plato", q: "The first and greatest victory is to conquer oneself.", k: ["victory", "win", "ego", "self"], m: "External success is hollow if you are internally chaotic.", c: "A king who cannot rule his own temper is no king at all.", act: "Identify one situation today where you usually lose your temper, and plan your silence."},
-        {a: "Socrates", q: "The unexamined life is not worth living.", k: ["life", "truth", "meaning"], m: "Living on autopilot is a waste of human potential.", c: "Question every 'fact' you think you know about your limitations.", act: "Ask yourself: 'Why do I believe I cannot do this?' until you find the root lie."},
-        {a: "Aristotle", q: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", k: ["habits", "excellence", "work", "routine"], m: "You don't need a breakthrough; you need a schedule.", c: "Stop waiting for inspiration. Virtue is a muscle built by repetition.", act: "Set a recurring alarm for a single virtuous act today."},
-        {a: "Musonius Rufus", q: "If you accomplish something honorable with hard work, the labor passes quickly, but the honor endures.", k: ["work", "tired", "hard", "pain"], m: "Discomfort is temporary. The pride of character is permanent.", c: "Choose the hard right over the easy wrong. The fatigue will vanish by morning.", act: "Choose the most difficult task on your list and finish it first."}
-        // ... Logic for 200+ quotes is simulated by keyword branching and random selection
-    ];
-
-    function consultOracle() {
-        const input = document.getElementById('chaosInput').value.toLowerCase();
-        if(!input) return;
-
-        // Logic Search
-        let match = records.find(r => r.k.some(key => input.includes(key)));
-        if(!match) match = records[Math.floor(Math.random() * records.length)];
-
-        document.getElementById('resAuthor').innerText = `RECORD: ${match.a.toUpperCase()}`;
-        document.getElementById('resQuote').innerText = `"${match.q}"`;
-        document.getElementById('meaningText').innerText = match.m;
-        document.getElementById('counselText').innerText = match.c;
-        document.getElementById('actionText').innerText = match.act;
-        
-        document.getElementById('responseArea').style.display = 'block';
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-    function switchMode(mode) {
-        document.querySelectorAll('.mode').forEach(m => m.style.display = 'none');
-        document.getElementById(mode).style.display = 'block';
-        if(mode === 'archive') loadArchive();
-    }
-
-    function loadArchive() {
-        const list = document.getElementById('vaultList');
-        list.innerHTML = records.map(r => `
-            <div class="info-card" style="margin-bottom:10px;">
-                <b style="font-size:0.6rem;">${r.a}</b>
-                <span style="color:#fff;">"${r.q}"</span>
-            </div>
-        `).join("");
-    }
-
-    function showPopup(type) {
-        const overlay = document.getElementById('overlay');
-        const content = document.getElementById('popupContent');
-        overlay.style.display = 'flex';
-
-        if(type === 'virtues') {
-            content.innerHTML = `
-                <h2>THE FOUR VIRTUES</h2>
-                <div class="info-card"><b>WISDOM</b>Prioritize the facts over the emotions.</div>
-                <div class="info-card"><b>JUSTICE</b>Act for the common good.</div>
-                <div class="info-card:"><b>COURAGE</b>Face the truth without flinching.</div>
-                <div class="info-card"><b>TEMPERANCE</b>Master your impulses.</div>
-                <button class="titan-btn" style="margin-top:20px" onclick="closePopup()">CLOSE</button>
-            `;
-        } else {
-            content.innerHTML = `
-                <h2>CBT PROTOCOL</h2>
-                <p>Cognitive Behavioral Therapy identifies "Distortions."</p>
-                <div class="info-card"><b>Catastrophizing</b>Stop assuming the worst will happen.</div>
-                <div class="info-card"><b>Black & White Thinking</b>Life isn't All or Nothing.</div>
-                <button class="titan-btn" style="margin-top:20px" onclick="closePopup()">CLOSE</button>
-            `;
-        }
-    }
-
-    function closePopup() { document.getElementById('overlay').style.display = 'none'; }
-</script>
-
-</body>
-</html>
+    // MASSIVE DATABASE (Sample of the 100+ precision quotes)
+    const archive = [
+        {a: "Epictetus", q: "Don't explain your philosophy. Embody it.", k: ["lazy", "talk", "action"], m: "Words are cheap; character is revealed through consistent behavior.", comfort: "It's okay to be quiet. Let your results speak for you today.", cbt: "Stop the 'Performance Anxiety.' You don't have to convince anyone but yourself.", v: "Temperance: Restraint in speech, excellence in action."},
+        {a: "Epictetus", q: "Wealth consists not in having great possessions, but in having few wants.", k: ["money", "jealous", "unhappy"], m: "True freedom is the ability to walk away from desire.", comfort: "You already have the air in your lungs and the mind to think. You are rich in essentials.", cbt: "Identify 'Hedonic Adaptation.' That thing you want won't change your baseline happiness.", v: "Wisdom: Distinguishing between needs and cravings."},
+        {a: "Marcus Aurelius", q: "You have power over your mind - not outside events. Realize this, and you will
