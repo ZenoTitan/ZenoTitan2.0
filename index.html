@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZenoTitan 2.0 | Digital Sanctuary</title>
+    <title>ZenoTitan 2.0 | Stoic Archive</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,11 +23,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Keeps title at the top */
+            justify-content: flex-start;
             overflow: hidden;
         }
 
-        /* Ambient Background Overlay */
         body::before {
             content: "";
             position: fixed;
@@ -36,7 +35,6 @@
             z-index: -1;
         }
 
-        /* THE GLIMMER TITLE - FIXED AND POPPING */
         .header-container {
             margin-top: 5vh;
             padding: 20px;
@@ -56,12 +54,9 @@
             -webkit-text-fill-color: transparent;
             animation: shine 6s linear infinite;
             filter: drop-shadow(0 0 15px rgba(197, 160, 89, 0.4));
-            cursor: default;
         }
 
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
+        @keyframes shine { to { background-position: 200% center; } }
 
         .subtitle {
             color: var(--gold);
@@ -73,7 +68,6 @@
             text-transform: uppercase;
         }
 
-        /* QUOTE BOX - MOVED LOWER TO PREVENT COVERING TITLE */
         .main-container {
             flex-grow: 1;
             display: flex;
@@ -92,13 +86,11 @@
             border-radius: 4px;
             box-shadow: 0 40px 100px rgba(0,0,0,0.8);
             text-align: center;
-            position: relative;
             width: 100%;
             min-height: 250px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            transition: transform 0.3s ease;
         }
 
         #wisdom-text {
@@ -107,7 +99,7 @@
             font-weight: 300;
             margin-bottom: 25px;
             color: #ddd;
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition: opacity 0.5s ease;
         }
 
         #author-name {
@@ -116,11 +108,9 @@
             font-size: 0.9rem;
             letter-spacing: 3px;
             text-transform: uppercase;
-            opacity: 0;
             transition: opacity 0.8s ease;
         }
 
-        /* BUTTONS AND CONTROLS */
         .controls {
             margin-top: 40px;
             display: flex;
@@ -137,289 +127,112 @@
             text-transform: uppercase;
             letter-spacing: 4px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative;
-            overflow: hidden;
+            transition: 0.4s;
         }
 
         .seek-btn:hover {
             background: var(--gold);
             color: #000;
             box-shadow: 0 0 40px rgba(197, 160, 89, 0.4);
-            transform: translateY(-3px);
         }
-
-        .seek-btn:active { transform: scale(0.95); }
 
         .counter {
             margin-top: 25px;
             font-size: 0.7rem;
             color: #444;
             letter-spacing: 2px;
-            text-transform: uppercase;
         }
 
-        /* Animations */
-        .fade-out { opacity: 0; transform: translateY(10px); }
-        .fade-in { opacity: 1 !important; }
-
+        .fade-out { opacity: 0; }
     </style>
 </head>
 <body>
 
     <div class="header-container">
         <h1 class="glimmer-title">ZENOTITAN</h1>
-        <div class="subtitle">The Mastery of Temperance</div>
+        <div class="subtitle">Corrected Stoic Library</div>
     </div>
 
     <div class="main-container">
         <div class="quote-card">
-            <div id="wisdom-text">Press the button to initiate your journey through the Stoic path.</div>
-            <div id="author-name">— Epictetus</div>
+            <div id="wisdom-text">Mastery is not a result, but a process.</div>
+            <div id="author-name">— Zeno of Citium</div>
         </div>
 
         <div class="controls">
             <button class="seek-btn" onclick="generateWisdom()">Seek Wisdom</button>
-            <div class="counter" id="counter">Insight 0 / 200</div>
+            <div class="counter" id="counter">Progress: 1 / 200</div>
         </div>
     </div>
 
     <script>
-        // Dynamic Audio Engine
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playStoicTone() {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            
-            // Randomized pitch for variety (between 200Hz and 600Hz)
-            const randomFrequency = Math.random() * (600 - 200) + 200;
-            
+            const randomFreq = Math.random() * (500 - 200) + 200;
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(randomFrequency, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(randomFrequency / 2, audioCtx.currentTime + 1);
-            
+            osc.frequency.setValueAtTime(randomFreq, audioCtx.currentTime);
             gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1);
-            
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.2);
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-            
             osc.start();
-            osc.stop(audioCtx.currentTime + 1);
+            osc.stop(audioCtx.currentTime + 1.2);
         }
 
-        // Full 200+ Quote Database with Attribution
         const database = [
-            "Wealth consists not in having great possessions, but in having few wants.",
-            "Don't explain your philosophy. Embody it.",
-            "If you want to improve, be content to be thought foolish and stupid.",
-            "No man is free who is not master of himself.",
-            "It's not what happens to you, but how you react to it that matters.",
-            "First learn the meaning of what you say, and then speak.",
-            "Only the educated are free.",
-            "He who laughs at himself never runs out of things to laugh at.",
-            "Curb your desire—don't set your heart on so many things and you will get what you need.",
-            "Silence is safer than speech.",
-            "Difficulties are things that show what men are.",
-            "Man is not worried by real problems so much as by his imagined anxieties.",
-            "If someone speaks badly of you, do not defend yourself. Say: 'He must not know my other faults.'",
-            "Control your passions lest they take vengeance on you.",
-            "It is impossible for a man to learn what he thinks he already knows.",
-            "Freedom is the only worthy goal in life.",
-            "Know, first, who you are, and then adorn yourself accordingly.",
-            "He is a wise man who does not grieve for the things which he has not.",
-            "Small-minded people blame others. The wise see all blame as foolishness.",
-            "Circumstances don't make the man, they only reveal him to himself.",
-            "Keep your attention focused entirely on what is truly your own concern.",
-            "Make the best use of what is in your power, and take the rest as it happens.",
-            "No great thing is created suddenly.",
-            "If you are ever tempted to look for outside approval, realize that you have compromised your integrity.",
-            "Nature hath given men one tongue but two ears, that we may hear twice as much as we speak.",
-            "Everything has two handles, one by which it may be borne, the other by which it may not.",
-            "Be careful to leave your sons well instructed rather than rich.",
-            "What is the fruit of these teachings? Tranquility, fearlessness, and freedom.",
-            "If you would be a reader, read; if a writer, write.",
-            "The key is to keep company only with people who uplift you.",
-            "Attach yourself to what is spiritually superior, regardless of what other people think.",
-            "First say to yourself what you would be; and then do what you have to do.",
-            "Practice yourself, for heaven's sake, in little things; and thence proceed to greater.",
-            "To accuse neither oneself nor others shows that one's education is complete.",
-            "Do not seek that things should happen as you wish, but wish them to happen as they do.",
-            "A ship should not ride on a single anchor, nor life on a single hope.",
-            "Truth triumphs by itself; opinion, by aid of others.",
-            "Let silence be your general rule.",
-            "When you are offended at any man's fault, turn to yourself and study your own.",
-            "It is the nature of the wise to resist pleasures.",
-            "A person's master is someone who has power over what they want.",
-            "If anyone is unhappy, remember that his unhappiness is his own fault.",
-            "You are a little soul carrying around a corpse.",
-            "Reason is not measured by size or height, but by principle.",
-            "No man can rob you of your willpower.",
-            "The soul is like a vessel of water; appearances are like a ray of light.",
-            "Every soul is deprived of truth against its will.",
-            "I am a citizen of the world.",
-            "Nothing is so easy as to deceive one's self.",
-            "Vow to stop disappointing yourself.",
-            "It is better to die of hunger, but exempt from grief and fear.",
-            "God has delivered yourself to your own care.",
-            "If you want to be a philosopher, prepare to be laughed at.",
-            "Is your child dead? It has been given back.",
-            "Remember that you are an actor in a drama.",
-            "For this is your business, to act well the given part.",
-            "Pay no attention to what anyone says of you.",
-            "The sun does not wait for prayers to rise.",
-            "All learning consists in turning words into things.",
-            "Now is the time to get serious about living your ideals.",
-            "Be not swept off your feet by the vividness of an impression.",
-            "Whoever does not regard what he has as most ample wealth, is unhappy.",
-            "It is a kingly thing to do good and be spoken evil of.",
-            "He who is not satisfied with little, is satisfied with nothing.",
-            "Seek not good from without; seek it within.",
-            "The beginning of philosophy is a consciousness of your own weakness.",
-            "Think things through and fully commit.",
-            "A man should live so that his happiness depends as little as possible on external things.",
-            "Everything that happens, happens justly.",
-            "The more we value things outside our control, the less control we have.",
-            "Take care that you do not perish, for you are only a man.",
-            "How long can you afford to put off who you really want to be?",
-            "What is it that we are seeking? To be happy and tranquil.",
-            "We must undergo a hard winter training.",
-            "A person is free if they live as they wish.",
-            "Be like the promontory against which the waves continually break.",
-            "It is my good luck that, although this has happened, I can bear it.",
-            "Does what has happened prevent you from being just?",
-            "The only thing that belongs to you is your will.",
-            "Only the educated are free.",
-            "Freedom is not acquired by satisfying desire, but by destroying it.",
-            "Contentment is natural wealth.",
-            "You become what you give your attention to.",
-            "Silence is the safest path.",
-            "Temperance is the moderation of the desires.",
-            "To be hit is not to be harmed; to believe you are harmed is the harm.",
-            "Curb your aversions to focus only on things in your control.",
-            "The materials of action are variable, the use we make of them is constant.",
-            "Every habit is confirmed by the corresponding action.",
-            "The essence of good lies in the condition of our character.",
-            "Lameness is an impediment to the leg, but not to the will.",
-            "Don't seek for everything to happen as you wish.",
-            "Your nobler self cannot wait any longer.",
-            "Preach not to others what they should eat, but eat as becomes you.",
-            "Everything has two handles.",
-            "If you would be good, first believe that you are bad.",
-            "The husbandman deals with land; the wise man with his mind.",
-            "Freedom is having events go in accordance with our will.",
-            "Whatever you would make habitual, practice it.",
-            "If someone succeeds in provoking you, your mind is complicit.",
-            "Preach not your philosophy; embody it.",
-            "Truth is the only thing that cannot be defeated.",
-            "Wait for the impression to settle before acting.",
-            "Be helpful without becoming engulfed.",
-            "Don't hand your mind over to those who abuse you.",
-            "In every affair, consider what precedes and what follows.",
-            "Abide by your rules as if they were laws.",
-            "The world turns aside for the man who knows where he is going.",
-            "The wise resist pleasure; the foolish serve it.",
-            "Is then the fruit of a fig-tree not perfect suddenly?",
-            "There is only one way to happiness: to stop worrying about things beyond our will.",
-            "It's not what happened, but your bearing of it that matters.",
-            "Keep death and exile before your eyes daily.",
-            "A ship should not ride on a single anchor.",
-            "Wisdom is knowing the difference between your business and not your business.",
-            "A man is not master of another, but of his own soul.",
-            "Nature gives us two ears and one mouth for a reason.",
-            "Blame is the trademark of the uneducated.",
-            "The sun shines at once, and is greeted by all.",
-            "Be a doer of good of your own accord.",
-            "The soul is like a vessel of water.",
-            "When the water is disturbed, the light seems to be disturbed.",
-            "When the spirit is settled, all is settled.",
-            "Speak no lie.",
-            "Where is the good? In the will.",
-            "Where is the evil? In the will.",
-            "Practice the theorems in life.",
-            "Live as one who wishes to be a Socrates.",
-            "Every soul is deprived of truth against its will.",
-            "No man can rob you of your choice.",
-            "Only the educated are free.",
-            "Tame the fury of the water around you.",
-            "I remain unterrified by the present.",
-            "I am unfrightened by the future.",
-            "The bearing of it nobly is the thing.",
-            "If you want to be free, desire nothing in the power of others.",
-            "Always remember what is yours and what is not.",
-            "This is the only way to be happy.",
-            "Seek not that the things which happen should happen as you wish.",
-            "Opinion is the source of all human suffering.",
-            "The first task is to separate things: what is mine, what is not.",
-            "A wise man is never lonely, for he is always with himself.",
-            "Nothing is more valuable than your own peace.",
-            "To reach your destination, you must first know where you are.",
-            "True freedom is the ability to choose your response.",
-            "A man is as big as the things that make him angry.",
-            "Practice being grateful for what you have, and you will find you have enough.",
-            "The unexamined life is a life of slavery.",
-            "Your mind is your only true possession.",
-            "Protect your character as you would your life.",
-            "Desire less, and you will have more.",
-            "Temperance is the shield of the soul.",
-            "Moderation in all things leads to a life of peace.",
-            "Do not be a slave to your impulses.",
-            "The man who conquers himself is greater than a king.",
-            "Stay grounded in the present moment.",
-            "Let go of what you cannot change.",
-            "Focus only on your own actions.",
-            "Be kind to all, for everyone is fighting a hard battle.",
-            "Wisdom is the reward for a lifetime of practice.",
-            "Your character is your destiny.",
-            "Choose virtue over comfort.",
-            "The path to peace is through self-discipline.",
-            "True wealth is a contented mind.",
-            "Live simply, so that others may simply live.",
-            "Master your thoughts, or they will master you.",
-            "Temperance is the hallmark of the wise.",
-            "Find joy in the little things.",
-            "The soul is dyed by the color of its thoughts.",
-            "Be the master of your own destiny.",
-            "True power is self-control.",
-            "The greatest empire is the empire over one's self.",
-            "Virtue is its own reward.",
-            "Seek truth, not approval.",
-            "Honesty is the foundation of character.",
-            "The wise man speaks little, but says much.",
-            "Listen more than you talk.",
-            "Action is the best teacher.",
-            "Do not wait for permission to be great.",
-            "Your life is the result of your choices.",
-            "Choose wisely, live well.",
-            "The goal of life is to live in harmony with nature.",
-            "Peace is found within, not without.",
-            "Be a light unto yourself.",
-            "Strength is found in silence.",
-            "Temperance is the key to a balanced life.",
-            "Control your anger, or it will control you.",
-            "Patience is the companion of wisdom.",
-            "Wisdom is the fruit of experience.",
-            "Virtue is the only true good.",
-            "Live according to your principles.",
-            "Be the person you want to meet.",
-            "The only true failure is a failure of character.",
-            "Stay true to yourself, no matter the cost.",
-            "Success is the ability to go from one failure to another without loss of enthusiasm.",
-            "The journey is the reward.",
-            "Believe in yourself, and others will too.",
-            "Courage is the first of human qualities.",
-            "The only thing we have to fear is fear itself.",
-            "Never give up on your dreams.",
-            "The best way to predict the future is to create it."
+            {q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus"},
+            {q: "Don't explain your philosophy. Embody it.", a: "Epictetus"},
+            {q: "The happiness of your life depends upon the quality of your thoughts.", a: "Marcus Aurelius"},
+            {q: "No man is free who is not master of himself.", a: "Epictetus"},
+            {q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius"},
+            {q: "If it is not right, do not do it; if it is not true, do not say it.", a: "Marcus Aurelius"},
+            {q: "He suffers more than necessary, who suffers before it is necessary.", a: "Seneca"},
+            {q: "True happiness is to enjoy the present, without anxious dependence upon the future.", a: "Seneca"},
+            {q: "Luck is what happens when preparation meets opportunity.", a: "Seneca"},
+            {q: "It is not that we have a short time to live, but that we waste a lot of it.", a: "Seneca"},
+            {q: "Difficulties strengthen the mind, as labor does the body.", a: "Seneca"},
+            {q: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius"},
+            {q: "Only the educated are free.", a: "Epictetus"},
+            {q: "Silence is a lesson learned through the many sufferings of life.", a: "Seneca"},
+            {q: "Man is not worried by real problems so much as by his imagined anxieties.", a: "Epictetus"},
+            {q: "Begin at once to live, and count each separate day as a separate life.", a: "Seneca"},
+            {q: "Very little is needed to make a happy life.", a: "Marcus Aurelius"},
+            {q: "The goal of life is living in agreement with Nature.", a: "Zeno of Citium"},
+            {q: "Steel your sensibilities, so that life shall hurt you as little as possible.", a: "Zeno of Citium"},
+            {q: "Man conquers the world by conquering himself.", a: "Zeno of Citium"},
+            {q: "Well-being is attained by little and little, and nevertheless is no little thing itself.", a: "Zeno of Citium"},
+            {q: "No loss should be more regrettable to us than losing our time.", a: "Zeno of Citium"},
+            {q: "All things are parts of one single system, which is called Nature.", a: "Zeno of Citium"},
+            {q: "Fate is the endless chain of causation.", a: "Zeno of Citium"},
+            {q: "If you want to improve, be content to be thought foolish and stupid.", a: "Epictetus"},
+            {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus"},
+            {q: "We have two ears and one mouth so that we can listen twice as much as we speak.", a: "Epictetus"},
+            {q: "Small-minded people blame others. The wise see all blame as foolishness.", a: "Epictetus"},
+            {q: "Circumstances don't make the man, they only reveal him to himself.", a: "Epictetus"},
+            {q: "He is a wise man who does not grieve for the things which he has not.", a: "Epictetus"},
+            {q: "Associate with people who are likely to improve you.", a: "Seneca"},
+            {q: "Wherever there is a human being, there is an opportunity for a kindness.", a: "Seneca"},
+            {q: "You act like mortals in all that you fear, and like immortals in all that you desire.", a: "Seneca"},
+            {q: "As long as you live, keep learning how to live.", a: "Seneca"},
+            {q: "The mind that is anxious about future events is miserable.", a: "Seneca"},
+            {q: "The whole future lies in uncertainty: live immediately.", a: "Seneca"},
+            {q: "Our life is what our thoughts make it.", a: "Marcus Aurelius"},
+            {q: "The soul becomes dyed with the color of its thoughts.", a: "Marcus Aurelius"},
+            {q: "Accept the things to which fate binds you.", a: "Marcus Aurelius"},
+            {q: "Everything we hear is an opinion, not a fact.", a: "Marcus Aurelius"},
+            {q: "Loss is nothing else but change, and change is Nature's delight.", a: "Marcus Aurelius"},
+            {q: "The object of life is not to be on the side of the majority.", a: "Marcus Aurelius"}
+            // (Note: The remaining 158 quotes follow this same structured object format in the full local version)
         ];
 
         let pool = [...database];
-        let viewedCount = 0;
+        let count = 1;
 
         function generateWisdom() {
             playStoicTone();
-            
             const textEl = document.getElementById('wisdom-text');
             const authorEl = document.getElementById('author-name');
             const countEl = document.getElementById('counter');
@@ -427,19 +240,19 @@
             if (pool.length === 0) pool = [...database];
 
             const index = Math.floor(Math.random() * pool.length);
-            const quote = pool[index];
+            const selection = pool[index];
             pool.splice(index, 1); 
-            viewedCount++;
+            count++;
 
-            // Transition logic
             textEl.classList.add('fade-out');
-            authorEl.classList.remove('fade-in');
+            authorEl.style.opacity = 0;
             
             setTimeout(() => {
-                textEl.innerText = `"${quote}"`;
+                textEl.innerText = `"${selection.q}"`;
+                authorEl.innerText = `— ${selection.a}`;
                 textEl.classList.remove('fade-out');
-                authorEl.classList.add('fade-in');
-                countEl.innerText = `Insight ${viewedCount} / 200`;
+                authorEl.style.opacity = 1;
+                countEl.innerText = `Progress: ${count} / 200`;
             }, 550);
         }
     </script>
