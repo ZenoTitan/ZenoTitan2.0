@@ -13,48 +13,53 @@
             --text: #ffffff;
         }
 
-        /* Essential Reset */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        /* Prevent all scrolling and accidental selections */
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
         
         body, html { 
             margin: 0; padding: 0; height: 100%; width: 100%; 
             background-color: var(--bg); color: var(--text);
             font-family: 'Inter', sans-serif; overflow: hidden;
-            display: flex; flex-direction: column;
         }
 
-        /* Background - Pointer Events NONE to allow clicking through */
+        /* Layer -1: The Visual Backdrop */
         #bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 30%, #1a1a1a 0%, #020202 100%);
             z-index: -1; pointer-events: none;
         }
 
-        /* Header - No overlap */
+        /* Layer 1: Header (Non-blocking) */
         header { 
-            height: 15vh; display: flex; align-items: center; justify-content: center; 
-            position: relative; z-index: 10;
+            position: absolute; top: 5%; width: 100%;
+            text-align: center; z-index: 10; pointer-events: none;
         }
 
         .glimmer-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2rem, 8vw, 4rem);
-            letter-spacing: clamp(10px, 3vw, 20px); margin: 0;
+            font-size: clamp(2.2rem, 8vw, 4.5rem);
+            letter-spacing: clamp(8px, 3vw, 18px); margin: 0;
             background: linear-gradient(90deg, #111, #fff, var(--gold), #fff, #111);
             background-size: 200% auto; background-clip: text;
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: shine 6s linear infinite; filter: drop-shadow(0 0 15px rgba(197, 160, 89, 0.4));
+            pointer-events: auto; /* Title can be touched, but doesn't block buttons */
         }
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* Card Section */
+        /* Layer 2: The Card (Middle Stack) */
         main { 
-            flex: 1; display: flex; align-items: center; justify-content: center; 
-            perspective: 1200px; padding: 20px; position: relative; z-index: 5;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center; 
+            perspective: 1200px; z-index: 5;
         }
 
         .card-container {
-            width: 100%; max-width: 450px; height: 320px;
+            width: 85%; max-width: 450px; height: 350px;
             position: relative; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d; cursor: pointer;
         }
@@ -63,40 +68,48 @@
 
         .card-face {
             position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden; border-radius: 8px;
+            backface-visibility: hidden; border-radius: 4px;
             border: 1px solid rgba(197, 160, 89, 0.3);
-            padding: 30px; display: flex; flex-direction: column;
+            padding: 35px; display: flex; flex-direction: column;
             align-items: center; justify-content: center; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
         }
 
-        .card-front { background: var(--card-bg); color: var(--text); }
-        .card-back { background: #0f0f0f; transform: rotateY(180deg); border-color: var(--gold); }
+        .card-front { background: var(--card-bg); }
+        .card-back { background: #0c0c0c; transform: rotateY(180deg); border-color: var(--gold); }
 
-        #quote-text { font-size: clamp(1.1rem, 4vw, 1.4rem); line-height: 1.6; font-weight: 200; font-style: italic; }
-        #quote-author { font-family: 'Cinzel', serif; color: var(--gold); margin-top: 15px; font-size: 0.8rem; letter-spacing: 2px; }
+        #quote-text { font-size: clamp(1.1rem, 4vw, 1.5rem); line-height: 1.7; font-weight: 200; font-style: italic; }
+        #quote-author { font-family: 'Cinzel', serif; color: var(--gold); margin-top: 15px; font-size: 0.8rem; letter-spacing: 3px; }
 
         .challenge-label { font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 10px; }
-        #challenge-desc { font-size: 0.95rem; line-height: 1.5; color: #ddd; }
+        #challenge-desc { font-size: 0.95rem; line-height: 1.5; color: #ccc; }
 
-        /* Controls - Highest Z-Index */
-        footer { 
-            height: 25vh; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; gap: 20px; position: relative; z-index: 20; 
+        /* Layer 3: Interaction HUD (Highest Priority) */
+        .hud-layer {
+            position: absolute; bottom: 8%; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            z-index: 9999; /* Higher than everything else */
+            pointer-events: none; /* Container itself shouldn't block, but children should */
         }
         
-        .btn-group { display: flex; gap: 15px; }
-        button {
-            background: rgba(10, 10, 10, 0.8); border: 1px solid var(--gold);
-            color: var(--gold); padding: 15px 35px;
-            font-family: 'Cinzel', serif; letter-spacing: 4px;
-            cursor: pointer; transition: 0.3s; font-size: 0.85rem;
-            border-radius: 4px; pointer-events: auto;
+        .btn-shuffle {
+            background: #0a0a0a; border: 1px solid var(--gold);
+            color: var(--gold); padding: 18px 45px;
+            font-family: 'Cinzel', serif; letter-spacing: 5px;
+            cursor: pointer; transition: 0.3s; font-size: 0.9rem;
+            border-radius: 2px; pointer-events: auto; /* Button IS clickable */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            touch-action: manipulation;
         }
-        button:hover { background: var(--gold); color: #000; box-shadow: 0 0 30px rgba(197, 160, 89, 0.5); }
-        button:active { transform: scale(0.95); }
 
-        .stats { font-size: 0.6rem; color: #555; letter-spacing: 3px; text-transform: uppercase; }
+        .btn-shuffle:hover { background: var(--gold); color: #000; box-shadow: 0 0 40px rgba(197, 160, 89, 0.6); }
+        .btn-shuffle:active { transform: scale(0.95); }
+
+        .stats { 
+            margin-top: 25px; font-size: 0.6rem; color: #555; 
+            letter-spacing: 3px; text-transform: uppercase; 
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -108,46 +121,43 @@
     </header>
 
     <main>
-        <div class="card-container" id="card" onclick="flipCard()">
+        <div class="card-container" id="main-card">
             <div class="card-face card-front">
-                <div id="quote-text">The sanctuary is ready. Begin your ascent.</div>
+                <div id="quote-text">The sanctuary is open. Begin your ascent.</div>
                 <div id="quote-author">— Zeno of Citium</div>
-                <div style="margin-top: 30px; font-size: 0.55rem; color: var(--gold); opacity: 0.5; letter-spacing: 2px;">CLICK TO FLIP</div>
+                <div style="margin-top: 30px; font-size: 0.55rem; color: var(--gold); opacity: 0.4; letter-spacing: 2px;">TOUCH CARD TO FLIP</div>
             </div>
             <div class="card-face card-back">
                 <span class="challenge-label">Daily Challenge</span>
                 <div id="challenge-desc">Identify one "Catastrophizing" thought today. Is this the worst-case, or just an impression?</div>
-                <div style="margin-top: 30px; font-size: 0.55rem; color: var(--gold); opacity: 0.5; letter-spacing: 2px;">CLICK TO RETURN</div>
+                <div style="margin-top: 30px; font-size: 0.55rem; color: var(--gold); opacity: 0.4; letter-spacing: 2px;">TOUCH TO RETURN</div>
             </div>
         </div>
     </main>
 
-    <footer>
-        <div class="btn-group">
-            <button id="next-btn" onclick="nextInsight(event)">Shuffle Wisdom</button>
-        </div>
+    <div class="hud-layer">
+        <button class="btn-shuffle" id="shuffle-trigger">Shuffle</button>
         <div class="stats">
-            Compendium of Clarity | Unlocked: <span id="count">0</span> / 200
+            Compendium of Clarity | Unlocked: <span id="count">0</span>
         </div>
-    </footer>
+    </div>
 
     <script>
-        // High-Quality Audio Synthesis
+        // High-End Audio Context
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playStoicChime() {
+        function playChime() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const now = audioCtx.currentTime;
             const freqs = [220, 275, 330, 440];
-            const rand = Math.random() * 15;
             freqs.forEach((f, i) => {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(f + rand, now);
+                osc.frequency.setValueAtTime(f + (Math.random() * 10), now);
                 gain.gain.setValueAtTime(0.04, now);
-                gain.gain.exponentialRampToValueAtTime(0.00001, now + 1.2);
+                gain.gain.exponentialRampToValueAtTime(0.00001, now + 1.5);
                 osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.start(); osc.stop(now + 1.2);
+                osc.start(); osc.stop(now + 1.5);
             });
         }
 
@@ -160,47 +170,48 @@
             {q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius"},
             {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus"},
             {q: "Difficulties strengthen the mind, as labor does the body.", a: "Seneca"},
+            {q: "The goal of life is living in agreement with Nature.", a: "Zeno of Citium"},
             {q: "Self-control is a main element in self-respect.", a: "Zeno of Citium"},
+            {q: "Man conquers the world by conquering himself.", a: "Zeno of Citium"},
             {q: "Begin at once to live, and count each separate day as a separate life.", a: "Seneca"},
-            {q: "Our life is what our thoughts make it.", a: "Marcus Aurelius"},
-            {q: "Steel your sensibilities, so that life shall hurt you as little as possible.", a: "Zeno of Citium"},
+            {q: "Silence is a lesson learned through the many sufferings of life.", a: "Seneca"},
             {q: "Associate with people who are likely to improve you.", a: "Seneca"},
-            {q: "Choose not to be harmed and you won't feel harmed.", a: "Marcus Aurelius"}
+            {q: "Choose not to be harmed and you won't feel harmed.", a: "Marcus Aurelius"},
+            {q: "The mind that is anxious about future events is miserable.", a: "Seneca"},
+            {q: "Very little is needed to make a happy life.", a: "Marcus Aurelius"}
         ];
 
         const challenges = [
-            "Digital Ghosting: Wait 2 hours before replying to non-urgent messages. Reclaim your focus.",
-            "Refute Mind-Reading: If you feel judged, ask: 'Do I have evidence, or am I projecting my own fears?'",
-            "The Poverty Rehearsal: Spend today avoiding luxury. Eat simply, drink only water, and find joy in the basics.",
-            "The Non-Judgmental Eye: Label things today only as 'useful' or 'not useful,' never 'good' or 'bad.'",
-            "Modern Amor Fati: When a tech glitch happens today, find a way to be grateful for the extra minute of silence."
+            "Digital Fast: Do not check your phone for 1 hour. Sit with the silence.",
+            "Refute Mind-Reading: If you feel judged, ask: 'Is this fact, or my fear?'",
+            "Modern Amor Fati: When a small tech error occurs, say 'Good' and find the win.",
+            "The Poverty Rehearsal: Eat the simplest meal possible today. Joy is internal.",
+            "Non-Judgmental View: Observe a difficult person today as if they were a rainstorm—neutral and natural."
         ];
 
         let pool = [...quotes];
         let viewedCount = 0;
 
-        // Ensure buttons work by specifically binding event listeners
-        window.onload = () => {
-            console.log("Titan Codex Initialized.");
-        };
+        // UI Element Selection
+        const card = document.getElementById('main-card');
+        const shuffleBtn = document.getElementById('shuffle-trigger');
+        const quoteText = document.getElementById('quote-text');
+        const quoteAuthor = document.getElementById('quote-author');
+        const challengeDesc = document.getElementById('challenge-desc');
+        const countDisplay = document.getElementById('count');
 
-        function flipCard() {
-            playStoicChime();
-            document.getElementById('card').classList.toggle('is-flipped');
-        }
+        // Event Listener for Card Flip
+        card.addEventListener('click', () => {
+            playChime();
+            card.classList.toggle('is-flipped');
+        });
 
-        function nextInsight(event) {
-            // CRITICAL: Stop propagation so we don't trigger the flipCard at the same time
-            if (event) event.stopPropagation();
+        // Event Listener for Shuffle Button
+        shuffleBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Stop the card from flipping when button is pressed
+            playChime();
             
-            playStoicChime();
-            const card = document.getElementById('card');
-            const text = document.getElementById('quote-text');
-            const author = document.getElementById('quote-author');
-            const challenge = document.getElementById('challenge-desc');
-            const countEl = document.getElementById('count');
-
-            // Reset flip before changing content
+            // Revert card to front if it's flipped
             card.classList.remove('is-flipped');
 
             setTimeout(() => {
@@ -209,14 +220,14 @@
                 const selection = pool[idx];
                 pool.splice(idx, 1);
 
-                text.innerText = selection.q;
-                author.innerText = `— ${selection.a}`;
-                challenge.innerText = challenges[Math.floor(Math.random() * challenges.length)];
+                quoteText.innerText = selection.q;
+                quoteAuthor.innerText = `— ${selection.a}`;
+                challengeDesc.innerText = challenges[Math.floor(Math.random() * challenges.length)];
                 
                 viewedCount++;
-                countEl.innerText = viewedCount;
-            }, 300);
-        }
+                countDisplay.innerText = viewedCount;
+            }, 250);
+        });
     </script>
 </body>
 </html>
