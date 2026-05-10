@@ -1,1 +1,113 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZENO | TITAN v7.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Cinzel:wght@400;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #d4af37; --gold-bright: #fcf6ba; --bg: #030303; }
+        body { background-color: var(--bg); color: var(--gold); font-family: 'Space Mono', monospace; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        
+        .glimmer-title {
+            font-family: 'Cinzel', serif; font-size: clamp(3rem, 10vw, 5.5rem); font-weight: 900; text-transform: uppercase;
+            background: linear-gradient(to right, #bf953f 20%, #fcf6ba 40%, #b38728 60%, #fbf5b7 80%, #aa771c 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto;
+            animation: shine 4s linear infinite; letter-spacing: 15px; margin: 0; filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .terminal { width: 95vw; max-width: 900px; background: rgba(15, 15, 15, 0.95); border: 1px solid var(--gold); padding: 40px; box-shadow: 0 0 100px #000; text-align: center; border-radius: 10px; }
+        textarea, input { width: 100%; background: #000; border: 1px solid var(--gold); color: #fff; padding: 15px; font-family: 'Space Mono'; margin: 20px 0; box-sizing: border-box; outline: none; }
+        
+        .glossy-btn {
+            background: linear-gradient(135deg, #d4af37 0%, #fcf6ba 50%, #b8860b 100%);
+            color: #000; padding: 18px 35px; font-family: 'Orbitron', sans-serif; font-weight: 900; border: none; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 3px; transition: 0.3s; clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+        }
+        .glossy-btn:hover { transform: scale(1.02); box-shadow: 0 0 25px var(--gold); }
+
+        .phase { display: none; animation: fadeIn 0.6s ease; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .v-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 25px; }
+        .v-card { border-left: 3px solid var(--gold); background: rgba(255,255,255,0.03); padding: 12px; text-align: left; font-size: 0.8rem; }
+        .v-card b { color: var(--gold-bright); display: block; margin-bottom: 3px; font-family: 'Orbitron'; font-size: 0.65rem; }
+    </style>
+</head>
+<body>
+
+<div class="terminal">
+    <div id="p1" class="phase active">
+        <h1 class="glimmer-title">ZENO</h1>
+        <p style="letter-spacing: 10px; opacity: 0.5;">TITAN MOTHERLODE v7.0</p>
+        <textarea id="mainInput" placeholder="WHAT IS YOUR DISTURBANCE?"></textarea>
+        <button class="glossy-btn" onclick="runOracle()">INITIATE NEURAL SCAN</button>
+    </div>
+
+    <div id="p2" class="phase">
+        <h2 style="font-family: 'Orbitron'; letter-spacing: 10px;">SCANNING_REASON...</h2>
+    </div>
+
+    <div id="p3" class="phase">
+        <h3 id="outAuthor" style="letter-spacing: 5px; font-size: 0.8rem;"></h3>
+        <h2 id="outQuote" style="font-family: 'Cinzel'; font-size: 2rem; color: #fff; margin: 25px 0;"></h2>
+        <input type="text" id="struggleInput" placeholder="HOW WILL YOU APPLY THIS?">
+        <button class="glossy-btn" onclick="runVirtue()">VIRTUE PROTOCOL</button>
+    </div>
+
+    <div id="p4" class="phase">
+        <h2 style="font-family: 'Cinzel'; letter-spacing: 5px;">THE 10 COMMANDMENTS</h2>
+        <div class="v-grid" id="vDeck"></div>
+        <button class="glossy-btn" style="margin-top: 30px; font-size: 0.7rem;" onclick="location.reload()">REBOOT</button>
+    </div>
+</div>
+
+<script>
+    const titanDB = [
+        {q: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius", k: ["angry", "revenge", "mad", "work"]},
+        {q: "We suffer more in imagination than in reality.", a: "Seneca", k: ["fear", "worry", "future", "scared"]},
+        {q: "You have power over your mind - not outside events.", a: "Marcus Aurelius", k: ["control", "stress", "other people"]},
+        {q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus", k: ["money", "rich", "jealous"]},
+        {q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius", k: ["action", "stuck", "lazy"]},
+        {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus", k: ["react", "event"]}
+    ];
+
+    function runOracle() {
+        const val = document.getElementById('mainInput').value;
+        if(!val) return;
+        switchPhase('p2');
+        setTimeout(() => {
+            let match = titanDB.find(i => i.k.some(k => val.toLowerCase().includes(k))) || titanDB[Math.floor(Math.random() * titanDB.length)];
+            document.getElementById('outQuote').innerText = `"${match.q}"`;
+            document.getElementById('outAuthor').innerText = `DECREE: ${match.a.toUpperCase()}`;
+            switchPhase('p3');
+        }, 1500);
+    }
+
+    function runVirtue() {
+        const tasks = [
+            {v: "WISDOM", t: "Isolate what you can control."},
+            {v: "WISDOM", t: "Look at the problem from 10,000 feet."},
+            {v: "COURAGE", t: "Do the hard thing first."},
+            {v: "COURAGE", t: "Accept the worst-case scenario."},
+            {v: "JUSTICE", t: "Do not return anger for anger."},
+            {v: "JUSTICE", t: "Help someone else today."},
+            {v: "TEMPERANCE", t: "Speak 50% less today."},
+            {v: "TEMPERANCE", t: "Deny one small luxury."},
+            {v: "SOVEREIGNTY", t: "Turn the obstacle into the way."},
+            {v: "SOVEREIGNTY", t: "You are the mountain, not the wind."}
+        ];
+        document.getElementById('vDeck').innerHTML = tasks.map(i => `<div class="v-card"><b>${i.v}</b>${i.t}</div>`).join("");
+        switchPhase('p4');
+    }
+
+    function switchPhase(id) {
+        document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+</script>
+</body>
+</html>
