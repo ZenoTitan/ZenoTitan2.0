@@ -1,13 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENO | TITAN v7.0</title>
+    <title>ZENO | TITAN v8.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Cinzel:wght@400;900&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #d4af37; --gold-bright: #fcf6ba; --bg: #030303; }
+        :root { --gold: #d4af37; --gold-bright: #fcf6ba; --bg: #030303; --glass: rgba(15, 15, 15, 0.98); }
         body { background-color: var(--bg); color: var(--gold); font-family: 'Space Mono', monospace; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
         
         .glimmer-title {
@@ -18,23 +17,24 @@
         }
         @keyframes shine { to { background-position: 200% center; } }
 
-        .terminal { width: 95vw; max-width: 900px; background: rgba(15, 15, 15, 0.95); border: 1px solid var(--gold); padding: 40px; box-shadow: 0 0 100px #000; text-align: center; border-radius: 10px; }
-        textarea, input { width: 100%; background: #000; border: 1px solid var(--gold); color: #fff; padding: 15px; font-family: 'Space Mono'; margin: 20px 0; box-sizing: border-box; outline: none; }
+        .terminal { width: 95vw; max-width: 1050px; background: var(--glass); border: 1px solid var(--gold); padding: 50px; box-shadow: 0 0 100px #000; text-align: center; border-radius: 5px; }
+        textarea, input { width: 100%; background: #000; border: 1px solid var(--gold); color: #fff; padding: 20px; font-family: 'Space Mono'; font-size: 1.1rem; margin: 20px 0; box-sizing: border-box; outline: none; }
         
         .glossy-btn {
             background: linear-gradient(135deg, #d4af37 0%, #fcf6ba 50%, #b8860b 100%);
-            color: #000; padding: 18px 35px; font-family: 'Orbitron', sans-serif; font-weight: 900; border: none; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 3px; transition: 0.3s; clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+            color: #000; padding: 20px 45px; font-family: 'Orbitron', sans-serif; font-weight: 900; border: none; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 4px; transition: 0.4s; clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
         }
-        .glossy-btn:hover { transform: scale(1.02); box-shadow: 0 0 25px var(--gold); }
+        .glossy-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px var(--gold); }
 
-        .phase { display: none; animation: fadeIn 0.6s ease; }
+        .phase { display: none; animation: fadeIn 0.8s ease; }
         .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .v-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 25px; }
-        .v-card { border-left: 3px solid var(--gold); background: rgba(255,255,255,0.03); padding: 12px; text-align: left; font-size: 0.8rem; }
-        .v-card b { color: var(--gold-bright); display: block; margin-bottom: 3px; font-family: 'Orbitron'; font-size: 0.65rem; }
+        .v-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 30px; }
+        .v-card { border-left: 4px solid var(--gold); background: rgba(255,255,255,0.03); padding: 18px; text-align: left; font-size: 0.85rem; line-height: 1.6; transition: 0.3s; }
+        .v-card:hover { background: rgba(212, 175, 55, 0.05); }
+        .v-card b { color: var(--gold-bright); display: block; margin-bottom: 8px; font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -42,64 +42,86 @@
 <div class="terminal">
     <div id="p1" class="phase active">
         <h1 class="glimmer-title">ZENO</h1>
-        <p style="letter-spacing: 10px; opacity: 0.5;">TITAN MOTHERLODE v7.0</p>
-        <textarea id="mainInput" placeholder="WHAT IS YOUR DISTURBANCE?"></textarea>
-        <button class="glossy-btn" onclick="runOracle()">INITIATE NEURAL SCAN</button>
+        <p style="letter-spacing: 12px; opacity: 0.5; margin-bottom: 40px;">SOVEREIGNTY_OS v8.0</p>
+        <textarea id="mainInput" placeholder="WHAT IS THE EXTERNAL DISTURBANCE?"></textarea>
+        <button class="glossy-btn" onclick="runOracle()">INITIATE SCAN</button>
     </div>
 
     <div id="p2" class="phase">
-        <h2 style="font-family: 'Orbitron'; letter-spacing: 10px;">SCANNING_REASON...</h2>
+        <h2 style="font-family: 'Orbitron'; letter-spacing: 15px;">PROCESSING_CHAOS...</h2>
+        <div id="load" style="width:0%; height:2px; background:var(--gold); margin:auto; transition: 2s;"></div>
     </div>
 
     <div id="p3" class="phase">
-        <h3 id="outAuthor" style="letter-spacing: 5px; font-size: 0.8rem;"></h3>
-        <h2 id="outQuote" style="font-family: 'Cinzel'; font-size: 2rem; color: #fff; margin: 25px 0;"></h2>
-        <input type="text" id="struggleInput" placeholder="HOW WILL YOU APPLY THIS?">
+        <h3 id="outAuthor" style="letter-spacing: 8px; font-size: 0.8rem;"></h3>
+        <h2 id="outQuote" style="font-family: 'Cinzel'; font-size: 2.2rem; color: #fff; margin: 30px 0;"></h2>
+        <p style="color: #888;">Define your specific intent for this wisdom:</p>
+        <input type="text" id="struggleInput" placeholder="HOW WILL YOU APPLY THIS TODAY?">
         <button class="glossy-btn" onclick="runVirtue()">VIRTUE PROTOCOL</button>
     </div>
 
     <div id="p4" class="phase">
-        <h2 style="font-family: 'Cinzel'; letter-spacing: 5px;">THE 10 COMMANDMENTS</h2>
+        <h2 style="font-family: 'Cinzel'; letter-spacing: 8px;">TACTICAL DIRECTIVES</h2>
         <div class="v-grid" id="vDeck"></div>
-        <button class="glossy-btn" style="margin-top: 30px; font-size: 0.7rem;" onclick="location.reload()">REBOOT</button>
+        <button class="glossy-btn" style="margin-top: 40px; font-size: 0.7rem;" onclick="location.reload()">REBOOT SYSTEM</button>
     </div>
 </div>
 
 <script>
     const titanDB = [
-        {q: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius", k: ["angry", "revenge", "mad", "work"]},
-        {q: "We suffer more in imagination than in reality.", a: "Seneca", k: ["fear", "worry", "future", "scared"]},
-        {q: "You have power over your mind - not outside events.", a: "Marcus Aurelius", k: ["control", "stress", "other people"]},
-        {q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus", k: ["money", "rich", "jealous"]},
-        {q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius", k: ["action", "stuck", "lazy"]},
-        {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus", k: ["react", "event"]}
+        {q: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius", k: ["revenge", "angry", "boss", "work", "mad", "unfair", "hate"]},
+        {q: "We suffer more in imagination than in reality.", a: "Seneca", k: ["fear", "worry", "anxious", "future", "failure", "scared"]},
+        {q: "You have power over your mind - not outside events. Realize this, and you will find strength.", a: "Marcus Aurelius", k: ["control", "stress", "weather", "other people"]},
+        {q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus", k: ["money", "poor", "jealous", "shopping", "greedy", "car", "house"]},
+        {q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius", k: ["stuck", "action", "lazy", "decision", "procrastinating"]},
+        {q: "Difficulties strengthen the mind, as labor does the body.", a: "Seneca", k: ["hard", "pain", "strength", "obstacle", "gym", "training"]},
+        {q: "If it is not right, do not do it; if it is not true, do not say it.", a: "Marcus Aurelius", k: ["lying", "truth", "ethics", "guilt"]},
+        {q: "He who fears death will never do anything worth of a man who is alive.", a: "Seneca", k: ["death", "dying", "time", "age"]},
+        {q: "Luck is what happens when preparation meets opportunity.", a: "Seneca", k: ["luck", "success", "fail", "business"]},
+        {q: "The impediment to action advances action. What stands in the way becomes the way.", a: "Marcus Aurelius", k: ["obstacle", "stuck", "problem", "wall"]},
+        {q: "Choose not to be harmed—and you won't feel harmed. Don't feel harmed—and you haven't been.", a: "Marcus Aurelius", k: ["hurt", "offended", "sad", "insult"]},
+        {q: "External things are not the problem. It's your assessment of them. Which you can erase right now.", a: "Marcus Aurelius", k: ["event", "problem", "circumstance"]},
+        {q: "How long are you going to wait before you demand the best for yourself?", a: "Epictetus", k: ["wait", "lazy", "better", "discipline"]},
+        {q: "You could leave life right now. Let that determine what you do and say and think.", a: "Marcus Aurelius", k: ["dying", "regret", "priority"]},
+        {q: "It is not that we have a short time to live, but that we waste a lot of it.", a: "Seneca", k: ["time", "phone", "social media", "waste"]},
+        {q: "No person has the power to have everything they want, but it is in their power not to want what they don't have.", a: "Seneca", k: ["desire", "want", "unhappy"]},
+        {q: "A man who suffers before it is necessary, suffers more than is necessary.", a: "Seneca", k: ["anticipation", "wait", "anxiety"]},
+        {q: "Think of yourself as dead. You have lived your life. Now, take what's left and live it properly.", a: "Marcus Aurelius", k: ["redo", "restart", "fresh"]},
+        {q: "The soul becomes dyed with the color of its thoughts.", a: "Marcus Aurelius", k: ["thoughts", "mindset", "negative", "positive"]},
+        {q: "Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth.", a: "Marcus Aurelius", k: ["opinion", "perspective", "judge"]},
+        {q: "Man is not worried by real problems so much as by his imagined anxieties about real problems.", a: "Epictetus", k: ["overthinking", "worry", "stress"]}
+        // Note: Thousands of matches can be detected using these keywords.
     ];
 
     function runOracle() {
         const val = document.getElementById('mainInput').value;
         if(!val) return;
         switchPhase('p2');
+        setTimeout(() => { document.getElementById('load').style.width = "100%"; }, 100);
         setTimeout(() => {
             let match = titanDB.find(i => i.k.some(k => val.toLowerCase().includes(k))) || titanDB[Math.floor(Math.random() * titanDB.length)];
             document.getElementById('outQuote').innerText = `"${match.q}"`;
-            document.getElementById('outAuthor').innerText = `DECREE: ${match.a.toUpperCase()}`;
+            document.getElementById('outAuthor').innerText = `ORACLE_DECREE: ${match.a.toUpperCase()}`;
             switchPhase('p3');
-        }, 1500);
+        }, 1800);
     }
 
     function runVirtue() {
         const tasks = [
-            {v: "WISDOM", t: "Isolate what you can control."},
-            {v: "WISDOM", t: "Look at the problem from 10,000 feet."},
-            {v: "COURAGE", t: "Do the hard thing first."},
-            {v: "COURAGE", t: "Accept the worst-case scenario."},
-            {v: "JUSTICE", t: "Do not return anger for anger."},
-            {v: "JUSTICE", t: "Help someone else today."},
-            {v: "TEMPERANCE", t: "Speak 50% less today."},
-            {v: "TEMPERANCE", t: "Deny one small luxury."},
-            {v: "SOVEREIGNTY", t: "Turn the obstacle into the way."},
-            {v: "SOVEREIGNTY", t: "You are the mountain, not the wind."}
+            {v: "Wisdom", t: "Isolate the variables. What specifically can you change in the next 5 minutes? Ignore everything else."},
+            {v: "Wisdom", t: "Practice 'Prosoche' (Attention). Watch your pulse as you think of the problem. Breathe until it slows."},
+            {v: "Wisdom", t: "The View from Above: Imagine looking at this from a satellite. Notice how small and temporary it is."},
+            {v: "Courage", t: "Amor Fati: Love this challenge. It was designed specifically to test your current weakness. Face it."},
+            {v: "Courage", t: "Premeditatio Malorum: Imagine the absolute worst result. Accept it. Now, you are free to act without fear."},
+            {v: "Courage", t: "Voluntary Hardship: Do something difficult today (cold shower, fast, extra reps) to prove you are the master."},
+            {v: "Justice", t: "Sympatheia: Remember that the person bothering you is part of the same human collective. Forgive their ignorance."},
+            {v: "Justice", t: "Duty: Perform one act of service today without seeking recognition. Balance the scales of the world."},
+            {v: "Justice", t: "Equanimity: Do not let your internal storm become someone else's weather. Be the source of calm."},
+            {v: "Temperance", t: "The Discipline of Desire: Stop wanting things to be different. Want them to be exactly as they are."},
+            {v: "Temperance", t: "The Discipline of Action: Do only what is essential. Strip away the 'nice-to-haves' from your schedule."},
+            {v: "Sovereignty", t: "Titan Mind: The mountain does not ask the wind to stop. The mountain remains. Be the mountain."}
         ];
+        
         document.getElementById('vDeck').innerHTML = tasks.map(i => `<div class="v-card"><b>${i.v}</b>${i.t}</div>`).join("");
         switchPhase('p4');
     }
