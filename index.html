@@ -1,69 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENO | TITAN v2.1</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <title>ZENO TITAN v2.2</title>
     <style>
-        :root { --bg: #050505; --accent: #d4af37; --text: #ffffff; }
-        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; text-align: center; overflow-x: hidden; }
-        .container { max-width: 800px; margin: 100px auto; padding: 20px; }
-        h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; background: linear-gradient(to right, #d4af37, #f2d06b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
-        textarea { width: 100%; background: #111; border: 1px solid #333; color: white; padding: 20px; border-radius: 15px; font-size: 1.2rem; margin: 30px 0; box-sizing: border-box; }
-        textarea:focus { border-color: var(--accent); outline: none; }
-        .btn { background: var(--accent); color: black; padding: 20px 40px; border-radius: 50px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; border: none; cursor: pointer; transition: 0.3s; }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 100; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-        .modal-content { max-width: 600px; border: 1px solid var(--accent); padding: 40px; border-radius: 30px; background: #0a0a0a; }
-        #quote { font-family: 'Playfair Display', serif; font-size: 2rem; line-height: 1.4; margin-bottom: 20px; }
-        #author { color: var(--accent); font-weight: 900; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
-        #note { font-style: italic; color: #888; border-top: 1px solid #222; padding-top: 20px; line-height: 1.6; }
+        body { background: #000; color: #d4af37; font-family: sans-serif; text-align: center; padding: 50px; }
+        .box { border: 2px solid #d4af37; padding: 40px; border-radius: 20px; max-width: 600px; margin: auto; }
+        textarea { width: 90%; padding: 15px; margin: 20px 0; background: #111; color: #fff; border: 1px solid #444; border-radius: 10px; }
+        button { background: #d4af37; color: #000; padding: 15px 30px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; }
+        .modal-inner { border: 1px solid #d4af37; padding: 40px; background: #050505; border-radius: 20px; max-width: 500px; }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div style="letter-spacing: 10px; color: var(--accent); font-size: 0.8rem; font-weight: 900; margin-bottom: 20px;">SYSTEM.ACTIVE</div>
-    <h1>Logic Over Emotion.</h1>
-    <textarea id="userInput" placeholder="What clouds your reason?"></textarea>
-    <br>
-    <button class="btn" onclick="process()">Submit to Reason</button>
-</div>
-
-<div id="wisdomModal" class="modal">
-    <div class="modal-content">
-        <div id="quote"></div>
-        <div id="author"></div>
-        <div id="note"></div>
-        <button class="btn" style="margin-top: 30px; font-size: 0.8rem;" onclick="closeModal()">Return</button>
+    <div class="box">
+        <h1>ZENO | TITAN</h1>
+        <p>SUBMIT YOUR DISTURBANCE</p>
+        <textarea id="input" placeholder="Type here..."></textarea>
+        <br>
+        <button onclick="startLogic()">Submit to Reason</button>
     </div>
-</div>
-
-<script>
-    const db = [
-        { q: "We suffer more in imagination than in reality.", a: "Seneca", n: "The pain you feel is from a thought, not an event. Discard the thought and the pain vanishes.", c: ["anxiety", "worry", "fear"] },
-        { q: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius", n: "Don't let their poison change your nature. Stay Titan.", c: ["angry", "hate", "mad"] },
-        { q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus", n: "If you need nothing, you own everything.", c: ["money", "poor", "want"] },
-        { q: "It is not death that a man should fear, but he should fear never beginning to live.", a: "Marcus Aurelius", n: "You are alive now. That is the only logic that matters.", c: ["death", "scared", "life"] }
-    ];
-
-    function process() {
-        const input = document.getElementById('userInput').value.toLowerCase();
-        let choice = db.find(item => item.c.some(keyword => input.includes(keyword)));
-        if (!choice) choice = db[Math.floor(Math.random() * db.length)];
-
-        document.getElementById('quote').innerText = `"${choice.q}"`;
-        document.getElementById('author').innerText = choice.a;
-        document.getElementById('note').innerText = choice.n;
-        document.getElementById('wisdomModal').style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('wisdomModal').style.display = 'none';
-        document.getElementById('userInput').value = "";
-    }
-</script>
-
+    <div id="modal">
+        <div class="modal-inner">
+            <h2 id="q"></h2>
+            <p id="a" style="letter-spacing: 5px;"></p>
+            <hr style="border: 0.5px solid #222;">
+            <p id="n" style="color: #888; font-style: italic;"></p>
+            <button onclick="closeMe()">Return</button>
+        </div>
+    </div>
+    <script>
+        const quotes = [
+            { q: "We suffer more in imagination than in reality.", a: "SENECA", n: "Fear is a ghost. Stop feeding it.", k: ["fear", "worry", "anxious"] },
+            { q: "The best revenge is to be unlike him who caused the injury.", a: "MARCUS AURELIUS", n: "Don't let them turn you into them.", k: ["angry", "hate", "mad"] },
+            { q: "You have power over your mind - not outside events.", a: "MARCUS AURELIUS", n: "Focus on what you can control.", k: ["control", "stress"] }
+        ];
+        function startLogic() {
+            const text = document.getElementById('input').value.toLowerCase();
+            let found = quotes.find(item => item.k.some(key => text.includes(key)));
+            if (!found) found = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('q').innerText = `"${found.q}"`;
+            document.getElementById('a').innerText = found.a;
+            document.getElementById('n').innerText = found.n;
+            document.getElementById('modal').style.display = 'flex';
+        }
+        function closeMe() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('input').value = "";
+        }
+    </script>
 </body>
 </html>
