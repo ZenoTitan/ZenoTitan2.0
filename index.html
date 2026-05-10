@@ -3,267 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ZenoTitan 2.0 | Titan Omnis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    <title>ZenoTitan 2.0 | Cognitive Clarity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #c5a059;
-            --bg: #050505;
-            --accent: #1a1a1a;
+            --bg: #020202;
+            --glass: rgba(15, 15, 15, 0.85);
             --text: #ffffff;
-            --glow: rgba(197, 160, 89, 0.3);
-            --transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            --accent: #1a1a1a;
         }
 
-        /* Prevent scroll issues */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { 
-            margin: 0; padding: 0; height: 100%; width: 100%; 
+            margin: 0; padding: 0; height: 100dvh; width: 100%; 
             background-color: var(--bg); color: var(--text);
             font-family: 'Inter', sans-serif; overflow: hidden;
+            display: flex; flex-direction: column;
         }
 
-        /* Theme Engine Background */
-        .bg-overlay {
+        /* Dynamic Theme Background */
+        #bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 30%, var(--accent) 0%, var(--bg) 100%);
-            z-index: -1; transition: var(--transition);
+            z-index: -1; transition: background 1.5s ease;
         }
 
-        /* Header logic - Fixed but not overlapping */
         header {
             height: 15vh; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center;
+            align-items: center; justify-content: center; padding-top: 20px;
         }
 
         .glimmer-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.8rem, 8vw, 4rem);
-            letter-spacing: 12px; margin: 0;
+            font-size: clamp(2rem, 8vw, 4.5rem);
+            letter-spacing: clamp(10px, 3vw, 20px); margin: 0;
             background: linear-gradient(90deg, #111, #fff, var(--primary), #fff, #111);
             background-size: 200% auto; background-clip: text;
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 6s linear infinite;
+            animation: shine 6s linear infinite; filter: drop-shadow(0 0 15px rgba(197, 160, 89, 0.3));
         }
 
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* Main Stage - Centered and Responsive */
         main {
-            height: 65vh; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; padding: 20px;
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 20px; gap: 20px;
         }
 
-        .quote-card {
-            background: rgba(15, 15, 15, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px; padding: 40px 30px;
-            width: 100%; max-width: 600px; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            transition: var(--transition); position: relative;
+        .card {
+            background: var(--glass); backdrop-filter: blur(20px);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            border-radius: 4px; padding: clamp(20px, 5vh, 40px);
+            width: 100%; max-width: 650px; text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        #quote-text {
-            font-size: clamp(1.1rem, 4vw, 1.5rem);
-            line-height: 1.6; font-weight: 300; margin-bottom: 20px;
+        #quote-text { font-size: clamp(1.1rem, 4vw, 1.6rem); line-height: 1.7; font-weight: 300; margin-bottom: 15px; font-style: italic; }
+        #quote-author { font-family: 'Cinzel', serif; color: var(--primary); letter-spacing: 3px; font-size: 0.8rem; text-transform: uppercase; }
+
+        /* Challenge Overlay */
+        #challenge-box {
+            display: none; border-top: 1px solid rgba(197, 160, 89, 0.2);
+            margin-top: 20px; padding-top: 20px; animation: fadeIn 0.5s ease;
         }
 
-        #quote-author {
-            font-family: 'Cinzel', serif; color: var(--primary);
-            font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase;
-        }
+        #challenge-title { font-family: 'Cinzel', serif; color: var(--primary); font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        #challenge-desc { font-size: 0.9rem; color: #bbb; margin-bottom: 15px; line-height: 1.5; }
 
-        /* Controls and Gamification */
+        textarea {
+            background: rgba(0,0,0,0.3); border: 1px solid #333; color: var(--primary);
+            width: 100%; border-radius: 4px; padding: 10px; font-family: 'Inter', sans-serif;
+            resize: none; outline: none; margin-bottom: 10px; transition: 0.3s;
+        }
+        textarea:focus { border-color: var(--primary); }
+
         footer {
-            height: 20vh; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; gap: 15px;
+            height: 25vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 15px; padding-bottom: 20px;
         }
 
-        .btn-shuffle {
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+        button {
             background: transparent; border: 1px solid var(--primary);
-            color: var(--primary); padding: 15px 40px;
-            font-family: 'Cinzel', serif; letter-spacing: 4px;
-            cursor: pointer; transition: 0.3s; font-size: 0.9rem;
-            border-radius: 4px;
+            color: var(--primary); padding: 12px 25px;
+            font-family: 'Cinzel', serif; letter-spacing: 3px;
+            cursor: pointer; transition: 0.4s; font-size: 0.8rem; border-radius: 2px;
         }
 
-        .btn-shuffle:hover { background: var(--primary); color: #000; box-shadow: 0 0 30px var(--glow); }
-        .btn-shuffle:active { transform: scale(0.95); }
+        button:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px rgba(197, 160, 89, 0.4); }
+        button:active { transform: scale(0.95); }
 
-        .stats-bar {
-            display: flex; gap: 20px; font-size: 0.7rem;
-            color: #666; text-transform: uppercase; letter-spacing: 2px;
-        }
+        .active-btn { background: var(--primary); color: #000; }
 
-        .goal-indicator { color: var(--primary); font-weight: bold; }
+        .stats { font-size: 0.65rem; color: #555; letter-spacing: 3px; text-transform: uppercase; }
 
-        /* Reward Alert */
-        #reward-pop {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: var(--primary); color: #000; padding: 20px 40px;
-            font-family: 'Cinzel', serif; border-radius: 4px; 
-            display: none; z-index: 1000; box-shadow: 0 0 50px var(--primary);
-        }
-
-        .fade-out { opacity: 0; transform: translateY(10px); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div class="bg-overlay" id="bg"></div>
-    <div id="reward-pop">Level Up: Scholar Titan</div>
+    <div id="bg-layer"></div>
 
     <header>
         <h1 class="glimmer-title">ZENOTITAN</h1>
-        <div style="font-size: 0.6rem; letter-spacing: 4px; color: var(--primary); margin-top: 5px;">THE OMNIS COMPENDIUM</div>
+        <div style="font-size: 0.6rem; letter-spacing: 4px; color: var(--primary); margin-top: 5px;">COMPENDIUM OF CLARITY</div>
     </header>
 
     <main>
-        <div class="quote-card" id="card">
-            <div id="quote-text">Mastery of the self is the highest form of power.</div>
-            <div id="quote-author">— Zeno of Citium</div>
+        <div class="card" id="main-card">
+            <div id="quote-display">
+                <div id="quote-text">Everything that happens, happens justly.</div>
+                <div id="quote-author">— Marcus Aurelius</div>
+            </div>
+
+            <div id="challenge-box">
+                <span id="challenge-title">Daily Challenge</span>
+                <p id="challenge-desc">Identify a modern "Mind-Reading" distortion today. When you think you know what someone is thinking about you, pause and ask: "Is this fact, or is this my judgment?"</p>
+                <textarea id="challenge-input" placeholder="Refute your distortion here..."></textarea>
+                <button onclick="completeChallenge()" id="complete-btn">Conquer Thought</button>
+            </div>
         </div>
     </main>
 
     <footer>
-        <button class="btn-shuffle" onclick="shuffleTitan()">Shuffle Wisdom</button>
-        <div class="stats-bar">
-            <span>Rank: <span id="rank-name">Initiate</span></span>
-            <span>Unlocked: <span id="count">0</span>/200</span>
-            <span class="goal-indicator">Goal: <span id="daily-goal">0</span>/5</span>
+        <div class="btn-group">
+            <button onclick="shuffleWisdom()">Seek Wisdom</button>
+            <button onclick="toggleChallenge()" id="challenge-trigger">Daily Challenge</button>
+        </div>
+        <div class="stats">
+            Rank: <span id="rank">Initiate</span> | 
+            Insights: <span id="insight-count">0</span> | 
+            Strength: <span id="strength-xp">0</span> XP
         </div>
     </footer>
 
     <script>
-        // --- 1. Algorithmic Audio Engine ---
+        // --- High-End Audio Engine ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playStoicChord() {
+        function playCelestialChord() {
             const now = audioCtx.currentTime;
-            // Pentatonic scale frequencies based on A (220Hz)
-            const scale = [220, 247.5, 275, 330, 366.6]; 
-            const notes = 3; // Number of notes in chord
-            
-            for(let i=0; i<notes; i++) {
+            const frequencies = [220, 275, 330, 440]; // A Major Pentatonic
+            frequencies.forEach((f, i) => {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                const freq = scale[Math.floor(Math.random() * scale.length)];
-                
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq * (i + 1), now);
-                gain.gain.setValueAtTime(0.05, now);
+                osc.frequency.setValueAtTime(f + (Math.random() * 5), now);
+                gain.gain.setValueAtTime(0.04, now);
                 gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
-                
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(now + 1.5);
-            }
+                osc.start(); osc.stop(now + 1.5);
+            });
         }
 
-        // --- 2. Corrected Database ---
+        // --- Database ---
         const quotes = [
             {q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus"},
             {q: "The happiness of your life depends upon the quality of your thoughts.", a: "Marcus Aurelius"},
-            {q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius"},
             {q: "He suffers more than necessary, who suffers before it is necessary.", a: "Seneca"},
             {q: "True happiness is to enjoy the present, without anxious dependence upon the future.", a: "Seneca"},
             {q: "No man is free who is not master of himself.", a: "Epictetus"},
-            {q: "Difficulties strengthen the mind, as labor does the body.", a: "Seneca"},
-            {q: "If it is not right, do not do it; if it is not true, do not say it.", a: "Marcus Aurelius"},
+            {q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius"},
             {q: "Luck is what happens when preparation meets opportunity.", a: "Seneca"},
-            {q: "The goal of life is living in agreement with Nature.", a: "Zeno of Citium"},
             {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus"},
+            {q: "The goal of life is living in agreement with Nature.", a: "Zeno of Citium"},
             {q: "Our life is what our thoughts make it.", a: "Marcus Aurelius"},
+            {q: "Difficulties strengthen the mind, as labor does the body.", a: "Seneca"},
+            {q: "Small-minded people blame others. The wise see all blame as foolishness.", a: "Epictetus"},
             {q: "Associate with people who are likely to improve you.", a: "Seneca"},
             {q: "Self-control is a main element in self-respect.", a: "Zeno of Citium"},
-            {q: "Steel your sensibilities, so that life shall hurt you as little as possible.", a: "Zeno of Citium"},
-            {q: "Man is not worried by real problems so much as by his imagined anxieties.", a: "Epictetus"},
-            {q: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius"},
+            {q: "You have power over your mind - not outside events.", a: "Marcus Aurelius"},
+            {q: "Man conquers the world by conquering himself.", a: "Zeno of Citium"},
             {q: "Begin at once to live, and count each separate day as a separate life.", a: "Seneca"},
             {q: "If it's endurable, then endure it. Stop complaining.", a: "Marcus Aurelius"},
-            {q: "You have power over your mind - not outside events. Realize this, and you will find strength.", a: "Marcus Aurelius"}
-            // (Database expanded to 200 items internally)
+            {q: "Choose not to be harmed—and you won’t feel harmed. Don’t feel harmed—and you haven’t been.", a: "Marcus Aurelius"},
+            {q: "Curb your desire—don't set your heart on so many things.", a: "Epictetus"}
+            // (Database can expand to 200 items in full version)
         ];
 
-        // --- 3. State Management ---
+        const challenges = [
+            {t: "Digital Ghosting", d: "If you are waiting for a reply, identify 'Fortune-Telling' (assuming the worst). Focus on your current work. Control only your input, not their output."},
+            {t: "The Social Comparison", d: "When scrolling, notice the 'Envy' distortion. Remind yourself: 'I am seeing an edited highlight reel, not reality.' Log off for 1 hour."},
+            {t: "The Doomscroll Shield", d: "Catastrophizing: Today, when you see negative news, ask: 'Does this news change my ability to act virtuously in this room right now?'"},
+            {t: "Work Burnout", d: "All-or-Nothing Thinking: If you fail at one task, don't label the whole day a waste. Identify the distortion and find one small thing you did well."},
+            {t: "Non-Judgmental Commute", d: "Mind-Reading: That person who cut you off? Don't assume they are a 'jerk.' Assume they are in a crisis. Protect your inner peace."}
+        ];
+
+        // --- State Management ---
+        let insightCount = localStorage.getItem('insights') || 0;
+        let xp = localStorage.getItem('xp') || 0;
         let pool = [...quotes];
-        let totalRead = parseInt(localStorage.getItem('zeno_total')) || 0;
-        let dailyCount = 0;
-        
-        // Initial setup
-        document.getElementById('count').innerText = totalRead;
+
+        document.getElementById('insight-count').innerText = insightCount;
+        document.getElementById('strength-xp').innerText = xp;
         updateRank();
 
-        function shuffleTitan() {
-            playStoicChord();
-            
-            const card = document.getElementById('card');
-            const textEl = document.getElementById('quote-text');
-            const authorEl = document.getElementById('quote-author');
-            const bg = document.getElementById('bg');
+        function shuffleWisdom() {
+            playCelestialChord();
+            const text = document.getElementById('quote-text');
+            const author = document.getElementById('quote-author');
+            const bg = document.getElementById('bg-layer');
 
-            if (pool.length === 0) pool = [...quotes];
-
+            if(pool.length === 0) pool = [...quotes];
             const idx = Math.floor(Math.random() * pool.length);
-            const choice = pool[idx];
+            const selection = pool[idx];
             pool.splice(idx, 1);
 
-            // Animate Card
-            card.classList.add('fade-out');
-            
+            text.parentElement.style.opacity = 0;
             setTimeout(() => {
-                textEl.innerText = choice.q;
-                authorEl.innerText = `— ${choice.a}`;
-                card.classList.remove('fade-out');
+                text.innerText = selection.q;
+                author.innerText = `— ${selection.a}`;
+                text.parentElement.style.opacity = 1;
                 
-                // Track Progress
-                totalRead++;
-                dailyCount++;
-                localStorage.setItem('zeno_total', totalRead);
-                
-                document.getElementById('count').innerText = totalRead;
-                document.getElementById('daily-goal').innerText = Math.min(dailyCount, 5);
-                
+                insightCount++;
+                xp = parseInt(xp) + 5;
+                saveStats();
                 updateTheme();
-                updateRank();
-                checkGoals();
-            }, 400);
+            }, 300);
         }
 
-        // --- 4. Theme & Gamification Logic ---
-        function updateTheme() {
-            const themes = [
-                {p: '#c5a059', a: '#1a1a1a'}, // Gold
-                {p: '#8e44ad', a: '#0a0510'}, // Purple
-                {p: '#27ae60', a: '#051005'}, // Green
-                {p: '#2980b9', a: '#050a10'}  // Blue
-            ];
-            const t = themes[totalRead % themes.length];
-            document.documentElement.style.setProperty('--primary', t.p);
-            document.documentElement.style.setProperty('--accent', t.a);
+        function toggleChallenge() {
+            playCelestialChord();
+            const box = document.getElementById('challenge-box');
+            const display = document.getElementById('quote-display');
+            const btn = document.getElementById('challenge-trigger');
+
+            if(box.style.display === 'block') {
+                box.style.display = 'none';
+                display.style.display = 'block';
+                btn.classList.remove('active-btn');
+            } else {
+                box.style.display = 'block';
+                display.style.display = 'none';
+                btn.classList.add('active-btn');
+                loadNewChallenge();
+            }
+        }
+
+        function loadNewChallenge() {
+            const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+            document.getElementById('challenge-title').innerText = `Modern Challenge: ${challenge.t}`;
+            document.getElementById('challenge-desc').innerText = challenge.d;
+        }
+
+        function completeChallenge() {
+            const input = document.getElementById('challenge-input').value;
+            if(input.length < 5) return alert("Reflect deeper to conquer the distortion.");
+            
+            playCelestialChord();
+            xp = parseInt(xp) + 50;
+            alert("Cognitive Strength Increased +50 XP");
+            document.getElementById('challenge-input').value = "";
+            saveStats();
+            toggleChallenge();
+        }
+
+        function saveStats() {
+            localStorage.setItem('insights', insightCount);
+            localStorage.setItem('xp', xp);
+            document.getElementById('insight-count').innerText = insightCount;
+            document.getElementById('strength-xp').innerText = xp;
+            updateRank();
         }
 
         function updateRank() {
-            const ranks = ["Initiate", "Scholar", "Guardian", "Titan", "Zeno Titan"];
-            const rankIdx = Math.min(Math.floor(totalRead / 10), 4);
-            document.getElementById('rank-name').innerText = ranks[rankIdx];
+            const rankEl = document.getElementById('rank');
+            if (xp < 100) rankEl.innerText = "Initiate";
+            else if (xp < 500) rankEl.innerText = "Scholar";
+            else if (xp < 1000) rankEl.innerText = "Guardian";
+            else rankEl.innerText = "Zeno Titan";
         }
 
-        function checkGoals() {
-            if (dailyCount === 5) {
-                showReward("Daily Discipline Complete");
-            }
-            if (totalRead % 10 === 0 && totalRead > 0) {
-                showReward("New Rank Unlocked");
-            }
-        }
-
-        function showReward(msg) {
-            const pop = document.getElementById('reward-pop');
-            pop.innerText = msg;
-            pop.style.display = 'block';
-            setTimeout(() => pop.style.display = 'none', 3000);
+        function updateTheme() {
+            const colors = ['#1a1a1a', '#0a0510', '#05100a', '#100505'];
+            document.getElementById('bg-layer').style.background = `radial-gradient(circle at 50% 30%, ${colors[insightCount % colors.length]} 0%, #020202 100%)`;
         }
     </script>
 </body>
