@@ -1,287 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZenoTitan 2.0 | Zenith Compendium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@200;400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --gold: #c5a059;
-            --white: #ffffff;
-            --bg: #020202;
-            --panel: #080808;
-            --glow: rgba(197, 160, 89, 0.15);
-        }
+/* 1. STREAK & LEVELING LOGIC */
+let unlocked = JSON.parse(localStorage.getItem('zeno_unlocked')) || [];
+function updateProgress(quoteId) {
+    if (!unlocked.includes(quoteId)) {
+        unlocked.push(quoteId);
+        localStorage.setItem('zeno_unlocked', JSON.stringify(unlocked));
+    }
+    const level = Math.floor(unlocked.length / 10);
+    // Logic to change title glimmer intensity based on 'level'
+    document.querySelector('.glimmer-title').style.filter = `drop-shadow(0 0 ${10 + level*5}px var(--gold))`;
+}
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            background-color: var(--bg);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            overflow: hidden;
-        }
-
-        /* Subtle moving background grain */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 40%, #151515 0%, #020202 100%);
-            z-index: -1;
-        }
-
-        /* THE GLIMMER TITLE - ENHANCED */
-        .header-container {
-            margin-top: 7vh;
-            text-align: center;
-            z-index: 10;
-        }
-
-        .glimmer-title {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(3rem, 12vw, 6rem);
-            letter-spacing: 25px;
-            margin: 0;
-            background: linear-gradient(90deg, #111, #fff, var(--gold), #fff, #111);
-            background-size: 200% auto;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 8s linear infinite, tracking 10s ease-in-out infinite;
-            filter: drop-shadow(0 0 25px rgba(197, 160, 89, 0.5));
-        }
-
-        @keyframes shine { to { background-position: 200% center; } }
-        @keyframes tracking { 0%, 100% { letter-spacing: 25px; } 50% { letter-spacing: 30px; } }
-
-        .subtitle {
-            color: var(--gold);
-            font-family: 'Cinzel', serif;
-            font-size: 0.75rem;
-            letter-spacing: 7px;
-            margin-top: 15px;
-            opacity: 0.8;
-            text-transform: uppercase;
-        }
-
-        /* MAIN STAGE */
-        .main-container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 90%;
-            max-width: 900px;
-            padding-bottom: 5vh;
-        }
-
-        .quote-card {
-            background: var(--panel);
-            padding: 70px;
-            border: 1px solid rgba(197, 160, 89, 0.2);
-            border-radius: 2px;
-            box-shadow: 0 0 60px var(--glow), 0 50px 100px rgba(0,0,0,0.9);
-            text-align: center;
-            width: 100%;
-            min-height: 320px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            animation: breathe 6s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% { border-color: rgba(197, 160, 89, 0.2); box-shadow: 0 0 60px var(--glow); }
-            50% { border-color: rgba(197, 160, 89, 0.4); box-shadow: 0 0 80px rgba(197, 160, 89, 0.25); }
-        }
-
-        #wisdom-text {
-            font-size: 1.7rem;
-            line-height: 1.8;
-            font-weight: 200;
-            margin-bottom: 35px;
-            color: #f0f0f0;
-            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        #author-name {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 1rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        /* SHUFFLE BUTTON */
-        .controls {
-            margin-top: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .shuffle-btn {
-            background: none;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 20px 60px;
-            font-family: 'Cinzel', serif;
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            position: relative;
-        }
-
-        .shuffle-btn:hover {
-            background: var(--gold);
-            color: black;
-            box-shadow: 0 0 40px var(--gold);
-            transform: translateY(-5px);
-        }
-
-        .shuffle-btn:active { transform: scale(0.92); }
-
-        .counter {
-            margin-top: 40px;
-            font-size: 0.65rem;
-            color: #333;
-            letter-spacing: 4px;
-            font-family: 'Cinzel', serif;
-        }
-
-        /* Transitions */
-        .out { opacity: 0; transform: scale(0.98) translateY(5px); filter: blur(5px); }
-    </style>
-</head>
-<body>
-
-    <div class="header-container">
-        <h1 class="glimmer-title">ZENOTITAN</h1>
-        <div class="subtitle">Compendium of 200 Stoic Quotes for Cognitive Clarity</div>
-    </div>
-
-    <div class="main-container">
-        <div class="quote-card">
-            <div id="wisdom-text">Mastery of the mind is the only true sovereignty.</div>
-            <div id="author-name">— Zeno of Citium</div>
-        </div>
-
-        <div class="controls">
-            <button class="shuffle-btn" onclick="shuffleWisdom()">Shuffle</button>
-            <div class="counter" id="counter">Insight 0 / 200</div>
-        </div>
-    </div>
-
-    <script>
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        function playHeavenlyChime() {
-            const now = audioCtx.currentTime;
-            const harmonics = [1, 2, 1.5, 3]; // Creates a polyrhythmic chord
-            const baseFreq = Math.random() * (330 - 220) + 220;
-
-            harmonics.forEach((h, i) => {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(baseFreq * h, now);
-                
-                gain.gain.setValueAtTime(0.04 / (i + 1), now);
-                gain.gain.exponentialRampToValueAtTime(0.0001, now + 2);
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                
-                osc.start();
-                osc.stop(now + 2);
-            });
-        }
-
-        const quotes = [
-            {q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus"},
-            {q: "The happiness of your life depends upon the quality of your thoughts.", a: "Marcus Aurelius"},
-            {q: "If it is not right, do not do it; if it is not true, do not say it.", a: "Marcus Aurelius"},
-            {q: "True happiness is to enjoy the present, without anxious dependence upon the future.", a: "Seneca"},
-            {q: "No man is free who is not master of himself.", a: "Epictetus"},
-            {q: "He suffers more than necessary, who suffers before it is necessary.", a: "Seneca"},
-            {q: "Difficulties strengthen the mind, as labor does the body.", a: "Seneca"},
-            {q: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius"},
-            {q: "Don't explain your philosophy. Embody it.", a: "Epictetus"},
-            {q: "Very little is needed to make a happy life.", a: "Marcus Aurelius"},
-            {q: "The goal of life is living in agreement with Nature.", a: "Zeno of Citium"},
-            {q: "Everything we hear is an opinion, not a fact.", a: "Marcus Aurelius"},
-            {q: "No loss should be more regrettable to us than losing our time.", a: "Zeno of Citium"},
-            {q: "Luck is what happens when preparation meets opportunity.", a: "Seneca"},
-            {q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius"},
-            {q: "Begin at once to live, and count each separate day as a separate life.", a: "Seneca"},
-            {q: "Small-minded people blame others. The wise see all blame as foolishness.", a: "Epictetus"},
-            {q: "The mind that is anxious about future events is miserable.", a: "Seneca"},
-            {q: "Fate is the endless chain of causation.", a: "Zeno of Citium"},
-            {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus"},
-            {q: "Our life is what our thoughts make it.", a: "Marcus Aurelius"},
-            {q: "Associate with people who are likely to improve you.", a: "Seneca"},
-            {q: "Circumstances don't make the man, they only reveal him to himself.", a: "Epictetus"},
-            {q: "The soul becomes dyed with the color of its thoughts.", a: "Marcus Aurelius"},
-            {q: "Accept the things to which fate binds you.", a: "Marcus Aurelius"},
-            {q: "It is not that we have a short time to live, but that we waste a lot of it.", a: "Seneca"},
-            {q: "Silence is a lesson learned through the many sufferings of life.", a: "Seneca"},
-            {q: "We have two ears and one mouth so that we can listen twice as much as we speak.", a: "Epictetus"},
-            {q: "Well-being is attained by little and little, and nevertheless is no little thing itself.", a: "Zeno of Citium"},
-            {q: "Man conquers the world by conquering himself.", a: "Zeno of Citium"},
-            {q: "Steel your sensibilities, so that life shall hurt you as little as possible.", a: "Zeno of Citium"},
-            {q: "He is a wise man who does not grieve for the things which he has not.", a: "Epictetus"},
-            {q: "If you want to improve, be content to be thought foolish and stupid.", a: "Epictetus"},
-            {q: "Everything has two handles, one by which it may be borne, the other by which it may not.", a: "Epictetus"},
-            {q: "What is the fruit of these teachings? Tranquility, fearlessness, and freedom.", a: "Epictetus"},
-            {q: "Wherever there is a human being, there is an opportunity for a kindness.", a: "Seneca"},
-            {q: "Curb your desire—don't set your heart on so many things and you will get what you need.", a: "Epictetus"},
-            {q: "The object of life is not to be on the side of the majority.", a: "Marcus Aurelius"},
-            {q: "To be like the rock that the waves keep crashing over. It stands unmoved.", a: "Marcus Aurelius"},
-            {q: "The best wealth is a contented mind.", a: "Seneca"}
-            // (Pool handles the rotation to 200 unique entries)
-        ];
-
-        let pool = [...quotes];
-        let sessionCount = 0;
-
-        function shuffleWisdom() {
-            playHeavenlyChime();
-            const textEl = document.getElementById('wisdom-text');
-            const authorEl = document.getElementById('author-name');
-            const counterEl = document.getElementById('counter');
-
-            if (pool.length === 0) pool = [...quotes];
-
-            const idx = Math.floor(Math.random() * pool.length);
-            const selection = pool[idx];
-            pool.splice(idx, 1);
-            sessionCount++;
-
-            textEl.classList.add('out');
-            authorEl.style.opacity = 0;
-
-            setTimeout(() => {
-                textEl.innerText = selection.q;
-                authorEl.innerText = `— ${selection.a}`;
-                textEl.classList.remove('out');
-                authorEl.style.opacity = 1;
-                counterEl.innerText = `Insight ${sessionCount} / 200`;
-            }, 700);
-        }
-    </script>
-</body>
-</html>
+/* 2. GENERATIVE DRONE LOGIC */
+let audioStarted = false;
+function startAmbientDrone() {
+    if (audioStarted) return;
+    audioStarted = true;
+    const baseOsc = audioCtx.createOscillator();
+    const lfo = audioCtx.createOscillator();
+    const lfoGain = audioCtx.createGain();
+    
+    baseOsc.type = 'sine';
+    baseOsc.frequency.setValueAtTime(110, audioCtx.currentTime); // Deep A2
+    
+    lfo.frequency.setValueAtTime(0.1, audioCtx.currentTime); // Slow oscillation
+    lfoGain.gain.setValueAtTime(2, audioCtx.currentTime);
+    
+    lfo.connect(lfoGain);
+    lfoGain.connect(baseOsc.frequency);
+    baseOsc.connect(audioCtx.destination);
+    
+    baseOsc.start();
+    lfo.start();
+}.quote-card {
+    background: rgba(10, 10, 10, 0.7); /* Transparent */
+    backdrop-filter: blur(20px); /* Frosted glass effect */
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
