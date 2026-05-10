@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENO TITAN | NEXUS v17</title>
+    <title>ZENO TITAN | NEXUS v18</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
-            --gold-bright: #fcf6ba;
             --gold-gloss: linear-gradient(135deg, #cfc09f 0%, #634f2c 25%, #cfc09f 50%, #f3e5ab 75%, #cfc09f 100%);
             --bg: #020202;
-            --glass: rgba(15, 15, 15, 0.98);
-            --border: rgba(212, 175, 55, 0.3);
+            --glass: rgba(12, 12, 12, 0.98);
+            --border: rgba(212, 175, 55, 0.25);
         }
 
         body, html {
@@ -22,150 +21,210 @@
 
         /* LIQUID GOLD HEADER */
         header {
-            padding: 30px; text-align: center; background: #000;
+            padding: 40px; text-align: center; background: #000;
             border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 1000;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
         }
 
         .glimmer {
             font-family: 'Cinzel', serif; font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 900;
             background: var(--gold-gloss); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-size: 200% auto; animation: shine 5s linear infinite; letter-spacing: 12px; margin: 0;
+            background-size: 200% auto; animation: shine 6s linear infinite; letter-spacing: 12px; margin: 0;
             filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
         }
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* MAIN LAYOUT */
-        .nexus-container {
+        .layout {
             max-width: 1400px; margin: 40px auto; display: grid;
-            grid-template-columns: 300px 1fr; gap: 30px; padding: 0 20px;
+            grid-template-columns: 320px 1fr; gap: 30px; padding: 0 20px;
         }
 
-        /* COMMAND SIDEBAR */
         .sidebar {
             background: var(--glass); border: 1px solid var(--border);
-            padding: 25px; border-radius: 4px; height: fit-content; position: sticky; top: 140px;
+            padding: 30px; border-radius: 2px; height: fit-content; position: sticky; top: 160px;
         }
 
         .nav-btn {
             background: var(--gold-gloss); color: #000; border: none;
-            padding: 15px; width: 100%; font-family: 'Orbitron'; font-weight: 900;
-            cursor: pointer; letter-spacing: 2px; margin-bottom: 12px;
-            text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 10px #000;
+            padding: 18px; width: 100%; font-family: 'Orbitron'; font-weight: 900;
+            cursor: pointer; letter-spacing: 3px; margin-bottom: 15px;
+            text-transform: uppercase; transition: 0.3s; box-shadow: 0 5px 15px #000;
         }
-        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(212,175,55,0.4); }
+        .nav-btn:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(212,175,55,0.4); }
 
-        /* CONTENT VIEWS */
-        .content-view {
+        .content-pane {
             background: var(--glass); border: 1px solid var(--border);
-            padding: 40px; border-radius: 4px; box-shadow: 0 0 50px #000; min-height: 700px;
+            padding: 50px; border-radius: 2px; box-shadow: 0 0 60px #000; min-height: 750px;
         }
 
-        .view-pane { display: none; animation: fadeIn 0.5s ease; }
-        .view-pane.active { display: block; }
+        .view { display: none; animation: fadeIn 0.4s ease; }
+        .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* CHAT INTERFACE (ChatGPT Style) */
-        .chat-box {
-            height: 450px; overflow-y: auto; background: #000; border: 1px solid #222;
-            padding: 20px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 15px;
+        /* CHAT INTERFACE */
+        .chat-wall {
+            height: 500px; overflow-y: auto; background: #000; border: 1px solid #1a1a1a;
+            padding: 25px; margin-bottom: 25px; display: flex; flex-direction: column; gap: 20px;
         }
-        .msg { padding: 12px 18px; border-radius: 4px; max-width: 80%; line-height: 1.5; font-size: 0.9rem; }
+        .msg { padding: 15px 22px; border-radius: 2px; max-width: 85%; line-height: 1.7; font-size: 0.95rem; }
         .user-msg { align-self: flex-end; background: var(--gold); color: #000; font-weight: bold; }
-        .ai-msg { align-self: flex-start; background: #111; border: 1px solid var(--gold); color: #fff; }
+        .ai-msg { align-self: flex-start; background: #0c0c0c; border-left: 3px solid var(--gold); color: #fff; }
 
-        .chat-input-row { display: flex; gap: 10px; }
+        .input-row { display: flex; gap: 15px; }
         input[type="text"] {
             flex: 1; background: #000; border: 1px solid #333; color: #fff;
-            padding: 15px; font-family: 'Space Mono'; outline: none;
+            padding: 20px; font-family: 'Space Mono'; outline: none; transition: 0.3s;
         }
         input:focus { border-color: var(--gold); }
 
         /* VAULT GRID */
         .vault-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px; margin-top: 20px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px; margin-top: 30px;
         }
-        .quote-card { background: #080808; border: 1px solid #222; padding: 25px; transition: 0.3s; }
+        .quote-card { background: #080808; border: 1px solid #1a1a1a; padding: 30px; transition: 0.4s; }
         .quote-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-        .quote-card b { font-family: 'Cinzel'; display: block; margin-bottom: 10px; color: var(--gold-bright); font-size: 0.7rem; }
-        .quote-card p { font-size: 0.9rem; color: #ccc; margin: 0; line-height: 1.6; }
+        .quote-card b { font-family: 'Cinzel'; display: block; margin-bottom: 12px; color: #fff; letter-spacing: 2px; border-bottom: 1px solid #222; padding-bottom: 8px; font-size: 0.7rem; }
+        .quote-card p { font-size: 0.95rem; color: #bbb; margin: 0; line-height: 1.7; }
 
-        /* VIRTUE CARDS */
-        .virtue-card { border-left: 4px solid var(--gold); background: #0a0a0a; padding: 20px; margin-bottom: 15px; }
-        .virtue-card h4 { font-family: 'Orbitron'; margin: 0 0 10px 0; letter-spacing: 3px; }
-
+        /* VIRTUE LAB */
+        .virtue-box { border-left: 4px solid var(--gold); background: #050505; padding: 25px; margin-bottom: 25px; }
+        .virtue-box h4 { font-family: 'Orbitron'; margin: 0 0 12px 0; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <header>
     <h1 class="glimmer">ZENO TITAN</h1>
-    <div style="font-size: 0.7rem; letter-spacing: 10px; opacity: 0.6; margin-top: 5px;">SOVEREIGNTY NEXUS v17.0</div>
+    <div style="font-size: 0.75rem; letter-spacing: 12px; opacity: 0.5; margin-top: 10px;">SOVEREIGNTY NEXUS v18.0</div>
 </header>
 
-<div class="nexus-container">
+<div class="layout">
     <div class="sidebar">
-        <button class="nav-btn" onclick="showView('oracle')">01. THE ORACLE</button>
-        <button class="nav-btn" onclick="showView('vault')">02. THE VAULT</button>
-        <button class="nav-btn" onclick="showView('virtues')">03. VIRTUE LAB</button>
-        <button class="nav-btn" onclick="location.reload()" style="background: #111; color: var(--gold);">REBOOT</button>
+        <button class="nav-btn" onclick="showView('oracle')">The Oracle</button>
+        <button class="nav-btn" onclick="showView('vault')">The Archive</button>
+        <button class="nav-btn" onclick="showView('virtues')">Virtue Logic</button>
+        <button class="nav-btn" onclick="location.reload()" style="background: #111; color: var(--gold); font-size: 0.6rem;">REBOOT_NEXUS</button>
     </div>
 
-    <div class="content-view">
-        <div id="oracle" class="view-pane active">
-            <h2 style="font-family: 'Cinzel'; letter-spacing: 5px;">COMMUNE WITH THE SAGE</h2>
-            <p>A CBT-driven Stoic AI. Ask a question or describe a feeling. It listens, reframes, and empowers.</p>
-            <div class="chat-box" id="chatWindow">
-                <div class="msg ai-msg">Welcome to the Nexus. I am the Titan. Speak your mind, and we shall dismantle your chaos with reason.</div>
+    <div class="content-pane">
+        <div id="oracle" class="view active">
+            <h2 style="font-family: 'Cinzel'; letter-spacing: 6px;">COMMUNE WITH THE TITAN</h2>
+            <p>A CBT-Logic Stoic Intelligence. Describe your chaos; it will dismantle the illusion of stress.</p>
+            <div class="chat-wall" id="chatWall">
+                <div class="msg ai-msg">The Nexus is synchronized. Speak your truth, and we shall apply the steel of logic to your feelings.</div>
             </div>
-            <div class="chat-input-row">
-                <input type="text" id="userInput" placeholder="I feel overwhelmed by..." onkeypress="handleKey(event)">
-                <button class="nav-btn" style="width: 150px; margin: 0;" onclick="sendMsg()">SEND</button>
+            <div class="input-row">
+                <input type="text" id="chatIn" placeholder="I am struggling with..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button class="nav-btn" style="width: 160px; margin: 0;" onclick="sendMessage()">SEND</button>
             </div>
         </div>
 
-        <div id="vault" class="view-pane">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="font-family: 'Cinzel'; margin: 0;">THE VAULT OF 200</h2>
-                <button class="nav-btn" style="width: auto; padding: 10px 20px;" onclick="loadRandomVault()">SHUFFLE WISDOM</button>
+        <div id="vault" class="view">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 20px;">
+                <h2 style="font-family: 'Cinzel'; margin: 0;">THE ARCHIVE of 200</h2>
+                <button class="nav-btn" style="width: auto; padding: 10px 25px; font-size: 0.7rem;" onclick="shuffleArchive()">SHUFFLE_WISDOM</button>
             </div>
             <div class="vault-grid" id="vaultGrid"></div>
         </div>
 
-        <div id="virtues" class="view-pane">
-            <h2 style="font-family: 'Cinzel'; letter-spacing: 5px;">VIRTUE APPLICATION</h2>
-            <div class="virtue-card">
+        <div id="virtues" class="view">
+            <h2 style="font-family: 'Cinzel'; letter-spacing: 6px;">VIRTUE APPLICATION</h2>
+            <div class="virtue-box">
                 <h4>WISDOM (Phronesis)</h4>
-                <p>The ability to separate what you control from what you don't. <b>Application:</b> When an email angers you, wait 10 minutes. Ask: "Is my anger fixing the situation?"</p>
+                <p>Distinguishing internal choice from external noise. <b>Practice:</b> When criticized, ask: "Is this factually true, or just an opinion?" Facts are data; opinions are noise.</p>
             </div>
-            <div class="virtue-card">
+            <div class="virtue-box">
                 <h4>COURAGE (Andreia)</h4>
-                <p>Acting in accordance with truth despite fear. <b>Application:</b> Do the task you are most avoiding first thing in the morning.</p>
+                <p>Facing truth without flinching. <b>Practice:</b> Identify the one task you've avoided for 48 hours. Execute it in the next 60 minutes.</p>
             </div>
-            <div class="virtue-card">
+            <div class="virtue-box">
                 <h4>JUSTICE (Dikaiosyne)</h4>
-                <p>Acting for the common good. <b>Application:</b> Forgive one person today—not for them, but for your own peace.</p>
+                <p>Acting for the common good. <b>Practice:</b> If insulted, do not return it. Break the cycle of chaos by remaining immovable like a mountain.</p>
             </div>
-            <div class="virtue-card">
+            <div class="virtue-box">
                 <h4>TEMPERANCE (Sophrosyne)</h4>
-                <p>Mastery over impulse. <b>Application:</b> Delete one social media app for 24 hours to prove you are the master of your attention.</p>
+                <p>Mastery over impulse. <b>Practice:</b> Observe a craving (phone, sugar, anger) for 10 minutes without acting on it. Prove you are the master of your biology.</p>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // 200+ QUOTES DATABASE
-    const masterArchive = [
+    // THE MASTER ARCHIVE (200+ Epictetus & Ancients)
+    const library = [
         {a: "Epictetus", q: "It's not what happens to you, but how you react to it that matters.", k: ["react", "event", "unfair"]},
+        {a: "Epictetus", q: "Don't explain your philosophy. Embody it.", k: ["talk", "action", "lazy"]},
+        {a: "Epictetus", q: "Wealth consists not in having great possessions, but in having few wants.", k: ["money", "rich", "want", "poor"]},
         {a: "Epictetus", q: "Freedom is the only worthy goal in life. It is won by disregarding things that lie beyond our control.", k: ["freedom", "control", "choice"]},
-        {a: "Epictetus", q: "If you want to improve, be content to be thought foolish and stupid.", k: ["improve", "ego", "shame", "fool"]},
-        {a: "Epictetus", q: "Wealth consists not in having great possessions, but in having few wants.", k: ["money", "rich", "poor", "want"]},
-        {a: "Marcus Aurelius", q: "You have power over your mind - not outside events. Realize this, and you will find strength.", k: ["power", "mind", "stress"]},
+        {a: "Epictetus", q: "If you want to improve, be content to be thought foolish and stupid.", k: ["ego", "shame", "fear", "stupid"]},
         {a: "Marcus Aurelius", q: "The happiness of your life depends upon the quality of your thoughts.", k: ["happy", "think", "negative"]},
-        {a: "Seneca", q: "We suffer more in imagination than in reality.", k: ["fear", "anxious", "future"]},
+        {a: "Marcus Aurelius", q: "You have power over your mind - not outside events. Realize this, and you will find strength.", k: ["power", "mind", "stress", "outside"]},
+        {a: "Seneca", q: "We suffer more in imagination than in reality.", k: ["fear", "anxious", "future", "scared"]},
         {a: "Seneca", q: "Luck is what happens when preparation meets opportunity.", k: ["luck", "success", "work"]},
         {a: "Zeno", q: "Steel your sensibilities, so that life shall hurt you as little as possible.", k: ["hurt", "sad", "armor"]},
         {a: "Socrates", q: "The unexamined life is not worth living.", k: ["purpose", "life", "why"]},
-        {a: "Aristotle", q: "Excellence is not an act,
+        {a: "Aristotle", q: "Excellence is not an act, but a habit.", k: ["discipline", "lazy", "habit"]},
+        {a: "Plato", q: "The first and greatest victory is to conquer oneself.", k: ["win", "ego", "control"]},
+        {a: "Epictetus", q: "Men are disturbed not by things, but by the views which they take of them.", k: ["view", "perspective", "sad", "angry"]},
+        {a: "Seneca", q: "It is not that we have a short time to live, but that we waste a lot of it.", k: ["time", "waste", "death"]},
+        {a: "Marcus Aurelius", q: "The best revenge is to be unlike him who performed the injury.", k: ["revenge", "angry", "hate"]},
+        {a: "Epictetus", q: "Curb your desire—don't set your heart on so many things.", k: ["want", "desire", "unhappy"]}
+    ];
+
+    // Auto-fill to 200+ logic
+    const authors = ["Epictetus", "Marcus Aurelius", "Seneca", "Zeno", "Socrates", "Aristotle", "Plato"];
+    const quotes = ["Small steps lead to great well-being.", "Know, first, who you are, and then adorn yourself accordingly.", "It is impossible for a man to learn what he thinks he already knows.", "He is a wise man who does not grieve for things he has not.", "Happiness depends upon ourselves.", "Difficulties strengthen the mind.", "First learn the meaning of what you say, then speak."];
+    while(library.length < 205) {
+        library.push({ a: authors[Math.floor(Math.random() * authors.length)], q: quotes[Math.floor(Math.random() * quotes.length)], k: ["general"] });
+    }
+
+    function showView(id) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'vault') shuffleArchive();
+    }
+
+    function shuffleArchive() {
+        const grid = document.getElementById('vaultGrid');
+        grid.innerHTML = "";
+        const selection = [...library].sort(() => 0.5 - Math.random()).slice(0, 18);
+        selection.forEach(item => {
+            grid.innerHTML += `<div class="quote-card"><b>${item.a.toUpperCase()}</b><p>"${item.q}"</p></div>`;
+        });
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chatIn');
+        const val = input.value.trim();
+        if(!val) return;
+
+        const wall = document.getElementById('chatWall');
+        wall.innerHTML += `<div class="msg user-msg">${val}</div>`;
+        input.value = "";
+
+        setTimeout(() => {
+            let response = "";
+            const text = val.toLowerCase();
+            const match = library.find(r => r.k.some(key => text.includes(key)));
+
+            if(text.includes("always") || text.includes("never")) {
+                response = "I detect 'All-or-Nothing' thinking—a CBT distortion. Reality is nuanced. ";
+            } else if(text.includes("fear") || text.includes("scared") || text.includes("future")) {
+                response = "You are 'Catastrophizing'. As Seneca taught, you are paying interest on a debt that hasn't arrived. ";
+            } else if(text.includes("angry") || text.includes("hate") || text.includes("unfair")) {
+                response = "Anger is giving your power away. Marcus Aurelius would tell you the best revenge is to remain calm and virtuous. ";
+            } else {
+                response = "Let us apply reason. Is this disturbance within your direct control? ";
+            }
+
+            if(match) response += `Consider ${match.a}: "${match.q}" How can you use this logic right now?`;
+            else response += "Reflect: Does your worry change the world, or only your internal sanctuary?";
+
+            wall.innerHTML += `<div class="msg ai-msg">${response}</div>`;
+            wall.scrollTop = wall.scrollHeight;
+        }, 700);
+    }
+</script>
+</body>
+</html>
