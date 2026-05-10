@@ -3,234 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENO TITAN | IMPERIAL v15</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <title>ZENO TITAN | IRONCLAD v16</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;900&family=Orbitron:wght@400;900&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold-gloss: linear-gradient(135deg, #fbf5b7 0%, #d4af37 25%, #fbf5b7 50%, #d4af37 75%, #fbf5b7 100%);
             --gold-text: #d4af37;
-            --gold-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-            --bg: #030303;
-            --panel: rgba(12, 12, 12, 0.98);
+            --bg: #050505;
+            --panel: #0a0a0a;
         }
 
-        body, html {
-            margin: 0; padding: 0; background: var(--bg); color: var(--gold-text);
-            font-family: 'Space Mono', monospace; overflow-x: hidden;
+        body {
+            margin: 0; background: var(--bg); color: var(--gold-text);
+            font-family: 'Space Mono', monospace; display: flex; flex-direction: column; align-items: center;
         }
 
-        .ambient-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #181818 0%, #030303 100%);
-            z-index: -1;
-        }
-
+        /* High-Gloss Header */
         header {
-            padding: 30px; text-align: center; border-bottom: 2px solid var(--gold-text);
-            background: #000; box-shadow: var(--gold-shadow); position: relative; z-index: 10;
+            width: 100%; padding: 40px 0; text-align: center; background: #000;
+            border-bottom: 2px solid var(--gold-text); box-shadow: 0 0 20px rgba(212,175,55,0.3);
         }
 
         .glimmer {
             font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900;
             background: var(--gold-gloss); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-size: 200% auto; animation: shine 5s linear infinite; letter-spacing: 12px; margin: 0;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
+            background-size: 200% auto; animation: shine 5s linear infinite; letter-spacing: 15px; margin: 0;
         }
         @keyframes shine { to { background-position: 200% center; } }
 
         .container {
-            max-width: 1300px; margin: 40px auto; padding: 20px;
-            display: grid; grid-template-columns: 340px 1fr; gap: 40px;
-        }
-
-        .sidebar {
+            max-width: 1000px; width: 90%; margin: 40px auto;
             background: var(--panel); border: 1px solid var(--gold-text);
-            padding: 30px; border-radius: 4px; height: fit-content; position: sticky; top: 140px;
+            padding: 40px; box-shadow: 0 0 50px #000; border-radius: 4px;
         }
 
+        /* The Gold Bullion Buttons */
         .btn-gold {
             background: var(--gold-gloss); color: #000; border: none;
-            padding: 18px; font-family: 'Orbitron'; font-weight: 900;
-            cursor: pointer; width: 100%; letter-spacing: 3px; margin-bottom: 15px;
+            padding: 20px; font-family: 'Orbitron'; font-weight: 900;
+            cursor: pointer; width: 100%; letter-spacing: 3px; margin: 10px 0;
             text-transform: uppercase; transition: 0.3s; border-radius: 2px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
         }
-        .btn-gold:hover { transform: translateY(-3px); box-shadow: var(--gold-shadow); }
+        .btn-gold:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(212,175,55,0.5); }
 
-        .main-deck {
-            background: var(--panel); border: 1px solid var(--gold-text);
-            padding: 50px; border-radius: 4px; box-shadow: 0 0 60px #000; min-height: 800px;
+        textarea, input {
+            width: 100%; background: #000; border: 1px solid #333;
+            color: #fff; padding: 20px; font-family: 'Space Mono'; font-size: 1.1rem;
+            margin: 15px 0; box-sizing: border-box; outline: none; border-radius: 2px;
         }
+        textarea:focus, input:focus { border-color: var(--gold-text); }
 
-        textarea {
-            width: 100%; height: 140px; background: #000; border: 1px solid #333;
-            color: #fff; padding: 25px; font-family: 'Space Mono'; font-size: 1.1rem;
-            margin: 20px 0; outline: none; transition: 0.4s; box-sizing: border-box;
-        }
-        textarea:focus { border-color: var(--gold-text); box-shadow: 0 0 15px var(--gold-shadow); }
+        /* Output Cards */
+        #output { display: none; margin-top: 40px; border-top: 1px solid #222; padding-top: 40px; }
+        .quote { font-family: 'Cinzel'; font-size: 2.2rem; color: #fff; line-height: 1.3; margin-bottom: 30px; border-left: 5px solid var(--gold-text); padding-left: 20px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: #000; border: 1px solid #222; padding: 20px; border-radius: 2px; }
+        .card b { color: var(--gold-text); font-family: 'Orbitron'; font-size: 0.7rem; display: block; margin-bottom: 10px; }
+        .card p { font-size: 0.9rem; line-height: 1.6; color: #bbb; margin: 0; }
 
-        .response-area { display: none; margin-top: 40px; animation: fadeInUp 0.8s ease; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        .quote-box {
-            font-family: 'Cinzel'; font-size: 2.3rem; color: #fff; line-height: 1.4;
-            margin: 30px 0; border-left: 6px solid var(--gold-text); padding-left: 30px;
-        }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-top: 40px; }
-        .card { background: #0a0a0a; border: 1px solid #222; padding: 30px; border-radius: 2px; transition: 0.3s; }
-        .card:hover { border-color: var(--gold-text); }
-        .card b { color: var(--gold-text); font-family: 'Orbitron'; font-size: 0.75rem; letter-spacing: 2px; display: block; margin-bottom: 12px; }
-        .card p { font-size: 0.95rem; line-height: 1.7; color: #bbb; margin: 0; }
-
-        #gate-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98); z-index: 9999; display: flex;
-            justify-content: center; align-items: center; text-align: center;
-        }
-
-        .xp-tray { margin-top: 40px; border-top: 1px solid #222; padding-top: 25px; font-size: 0.7rem; }
-        .xp-bar { width: 100%; height: 4px; background: #111; margin: 15px 0; }
-        .xp-fill { width: 0%; height: 100%; background: var(--gold-gloss); transition: 1.2s ease; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<div id="gate-modal">
-    <div style="padding: 60px; border: 3px solid var(--gold-text); background: #000; max-width: 500px; box-shadow: var(--gold-shadow);">
-        <h2 style="font-family: 'Cinzel'; letter-spacing: 6px; color: #fff; margin-bottom: 30px;">WHO ENTERS THE ARCHIVE?</h2>
-        <input type="text" id="user-name" placeholder="Name..." style="width: 100%; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; margin-bottom: 30px; text-align: center; font-family: 'Space Mono'; font-size: 1.2rem;">
-        <button class="btn-gold" onclick="unlock()">INITIALIZE ASCENSION</button>
-    </div>
-</div>
-
-<div class="ambient-bg"></div>
-
 <header>
     <h1 class="glimmer">ZENO TITAN</h1>
-    <div style="font-size: 0.75rem; letter-spacing: 12px; opacity: 0.6; margin-top: 10px;">IMPERIAL SOVEREIGNTY v15.0</div>
+    <p style="letter-spacing: 10px; opacity: 0.5; font-size: 0.7rem;">IRONCLAD SOVEREIGNTY v16.0</p>
 </header>
 
 <div class="container">
-    <div class="sidebar">
-        <h3 style="font-family: 'Orbitron'; font-size: 0.75rem; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px;">SYSTEM_CONTROL</h3>
-        <button class="btn-gold" onclick="location.reload()">The Oracle</button>
-        <button class="btn-gold" onclick="toggleArchive()">The Archive</button>
-        <button class="btn-gold" onclick="alert('Virtue Logic: Use Wisdom, Courage, Justice, and Temperance to rule your reality.')">Virtue Logic</button>
-        
-        <div class="xp-tray">
-            <span id="rank-display" style="font-family: 'Orbitron';">RANK: INITIATE</span>
-            <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
-            <div style="opacity: 0.6; letter-spacing: 2px;">SOVEREIGNTY XP: <span id="xp-val">0</span></div>
-        </div>
+    <div id="step-name">
+        <h2 style="font-family: 'Cinzel'; text-align: center;">WHO ENTERS THE ARCHIVE?</h2>
+        <input type="text" id="username" placeholder="Your Name...">
+        <button class="btn-gold" onclick="saveUser()">INITIALIZE ASCENSION</button>
     </div>
 
-    <div class="main-deck">
-        <div id="oracle-ui">
-            <h2 style="font-family: 'Cinzel'; color: #fff; letter-spacing: 5px;">COMMUNE WITH THE SAGES</h2>
-            <p>Reveal your disturbance. The Archon scans 200+ ancient records to find your specific logic shield.</p>
-            <textarea id="titan-input" placeholder="e.g. 'I feel anxious about failure' or 'Someone was unfair to me'"></textarea>
-            <button class="btn-gold" style="border: 1px solid #fff;" onclick="consultTitan()">CONSULT THE SOVEREIGN</button>
+    <div id="step-oracle" class="hidden">
+        <h3 id="welcome" style="font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 3px;"></h3>
+        <p>Describe your chaos. The Archon scans 200+ ancient records for your logic shield.</p>
+        <textarea id="chaos" placeholder="e.g. 'I am worried about money' or 'People are being mean to me'"></textarea>
+        <button class="btn-gold" onclick="consult()">CONSULT THE SOVEREIGN</button>
 
-            <div id="response-area" class="response-area">
-                <span id="resAuthor" style="font-family: 'Orbitron'; font-size: 0.9rem; letter-spacing: 8px;"></span>
-                <div class="quote-box" id="resQuote"></div>
-                
-                <div class="grid">
-                    <div class="card"><b>DEEP_MEANING</b><p id="resMeaning"></p></div>
-                    <div class="card"><b>TITAN_COMFORT</b><p id="resComfort"></p></div>
-                    <div class="card"><b>CBT_PROTOCOL</b><p id="resCBT"></p></div>
-                    <div class="card"><b>SOVEREIGN_ACTION</b><p id="resAction"></p></div>
-                </div>
-                <button class="btn-gold" style="margin-top: 40px; background: #111; color: #fff;" onclick="addXP()">INTEGRATE LESSON (+25 XP)</button>
+        <div id="output">
+            <span id="resAuthor" style="font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 5px;"></span>
+            <div class="quote" id="resQuote"></div>
+            <div class="grid">
+                <div class="card"><b>THE_MEANING</b><p id="resMeaning"></p></div>
+                <div class="card"><b>TITAN_COMFORT</b><p id="resComfort"></p></div>
+                <div class="card"><b>CBT_PROTOCOL</b><p id="resCBT"></p></div>
+                <div class="card"><b>SOVEREIGN_TASK</b><p id="resAction"></p></div>
             </div>
-        </div>
-
-        <div id="archive-ui" style="display:none;">
-            <h2 style="font-family: 'Cinzel'; color: #fff; letter-spacing: 6px;">THE ARCHIVE OF 200</h2>
-            <div id="vault-list" style="max-height: 800px; overflow-y: auto; margin-top: 30px;"></div>
+            <button class="btn-gold" style="margin-top: 30px; background: #111; color: #fff;" onclick="location.reload()">REBOOT SYSTEM</button>
         </div>
     </div>
 </div>
 
 <script>
-    const archive = [
-        {a: "Epictetus", q: "It's not what happens to you, but how you react to it that matters.", k: ["react", "event", "happened"], m: "Events have no moral value; only your reaction is good or evil.", c: "Titan, don't give your power away to a random event. You are the architect of your calm.", cbt: "Stop the 'Emotional Reasoning.' Just because you feel hurt doesn't mean you are harmed.", act: "List 3 things about this event you CANNOT change. Stop thinking about them for 2 hours."},
-        {a: "Marcus Aurelius", q: "The happiness of your life depends upon the quality of your thoughts.", k: ["happy", "think", "negative"], m: "Your mind is the filter for everything you experience.", c: "Guard your mind like a fortress. If a thought is toxic, do not let it in.", cbt: "Cognitive Re-labeling: Replace 'This is a disaster' with 'This is a challenge to be solved.'", act: "Identify one recurring negative thought and replace it with a factual strength you possess."},
-        {a: "Seneca", q: "We suffer more in imagination than in reality.", k: ["fear", "anxious", "scared"], m: "Anxiety is a ghost that bites you before the enemy even arrives.", c: "The future hasn't happened. Relax your jaw, drop your shoulders. You are safe right now.", cbt: "De-catastrophizing: What is the absolute worst outcome? Is it happening now? No.", act: "Breathe in for 4, hold for 4, out for 4. Do this 10 times to ground yourself in reality."},
-        {a: "Socrates", q: "The unexamined life is not worth living.", k: ["lost", "purpose", "why"], m: "Awareness is the only difference between a human and a biological machine.", c: "Keep questioning, Titan. Your curiosity is your greatest weapon against ignorance.", cbt: "Socratic Inquiry: Ask yourself 'Why?' 5 times for your biggest worry until you find the lie.", act: "Turn off all electronics for 15 minutes. Just sit and observe your thoughts."},
-        {a: "Zeno of Citium", q: "Well-being is attained by little rendering, but it is no little thing itself.", k: ["success", "progress", "small"], m: "A mountain is built one grain of sand at a time.", c: "Stop waiting for the giant victory. Win the next 10 minutes. That is how empires start.", cbt: "Behavioral Activation: Action precedes motivation. Don't wait to 'feel like it'. Start now.", act: "Do the smallest possible task on your to-do list perfectly right now."},
-        {a: "Aristotle", q: "Excellence is not an act, but a habit.", k: ["discipline", "lazy", "work"], m: "You are what you repeat. Choose your repetitions wisely.", c: "Don't look for inspiration; look for your schedule. The ritual is the sanctuary.", cbt: "Habit Stacking: Attach one small positive act to a habit you already have (like brushing teeth).", act: "Pick a task you've avoided for 3 days and work on it for only 120 seconds."},
-        {a: "Plato", q: "The first and greatest victory is to conquer oneself.", k: ["angry", "temper", "habits"], m: "Mastery over the world is hollow if you can't master your own pulse.", c: "Every time you master an impulse, you reclaim your crown. Be kingly in your restraint.", cbt: "Urge Surfing: When you feel a craving or anger, imagine it's a wave. Watch it peak and fade.", act: "Wait 60 seconds before speaking the next time you feel annoyed today."},
-        {a: "Epictetus", q: "Wealth consists not in having great possessions, but in having few wants.", k: ["money", "jealous", "poor"], m: "Freedom is the ability to say 'I have enough.'", c: "Desire is a prison with no walls. Step out of it and see how rich you already are.", cbt: "Hedonic Adaptation: Realize that 'more' will only make you happy for 48 hours. Choose peace.", act: "Identify one thing you thought you 'needed' and delete it from your cart or list today."}
-    ];
-
-    let user = { name: "", xp: 0 };
-
-    function unlock() {
-        const val = document.getElementById('user-name').value;
-        if(!val) return;
-        user.name = val;
-        localStorage.setItem('zeno_name', val);
-        document.getElementById('gate-modal').style.display = 'none';
-        updateUI();
-    }
-
-    function consultTitan() {
-        const input = document.getElementById('titan-input').value.toLowerCase();
-        if(!input) return;
-
-        let match = archive.find(r => r.k.some(key => input.includes(key))) || archive[Math.floor(Math.random() * archive.length)];
-        
-        document.getElementById('resAuthor').innerText = `RECORD: ${match.a.toUpperCase()}`;
-        document.getElementById('resQuote').innerText = `"${match.q}"`;
-        document.getElementById('resMeaning').innerText = match.m;
-        document.getElementById('resComfort').innerText = `Listen, ${user.name}: ${match.c}`;
-        document.getElementById('resCBT').innerText = match.cbt;
-        document.getElementById('resAction').innerText = match.act;
-
-        document.getElementById('response-area').style.display = 'block';
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
-
-    function addXP() {
-        user.xp += 25;
-        localStorage.setItem('zeno_xp', user.xp);
-        updateUI();
-        alert(`Wisdom Integrated. You are ascending, ${user.name}.`);
-    }
-
-    function updateUI() {
-        user.xp = parseInt(localStorage.getItem('zeno_xp')) || 0;
-        document.getElementById('xp-fill').style.width = (user.xp % 100) + '%';
-        document.getElementById('xp-val').innerText = user.xp;
-        document.getElementById('rank-display').innerText = user.xp > 500 ? "RANK: ARCHON" : "RANK: INITIATE";
-    }
-
-    function toggleArchive() {
-        const ui = document.getElementById('archive-ui');
-        const main = document.getElementById('oracle-ui');
-        ui.style.display = ui.style.display === 'none' ? 'block' : 'none';
-        main.style.display = ui.style.display === 'block' ? 'none' : 'block';
-        
-        if(ui.style.display === 'block') {
-            const list = document.getElementById('vault-list');
-            list.innerHTML = "";
-            for(let i=0; i<100; i++) {
-                const r = archive[i % archive.length];
-                list.innerHTML += `<div class="card" style="margin-bottom:10px"><b>${r.a}</b><p>"${r.q}"</p></div>`;
-            }
-        }
-    }
-
-    window.onload = () => {
-        const saved = localStorage.getItem('zeno_name');
-        if(saved) {
-            user.name = saved;
-            document.getElementById('gate-modal').style.display = 'none';
-            updateUI();
-        }
-    }
-</script>
-</body>
-</html>
+    const library = [
+        {a: "Epictetus", q: "It's not what happens to you, but how you react to it that matters.", k: ["react", "event", "happened"], m: "Events are neutral. Your judgment
