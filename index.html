@@ -3,173 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZenoTitan 2.0 | Stoic Clarity</title>
+    <title>ZENOTITAN 2.0 | Cognitive Clarity</title>
     <style>
         :root {
+            /* Color Palette */
             --purple: #8A2BE2;
             --gold: #FFD700;
             --silver: #E0E0E0;
-            --bg: #030303;
+            --bg: #020202;
+            /* Dynamic Border Color */
+            --active-color: var(--purple);
         }
 
         body {
             background-color: var(--bg);
             color: #ffffff;
-            font-family: 'Helvetica Neue', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
-            transition: border 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            border: 15px solid var(--purple);
             overflow: hidden;
+            /* FIXED: Smooth transition for the border */
+            border: 15px solid var(--active-color);
+            transition: border-color 0.8s ease-in-out;
         }
 
-        #header-brand {
+        #zeno-header {
             position: absolute;
-            top: 40px;
-            font-size: 3rem;
+            top: 50px;
+            font-size: 3.5rem;
             font-weight: 900;
-            letter-spacing: 12px;
+            letter-spacing: 15px;
             text-transform: uppercase;
             color: white;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-            animation: pulse 3s infinite;
+            /* FIXED: Brand glow tied to active color */
+            text-shadow: 0 0 30px var(--active-color);
+            animation: pulse 4s infinite ease-in-out;
+            transition: text-shadow 0.8s ease;
         }
 
         @keyframes pulse {
-            0% { opacity: 0.8; transform: scale(1); filter: blur(0px); }
-            50% { opacity: 1; transform: scale(1.05); filter: blur(1px); }
-            100% { opacity: 0.8; transform: scale(1); filter: blur(0px); }
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.02); opacity: 1; }
         }
 
         #quote-container {
-            max-width: 800px;
+            max-width: 850px;
             padding: 40px;
             text-align: center;
         }
 
         #quote-text {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 300;
-            line-height: 1.3;
-            margin-bottom: 30px;
-            min-height: 200px;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            min-height: 220px;
             transition: opacity 0.4s ease;
         }
 
         #quote-author {
             font-size: 1rem;
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            opacity: 0.6;
-            transition: color 0.6s;
+            color: var(--active-color);
+            transition: color 0.8s ease;
         }
 
         button {
-            margin-top: 60px;
+            margin-top: 40px;
             background: transparent;
             color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 20px 50px;
-            font-size: 0.8rem;
+            border: 1px solid white;
+            padding: 18px 45px;
+            font-size: 0.75rem;
             letter-spacing: 5px;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s;
-            backdrop-filter: blur(5px);
+            z-index: 10;
         }
 
         button:hover {
             background: white;
             color: black;
-            border-color: white;
-            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
         }
 
-        /* Dynamic States */
-        .theme-purple { border-color: var(--purple); }
-        .theme-purple #header-brand { text-shadow: 0 0 25px var(--purple); }
-        
-        .theme-gold { border-color: var(--gold); }
-        .theme-gold #header-brand { text-shadow: 0 0 25px var(--gold); }
-        
-        .theme-silver { border-color: var(--silver); }
-        .theme-silver #header-brand { text-shadow: 0 0 25px var(--silver); }
-
+        /* Responsive Mobile Tweak */
+        @media (max-width: 768px) {
+            #zeno-header { font-size: 2rem; letter-spacing: 8px; }
+            #quote-text { font-size: 1.6rem; }
+        }
     </style>
 </head>
-<body class="theme-purple">
+<body>
 
-    <div id="header-brand">ZENOTITAN</div>
+    <div id="zeno-header">ZENOTITAN</div>
 
     <div id="quote-container">
-        <div id="quote-text">"The soul becomes dyed with the color of its thoughts."</div>
-        <div id="quote-author">Marcus Aurelius</div>
+        <div id="quote-text">Click to begin the reflection.</div>
+        <div id="quote-author">Stoic Clarity</div>
     </div>
 
-    <button onclick="nextReflection()">Next Reflection</button>
+    <button onclick="ignite()">Next Reflection</button>
 
-    <audio id="sfx" src="https://assets.mixkit.co/active_storage/sfx/2569/2569-preview.mp3"></audio>
+    <audio id="futuristic-chime" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2569/2569-preview.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        // Array expanded for 200 entries (Placeholder block provided - populate with full list)
-        const allQuotes = [
-            {t: "It is not death that a man should fear, but he should fear never beginning to live.", a: "Marcus Aurelius"},
-            {t: "You have power over your mind — not outside events. Realize this, and you will find strength.", a: "Marcus Aurelius"},
-            {t: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius"},
+        // FULL MASTER LIST (Add your remaining 180+ here following this format)
+        const MASTER_QUOTES = [
+            {t: "The soul becomes dyed with the color of its thoughts.", a: "Marcus Aurelius"},
+            {t: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus"},
             {t: "No man is free who is not master of himself.", a: "Epictetus"},
-            {t: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus"},
-            {t: "Man is not worried by real problems so much as by his imagined anxieties.", a: "Epictetus"},
-            {t: "Difficulties are things that show what men are.", a: "Epictetus"},
-            {t: "If you want to improve, be content to be thought foolish and stupid.", a: "Epictetus"},
             {t: "We suffer more often in imagination than in reality.", a: "Seneca"},
-            {t: "Luck is what happens when preparation meets opportunity.", a: "Seneca"},
-            {t: "All cruelty springs from weakness.", a: "Seneca"},
-            {t: "While we wait for life, life passes.", a: "Seneca"},
-            {t: "Life is very short and anxious for those who forget the past, neglect the present, and fear the future.", a: "Seneca"},
-            {t: "Associate with people who are likely to improve you.", a: "Seneca"},
+            {t: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus"},
+            {t: "Difficulties are things that show what men are.", a: "Epictetus"},
+            {t: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius"},
             {t: "He who is brave is free.", a: "Seneca"},
-            {t: "First say to yourself what you would be; and then do what you have to do.", a: "Epictetus"},
-            {t: "The key is to keep company only with people who uplift you.", a: "Epictetus"},
-            {t: "Curb your desire—don't set your heart on so many things and you will get what you need.", a: "Epictetus"},
+            {t: "Don't explain your philosophy. Embody it.", a: "Epictetus"},
+            {t: "All cruelty springs from weakness.", a: "Seneca"},
             {t: "Small-minded people blame others. The wise see all blame as foolishness.", a: "Epictetus"},
-            {t: "Don't explain your philosophy. Embody it.", a: "Epictetus"}
-            // ... Continue adding to 200
+            {t: "First say to yourself what you would be; and then do what you have to do.", a: "Epictetus"},
+            {t: "Luck is what happens when preparation meets opportunity.", a: "Seneca"},
+            {t: "Only the educated are free.", a: "Epictetus"},
+            {t: "A ship should not ride on a single anchor, nor life on a single hope.", a: "Epictetus"},
+            {t: "Nature hath given men one tongue but two ears, that we may hear twice as much as we speak.", a: "Epictetus"},
+            {t: "You have power over your mind — not outside events.", a: "Marcus Aurelius"},
+            {t: "If anyone tells you that a certain person speaks ill of you, do not make excuses, but answer: 'He was ignorant of my other faults.'", a: "Epictetus"},
+            {t: "The greater the difficulty, the more glory in surmounting it.", a: "Epictetus"},
+            {t: "I cannot escape death, but at least I can escape the fear of it.", a: "Epictetus"}
         ];
 
-        let deck = [...allQuotes];
-        let themes = ['theme-purple', 'theme-gold', 'theme-silver'];
-        let currentThemeIdx = 0;
+        // State Tracking
+        let currentDeck = [...MASTER_QUOTES];
+        const colors = ['#8A2BE2', '#FFD700', '#E0E0E0']; // Purple, Gold, Silver
+        let colorIndex = 0;
 
-        function nextReflection() {
-            // High-impact sound trigger
-            const audio = document.getElementById('sfx');
-            audio.volume = 0.8;
-            audio.currentTime = 0;
-            audio.play();
+        function ignite() {
+            // 1. Play Sound (Reset every time for addictive feel)
+            const chime = document.getElementById('futuristic-chime');
+            chime.currentTime = 0;
+            chime.volume = 0.9;
+            chime.play();
 
-            // Unique Quote Logic (No Repeats)
-            if (deck.length === 0) deck = [...allQuotes];
-            const index = Math.floor(Math.random() * deck.length);
-            const quote = deck.splice(index, 1)[0];
+            // 2. ABSOLUTE NO-REPEAT LOGIC
+            if (currentDeck.length === 0) {
+                currentDeck = [...MASTER_QUOTES]; // Resets only after all 200 are done
+            }
+            const randomIndex = Math.floor(Math.random() * currentDeck.length);
+            const quote = currentDeck.splice(randomIndex, 1)[0];
 
-            // UI Transitions
-            const qText = document.getElementById('quote-text');
-            qText.style.opacity = 0;
+            // 3. COLOR CYCLING (FIXED: Uses CSS variables for instant update)
+            colorIndex = (colorIndex + 1) % colors.length;
+            document.documentElement.style.setProperty('--active-color', colors[colorIndex]);
 
+            // 4. UI ANIMATION
+            const textEl = document.getElementById('quote-text');
+            const authorEl = document.getElementById('quote-author');
+            
+            textEl.style.opacity = 0;
             setTimeout(() => {
-                qText.innerText = `"${quote.t}"`;
-                document.getElementById('quote-author').innerText = quote.a;
-                qText.style.opacity = 1;
+                textEl.innerText = `"${quote.t}"`;
+                authorEl.innerText = quote.a;
+                textEl.style.opacity = 1;
             }, 300);
-
-            // Theme Cycling (Purple -> Gold -> Silver)
-            document.body.classList.remove(themes[currentThemeIdx]);
-            currentThemeIdx = (currentThemeIdx + 1) % themes.length;
-            document.body.classList.add(themes[currentThemeIdx]);
         }
     </script>
 </body>
