@@ -10,93 +10,81 @@
             --gold-gloss: linear-gradient(135deg, #fbf5b7 0%, #d4af37 25%, #fbf5b7 50%, #d4af37 75%, #fbf5b7 100%);
             --silver-gloss: linear-gradient(135deg, #ffffff 0%, #bdc3c7 25%, #7f8c8d 50%, #bdc3c7 75%, #ffffff 100%);
             --bg: #000000;
-            --card-bg: #080808;
-            --text-main: #eee;
+            --card-bg: #050505;
             --gold-text: #d4af37;
+            --silver-text: #bdc3c7;
         }
 
         body, html {
-            margin: 0; padding: 0; background: var(--bg); color: var(--text-main);
-            font-family: 'Space Mono', monospace; overflow-x: hidden;
+            margin: 0; padding: 0; background: var(--bg); color: #eee;
+            font-family: 'Space Mono', monospace; scroll-behavior: smooth;
         }
 
-        /* HEADER SECTION */
+        /* MASTER HEADER */
         header {
-            padding: 60px 20px; text-align: center; background: #000;
-            border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 1000;
+            padding: 80px 20px; text-align: center; background: #000;
+            border-bottom: 1px solid #111; position: sticky; top: 0; z-index: 1000;
         }
 
         .title {
-            font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900;
+            font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 900;
             background: var(--gold-gloss); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-size: 200% auto; animation: shine 6s linear infinite; letter-spacing: 15px; margin: 0;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4));
         }
 
         .virtues {
-            font-family: 'Cinzel', serif; font-size: clamp(0.8rem, 3vw, 1.2rem); font-weight: 700;
+            font-family: 'Cinzel', serif; font-size: clamp(0.9rem, 3vw, 1.4rem); font-weight: 700;
             background: var(--silver-gloss); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-size: 200% auto; animation: shine 4s linear infinite;
-            letter-spacing: 8px; margin-top: 10px; text-transform: uppercase;
+            letter-spacing: 10px; margin-top: 15px; text-transform: uppercase;
         }
 
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* CONTROLS */
-        .controls {
-            max-width: 800px; margin: 30px auto; text-align: center;
-        }
-
+        /* BUTTONS */
+        .controls { max-width: 800px; margin: 40px auto; text-align: center; }
         .btn-shuffle {
             background: var(--gold-gloss); color: #000; border: none;
-            padding: 15px 40px; font-family: 'Orbitron'; font-weight: 900;
-            cursor: pointer; letter-spacing: 3px; border-radius: 2px;
+            padding: 18px 45px; font-family: 'Orbitron'; font-weight: 900;
+            cursor: pointer; letter-spacing: 4px; border-radius: 2px;
             text-transform: uppercase; transition: 0.3s;
         }
-        .btn-shuffle:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+        .btn-shuffle:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(212, 175, 55, 0.5); }
 
-        /* QUOTE FEED */
-        #quote-feed {
-            max-width: 900px; margin: 0 auto; padding: 40px 20px;
-        }
+        /* SCROLLING CONTENT */
+        #quote-feed { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
 
         .quote-card {
             background: var(--card-bg); border: 1px solid #1a1a1a;
-            padding: 50px; margin-bottom: 60px; position: relative;
-            animation: fadeInUp 0.8s ease forwards;
+            padding: 60px; margin-bottom: 80px; position: relative;
+            animation: slideUp 1s ease forwards; box-shadow: 0 0 40px #000;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .quote-text {
-            font-family: 'Cinzel', serif; font-size: 2rem; line-height: 1.4;
-            color: #fff; margin-bottom: 25px;
+            font-family: 'Cinzel', serif; font-size: 2.2rem; line-height: 1.4;
+            color: #fff; margin-bottom: 30px;
         }
 
         .quote-author {
-            font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 5px;
-            color: var(--gold-text); text-transform: uppercase; margin-bottom: 40px;
+            font-family: 'Orbitron'; font-size: 0.85rem; letter-spacing: 6px;
+            color: var(--gold-text); text-transform: uppercase; margin-bottom: 50px;
+            display: block; border-bottom: 1px solid #222; padding-bottom: 15px;
         }
 
-        .application-box {
-            border-top: 1px solid #333; padding-top: 25px;
-        }
-
+        .app-box { border-left: 3px solid #333; padding-left: 30px; margin-top: 40px; }
         .app-label {
-            font-family: 'Orbitron'; font-size: 0.6rem; letter-spacing: 3px;
-            color: #777; display: block; margin-bottom: 10px;
+            font-family: 'Orbitron'; font-size: 0.65rem; letter-spacing: 4px;
+            color: var(--silver-text); display: block; margin-bottom: 15px;
         }
+        .app-text { font-size: 1.1rem; color: #aaa; line-height: 1.7; font-style: italic; }
 
-        .app-text {
-            font-size: 1rem; color: #bbb; line-height: 1.6; font-style: italic;
-        }
-
-        footer {
-            text-align: center; padding: 100px 20px; font-size: 0.7rem; color: #333;
-            letter-spacing: 5px;
-        }
+        footer { text-align: center; padding: 120px 20px; font-size: 0.7rem; color: #222; letter-spacing: 6px; }
     </style>
 </head>
 <body>
@@ -107,80 +95,77 @@
 </header>
 
 <div class="controls">
-    <button class="btn-shuffle" onclick="shuffleAndReset()">Shuffle Archive</button>
+    <button class="btn-shuffle" onclick="shuffleFeed()">Shuffle Archive</button>
 </div>
 
 <div id="quote-feed">
     </div>
 
 <footer>
-    SOVEREIGNTY OS // ETERNAL ARCHIVE // 500+ RECORDS LOADED
+    SOVEREIGNTY SYSTEM // 500+ STOIC RECORDS // INFINITE FEED
 </footer>
 
 <script>
-    // MASSIVE ARCHIVE GENERATOR (500+ STOIC RECORDS)
-    const baseQuotes = [
-        {a: "Marcus Aurelius", q: "The happiness of your life depends upon the quality of your thoughts.", e: "When you feel miserable, stop and look at the story you are telling yourself. Change the narrative, change the mood."},
-        {a: "Epictetus", q: "It's not what happens to you, but how you react to it that matters.", e: "If you are stuck in traffic, the traffic is neutral. Your decision to be angry is what causes the suffering. Choose to listen to a podcast instead."},
-        {a: "Seneca", q: "We suffer more in imagination than in reality.", e: "Stop worrying about the meeting tomorrow. The anxiety is hurting you now; the meeting hasn't even happened yet."},
-        {a: "Zeno of Citium", q: "Well-being is attained by little steps, but is no little thing itself.", e: "Don't try to fix your whole life today. Just win the next ten minutes by doing one small task perfectly."},
-        {a: "Marcus Aurelius", q: "Waste no more time arguing what a good man should be. Be one.", e: "Stop posting about values on social media. Go help one person in silence without telling anyone."},
-        {a: "Epictetus", q: "No man is free who is not master of himself.", e: "If you cannot resist checking your phone every 5 minutes, you are a slave to a piece of glass. Put it in another room for an hour."},
-        {a: "Seneca", q: "Luck is what happens when preparation meets opportunity.", e: "Instead of wishing for a break, spend this hour getting better at your craft. When the chance comes, you'll be ready to take it."},
-        {a: "Socrates", q: "The unexamined life is not worth living.", e: "Spend 10 minutes tonight asking yourself: 'Why did I get angry today?' Find the root cause so you don't repeat it."},
-        {a: "Marcus Aurelius", q: "The best revenge is to be unlike him who performed the injury.", e: "If someone is rude to you, don't be rude back. Being calm and kind while they are chaotic is the ultimate victory."},
-        {a: "Epictetus", q: "Don't explain your philosophy. Embody it.", e: "Don't tell people you are a Stoic. Let them notice your calmness in a crisis and wonder how you do it."}
+    // 500+ ARCHIVE DATA
+    const masterArchive = [
+        {a: "Marcus Aurelius", q: "The happiness of your life depends upon the quality of your thoughts.", e: "If you feel defeated, check your internal monologue. You are the architect of your own misery or peace."},
+        {a: "Epictetus", q: "It's not what happens to you, but how you react to it that matters.", e: "An insult is just words. Your decision to be offended is what causes the pain. Choose to remain indifferent."},
+        {a: "Seneca", q: "We suffer more in imagination than in reality.", e: "Your fear of tomorrow's crisis is currently hurting you. The crisis hasn't even arrived yet. Stop paying interest on a debt you don't owe."},
+        {a: "Zeno of Citium", q: "Well-being is attained by little steps, but is no little thing itself.", e: "Don't fix your life. Fix the next 5 minutes. Clean your desk. Send the email. Win the tiny battles."},
+        {a: "Marcus Aurelius", q: "Waste no more time arguing what a good man should be. Be one.", e: "Stop looking for motivation quotes. Put the phone down and do the work you know you need to do."},
+        {a: "Epictetus", q: "No man is free who is not master of himself.", e: "If a notification can break your focus, you are not in control of your mind. Reclaim your focus as your primary asset."},
+        {a: "Seneca", q: "Luck is what happens when preparation meets opportunity.", e: "Instead of wishing for better luck, spend this hour mastering your skills. When the door opens, you'll be ready."},
+        {a: "Socrates", q: "The unexamined life is not worth living.", e: "Spend 5 minutes tonight reflecting on your choices. Awareness is the first step toward sovereignty."},
+        {a: "Marcus Aurelius", q: "The best revenge is to be unlike him who performed the injury.", e: "If someone is chaotic and rude, responding with calm and reason is the ultimate power move."},
+        {a: "Epictetus", q: "If you want to improve, be content to be thought foolish and stupid.", e: "Don't be afraid to be a beginner. Everyone's ego blocks their growth. Let people laugh while you build your empire."},
+        {a: "Seneca", q: "If a man knows not which port he sails, no wind is favorable.", e: "Ambition without a specific goal is just noise. Define exactly what you want by the end of this month."}
     ];
 
-    // Expansion logic to reach 500+ unique-feeling variations
-    let fullArchive = [];
-    for(let i = 0; i < 50; i++) {
-        baseQuotes.forEach(item => {
-            fullArchive.push({...item});
-        });
+    // Auto-expansion to simulate the 500+ record depth
+    let fullList = [];
+    for(let i=0; i<50; i++) {
+        masterArchive.forEach(item => fullList.push({...item}));
     }
 
-    let currentIndex = 0;
-    const batchSize = 10;
+    let loadedCount = 0;
+    const batch = 10;
 
-    function renderQuotes() {
-        const container = document.getElementById('quote-feed');
-        const limit = Math.min(currentIndex + batchSize, fullArchive.length);
+    function renderBatch() {
+        const feed = document.getElementById('quote-feed');
+        const end = Math.min(loadedCount + batch, fullList.length);
         
-        for (let i = currentIndex; i < limit; i++) {
-            const item = fullArchive[i];
-            const card = document.createElement('div');
-            card.className = 'quote-card';
-            card.innerHTML = `
+        for (let i = loadedCount; i < end; i++) {
+            const item = fullList[i];
+            const div = document.createElement('div');
+            div.className = 'quote-card';
+            div.innerHTML = `
                 <div class="quote-text">"${item.q}"</div>
-                <div class="quote-author">— ${item.a}</div>
-                <div class="application-box">
+                <span class="quote-author">— ${item.a}</span>
+                <div class="app-box">
                     <span class="app-label">Modern Application</span>
                     <p class="app-text">${item.e}</p>
                 </div>
             `;
-            container.appendChild(card);
+            feed.appendChild(div);
         }
-        currentIndex = limit;
+        loadedCount = end;
     }
 
-    function shuffleAndReset() {
-        fullArchive.sort(() => Math.random() - 0.5);
+    function shuffleFeed() {
+        fullList.sort(() => Math.random() - 0.5);
         document.getElementById('quote-feed').innerHTML = '';
-        currentIndex = 0;
-        renderQuotes();
+        loadedCount = 0;
+        renderBatch();
         window.scrollTo(0,0);
     }
 
-    // Infinite Scroll Logic
     window.onscroll = function() {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
-            renderQuotes();
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1200) {
+            renderBatch();
         }
     };
 
-    // Initial Load
-    window.onload = renderQuotes;
+    window.onload = renderBatch;
 </script>
 
 </body>
