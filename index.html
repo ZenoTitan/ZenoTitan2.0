@@ -2,129 +2,150 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>ZENOTITAN 2.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@800&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --purple: #6A0DAD; --gold: #D4AF37; --silver: #A8A9AD;
-            --bg: #020202; --active: var(--purple);
+            --purple: #7029d1; --gold: #ffd700; --silver: #e5e5e5;
+            --bg: #000000; --accent: var(--purple);
         }
+
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
 
         body {
             background: var(--bg); color: white; margin: 0; height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-family: 'Helvetica Neue', sans-serif; overflow: hidden;
-            border: 15px solid var(--active); transition: border-color 0.8s ease;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            border: 14px solid var(--accent); transition: border-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom) 20px;
         }
 
-        #brand {
-            position: absolute; top: 10%; font-family: 'Cinzel', serif;
-            letter-spacing: 15px; font-size: 2.5rem; text-shadow: 0 0 15px var(--active);
-            transition: text-shadow 0.8s ease;
+        #header {
+            margin-top: 40px; font-family: 'Cinzel', serif; letter-spacing: 12px;
+            font-size: 1.8rem; text-align: center; text-shadow: 0 0 20px var(--accent);
         }
 
-        #quote-box {
-            max-width: 85%; text-align: center; padding: 20px;
-            min-height: 250px; display: flex; flex-direction: column; justify-content: center;
+        #quote-display {
+            flex-grow: 1; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; max-width: 600px;
         }
 
-        #text {
-            font-size: 1.8rem; font-weight: 300; line-height: 1.5;
-            font-style: italic; margin-bottom: 20px; transition: opacity 0.4s;
+        #quote-text {
+            font-size: clamp(1.4rem, 5vw, 2.2rem); line-height: 1.4;
+            font-weight: 300; font-style: italic; text-align: center;
+            margin-bottom: 25px; transition: opacity 0.4s ease;
         }
 
-        #author {
+        #quote-author {
             font-family: 'Space Mono', monospace; font-size: 0.8rem;
-            letter-spacing: 4px; color: var(--active); text-transform: uppercase;
+            letter-spacing: 5px; color: var(--accent); text-transform: uppercase;
         }
 
-        button {
-            margin-top: 50px; background: none; border: 1px solid white;
-            color: white; padding: 20px 40px; font-family: 'Space Mono', monospace;
-            letter-spacing: 3px; cursor: pointer; transition: all 0.3s;
-            -webkit-tap-highlight-color: transparent;
+        #btn-next {
+            margin-bottom: 60px; background: none; border: 1px solid white;
+            color: white; padding: 22px 50px; font-family: 'Space Mono', monospace;
+            letter-spacing: 4px; font-size: 0.7rem; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        button:active { transform: scale(0.95); background: white; color: black; }
+        #btn-next:active { transform: scale(0.92); background: white; color: black; }
 
-        #counter {
-            position: absolute; bottom: 5%; font-size: 0.6rem; 
-            letter-spacing: 2px; opacity: 0.4;
+        #progress {
+            position: absolute; bottom: 20px; font-size: 0.6rem;
+            letter-spacing: 2px; opacity: 0.3; font-family: 'Space Mono', monospace;
         }
     </style>
 </head>
 <body>
 
-    <div id="brand">ZENOTITAN</div>
+    <div id="header">ZENOTITAN</div>
 
-    <div id="quote-box">
-        <div id="text">Tap the button to begin your journey through the Discourses.</div>
-        <div id="author">ZenoTitan Engine</div>
+    <div id="quote-display">
+        <div id="quote-text">The journey begins with a single reflection.</div>
+        <div id="quote-author">Stoic Clarity</div>
     </div>
 
-    <button onclick="process()">NEXT REFLECTION</button>
+    <button id="btn-next" onclick="advance()">Next Reflection</button>
 
-    <div id="counter">REFLECTION <span id="num">0</span> / 200</div>
+    <div id="progress">REMAINING: <span id="rem">200</span></div>
 
-    <audio id="sfx" src="https://assets.mixkit.co/active_storage/sfx/2569/2569-preview.mp3"></audio>
+    <audio id="sfx" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        // CORE QUOTE ARRAY (Populate to 200)
-        const QUOTES = [
-            {t: "The soul becomes dyed with the color of its thoughts.", a: "Marcus Aurelius"},
-            {t: "He who fears death will never do anything worthy of a man who is alive.", a: "Seneca"},
-            {t: "No man is free who is not master of himself.", a: "Epictetus"},
-            {t: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus"},
-            {t: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus"},
-            {t: "If you want to improve, be content to be thought foolish and stupid.", a: "Epictetus"},
-            {t: "Curb your desire—don't set your heart on so many things and you will get what you need.", a: "Epictetus"},
+        const MASTER_LIST = [
             {t: "We suffer more often in imagination than in reality.", a: "Seneca"},
+            {t: "No man is free who is not master of himself.", a: "Epictetus"},
+            {t: "The soul becomes dyed with the color of its thoughts.", a: "Marcus Aurelius"},
+            {t: "He is a wise man who does not grieve for the things which he has not.", a: "Epictetus"},
+            {t: "Don't explain your philosophy. Embody it.", a: "Epictetus"},
+            {t: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus"},
+            {t: "You have power over your mind — not outside events.", a: "Marcus Aurelius"},
             {t: "Difficulties are things that show what men are.", a: "Epictetus"},
-            {t: "The key is to keep company only with people who uplift you.", a: "Epictetus"}
-            // Add remaining 190 here...
+            {t: "It is not death that a man should fear, but he should fear never beginning to live.", a: "Marcus Aurelius"},
+            {t: "If you want to improve, be content to be thought foolish and stupid.", a: "Epictetus"},
+            {t: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius"},
+            {t: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius"},
+            {t: "All cruelty springs from weakness.", a: "Seneca"},
+            {t: "Luck is what happens when preparation meets opportunity.", a: "Seneca"},
+            {t: "While we wait for life, life passes.", a: "Seneca"},
+            {t: "Associate with people who are likely to improve you.", a: "Seneca"},
+            {t: "He who is brave is free.", a: "Seneca"},
+            {t: "The impediment to action advances action. What stands in the way becomes the way.", a: "Marcus Aurelius"},
+            {t: "A ship should not ride on a single anchor, nor life on a single hope.", a: "Epictetus"},
+            {t: "Small-minded people blame others. The wise see all blame as foolishness.", a: "Epictetus"}
+            // Note: For App Store, you can expand this array to 200+
         ];
 
-        let seenIndices = JSON.parse(localStorage.getItem('zenoSeen')) || [];
-        const colors = ['#6A0DAD', '#D4AF37', '#A8A9AD'];
-        let colorIdx = 0;
+        let state = JSON.parse(localStorage.getItem('zeno_state')) || { queue: [], colors: ['var(--purple)', 'var(--gold)', 'var(--silver)'], colorIdx: 0 };
 
-        function process() {
-            // Sound play
-            const sfx = document.getElementById('sfx');
-            sfx.currentTime = 0; sfx.play();
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
-            // Reset if all 200 seen
-            if (seenIndices.length >= QUOTES.length) {
-                seenIndices = [];
-                localStorage.setItem('zenoSeen', JSON.stringify([]));
+        function advance() {
+            const sound = document.getElementById('sfx');
+            sound.currentTime = 0;
+            sound.play();
+
+            // Initialize or Refill Queue if empty
+            if (!state.queue || state.queue.length === 0) {
+                state.queue = shuffle([...Array(MASTER_LIST.length).keys()]);
             }
 
-            // Find an unseen quote
-            let randomIdx;
-            do {
-                randomIdx = Math.floor(Math.random() * QUOTES.length);
-            } while (seenIndices.includes(randomIdx) && seenIndices.length < QUOTES.length);
+            // Pull the next index from the queue
+            const currentIdx = state.queue.shift();
+            const quote = MASTER_LIST[currentIdx];
 
-            // Save state
-            seenIndices.push(randomIdx);
-            localStorage.setItem('zenoSeen', JSON.stringify(seenIndices));
-
-            // UI Transitions
-            const q = QUOTES[randomIdx];
-            document.getElementById('text').style.opacity = 0;
+            // Update UI with transition
+            const textDisplay = document.getElementById('quote-text');
+            textDisplay.style.opacity = 0;
             
             setTimeout(() => {
-                document.getElementById('text').innerText = `"${q.t}"`;
-                document.getElementById('author').innerText = q.a;
-                document.getElementById('text').style.opacity = 1;
-                document.getElementById('num').innerText = seenIndices.length;
-            }, 300);
+                textDisplay.innerText = `"${quote.t}"`;
+                document.getElementById('quote-author').innerText = quote.a;
+                textDisplay.style.opacity = 1;
+                document.getElementById('rem').innerText = state.queue.length;
+            }, 350);
 
-            // Color Logic
-            colorIdx = (colorIdx + 1) % colors.length;
-            document.documentElement.style.setProperty('--active', colors[colorIdx]);
+            // Cycle Colors
+            state.colorIdx = (state.colorIdx + 1) % state.colors.length;
+            document.documentElement.style.setProperty('--accent', state.colors[state.colorIdx]);
+
+            // Save Progress
+            localStorage.setItem('zeno_state', JSON.stringify(state));
         }
+
+        // Initialize display count
+        window.onload = () => {
+            document.getElementById('rem').innerText = state.queue.length || MASTER_LIST.length;
+        };
     </script>
 </body>
 </html>
