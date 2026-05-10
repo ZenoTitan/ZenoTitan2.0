@@ -2,177 +2,128 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENOTITAN 2.0 | Cognitive Clarity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZENOTITAN 2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Color Palette */
-            --purple: #8A2BE2;
-            --gold: #FFD700;
-            --silver: #E0E0E0;
-            --bg: #020202;
-            /* Dynamic Border Color */
-            --active-color: var(--purple);
+            --purple: #6A0DAD; --gold: #D4AF37; --silver: #A8A9AD;
+            --bg: #020202; --active: var(--purple);
         }
 
         body {
-            background-color: var(--bg);
-            color: #ffffff;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            /* FIXED: Smooth transition for the border */
-            border: 15px solid var(--active-color);
-            transition: border-color 0.8s ease-in-out;
+            background: var(--bg); color: white; margin: 0; height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-family: 'Helvetica Neue', sans-serif; overflow: hidden;
+            border: 15px solid var(--active); transition: border-color 0.8s ease;
         }
 
-        #zeno-header {
-            position: absolute;
-            top: 50px;
-            font-size: 3.5rem;
-            font-weight: 900;
-            letter-spacing: 15px;
-            text-transform: uppercase;
-            color: white;
-            /* FIXED: Brand glow tied to active color */
-            text-shadow: 0 0 30px var(--active-color);
-            animation: pulse 4s infinite ease-in-out;
+        #brand {
+            position: absolute; top: 10%; font-family: 'Cinzel', serif;
+            letter-spacing: 15px; font-size: 2.5rem; text-shadow: 0 0 15px var(--active);
             transition: text-shadow 0.8s ease;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.02); opacity: 1; }
+        #quote-box {
+            max-width: 85%; text-align: center; padding: 20px;
+            min-height: 250px; display: flex; flex-direction: column; justify-content: center;
         }
 
-        #quote-container {
-            max-width: 850px;
-            padding: 40px;
-            text-align: center;
+        #text {
+            font-size: 1.8rem; font-weight: 300; line-height: 1.5;
+            font-style: italic; margin-bottom: 20px; transition: opacity 0.4s;
         }
 
-        #quote-text {
-            font-size: 2.4rem;
-            font-weight: 300;
-            line-height: 1.4;
-            margin-bottom: 20px;
-            min-height: 220px;
-            transition: opacity 0.4s ease;
-        }
-
-        #quote-author {
-            font-size: 1rem;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            color: var(--active-color);
-            transition: color 0.8s ease;
+        #author {
+            font-family: 'Space Mono', monospace; font-size: 0.8rem;
+            letter-spacing: 4px; color: var(--active); text-transform: uppercase;
         }
 
         button {
-            margin-top: 40px;
-            background: transparent;
-            color: white;
-            border: 1px solid white;
-            padding: 18px 45px;
-            font-size: 0.75rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s;
-            z-index: 10;
+            margin-top: 50px; background: none; border: 1px solid white;
+            color: white; padding: 20px 40px; font-family: 'Space Mono', monospace;
+            letter-spacing: 3px; cursor: pointer; transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        button:hover {
-            background: white;
-            color: black;
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
-        }
+        button:active { transform: scale(0.95); background: white; color: black; }
 
-        /* Responsive Mobile Tweak */
-        @media (max-width: 768px) {
-            #zeno-header { font-size: 2rem; letter-spacing: 8px; }
-            #quote-text { font-size: 1.6rem; }
+        #counter {
+            position: absolute; bottom: 5%; font-size: 0.6rem; 
+            letter-spacing: 2px; opacity: 0.4;
         }
     </style>
 </head>
 <body>
 
-    <div id="zeno-header">ZENOTITAN</div>
+    <div id="brand">ZENOTITAN</div>
 
-    <div id="quote-container">
-        <div id="quote-text">Click to begin the reflection.</div>
-        <div id="quote-author">Stoic Clarity</div>
+    <div id="quote-box">
+        <div id="text">Tap the button to begin your journey through the Discourses.</div>
+        <div id="author">ZenoTitan Engine</div>
     </div>
 
-    <button onclick="ignite()">Next Reflection</button>
+    <button onclick="process()">NEXT REFLECTION</button>
 
-    <audio id="futuristic-chime" preload="auto">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2569/2569-preview.mp3" type="audio/mpeg">
-    </audio>
+    <div id="counter">REFLECTION <span id="num">0</span> / 200</div>
+
+    <audio id="sfx" src="https://assets.mixkit.co/active_storage/sfx/2569/2569-preview.mp3"></audio>
 
     <script>
-        // FULL MASTER LIST (Add your remaining 180+ here following this format)
-        const MASTER_QUOTES = [
+        // CORE QUOTE ARRAY (Populate to 200)
+        const QUOTES = [
             {t: "The soul becomes dyed with the color of its thoughts.", a: "Marcus Aurelius"},
-            {t: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus"},
+            {t: "He who fears death will never do anything worthy of a man who is alive.", a: "Seneca"},
             {t: "No man is free who is not master of himself.", a: "Epictetus"},
-            {t: "We suffer more often in imagination than in reality.", a: "Seneca"},
+            {t: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus"},
             {t: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus"},
+            {t: "If you want to improve, be content to be thought foolish and stupid.", a: "Epictetus"},
+            {t: "Curb your desire—don't set your heart on so many things and you will get what you need.", a: "Epictetus"},
+            {t: "We suffer more often in imagination than in reality.", a: "Seneca"},
             {t: "Difficulties are things that show what men are.", a: "Epictetus"},
-            {t: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius"},
-            {t: "He who is brave is free.", a: "Seneca"},
-            {t: "Don't explain your philosophy. Embody it.", a: "Epictetus"},
-            {t: "All cruelty springs from weakness.", a: "Seneca"},
-            {t: "Small-minded people blame others. The wise see all blame as foolishness.", a: "Epictetus"},
-            {t: "First say to yourself what you would be; and then do what you have to do.", a: "Epictetus"},
-            {t: "Luck is what happens when preparation meets opportunity.", a: "Seneca"},
-            {t: "Only the educated are free.", a: "Epictetus"},
-            {t: "A ship should not ride on a single anchor, nor life on a single hope.", a: "Epictetus"},
-            {t: "Nature hath given men one tongue but two ears, that we may hear twice as much as we speak.", a: "Epictetus"},
-            {t: "You have power over your mind — not outside events.", a: "Marcus Aurelius"},
-            {t: "If anyone tells you that a certain person speaks ill of you, do not make excuses, but answer: 'He was ignorant of my other faults.'", a: "Epictetus"},
-            {t: "The greater the difficulty, the more glory in surmounting it.", a: "Epictetus"},
-            {t: "I cannot escape death, but at least I can escape the fear of it.", a: "Epictetus"}
+            {t: "The key is to keep company only with people who uplift you.", a: "Epictetus"}
+            // Add remaining 190 here...
         ];
 
-        // State Tracking
-        let currentDeck = [...MASTER_QUOTES];
-        const colors = ['#8A2BE2', '#FFD700', '#E0E0E0']; // Purple, Gold, Silver
-        let colorIndex = 0;
+        let seenIndices = JSON.parse(localStorage.getItem('zenoSeen')) || [];
+        const colors = ['#6A0DAD', '#D4AF37', '#A8A9AD'];
+        let colorIdx = 0;
 
-        function ignite() {
-            // 1. Play Sound (Reset every time for addictive feel)
-            const chime = document.getElementById('futuristic-chime');
-            chime.currentTime = 0;
-            chime.volume = 0.9;
-            chime.play();
+        function process() {
+            // Sound play
+            const sfx = document.getElementById('sfx');
+            sfx.currentTime = 0; sfx.play();
 
-            // 2. ABSOLUTE NO-REPEAT LOGIC
-            if (currentDeck.length === 0) {
-                currentDeck = [...MASTER_QUOTES]; // Resets only after all 200 are done
+            // Reset if all 200 seen
+            if (seenIndices.length >= QUOTES.length) {
+                seenIndices = [];
+                localStorage.setItem('zenoSeen', JSON.stringify([]));
             }
-            const randomIndex = Math.floor(Math.random() * currentDeck.length);
-            const quote = currentDeck.splice(randomIndex, 1)[0];
 
-            // 3. COLOR CYCLING (FIXED: Uses CSS variables for instant update)
-            colorIndex = (colorIndex + 1) % colors.length;
-            document.documentElement.style.setProperty('--active-color', colors[colorIndex]);
+            // Find an unseen quote
+            let randomIdx;
+            do {
+                randomIdx = Math.floor(Math.random() * QUOTES.length);
+            } while (seenIndices.includes(randomIdx) && seenIndices.length < QUOTES.length);
 
-            // 4. UI ANIMATION
-            const textEl = document.getElementById('quote-text');
-            const authorEl = document.getElementById('quote-author');
+            // Save state
+            seenIndices.push(randomIdx);
+            localStorage.setItem('zenoSeen', JSON.stringify(seenIndices));
+
+            // UI Transitions
+            const q = QUOTES[randomIdx];
+            document.getElementById('text').style.opacity = 0;
             
-            textEl.style.opacity = 0;
             setTimeout(() => {
-                textEl.innerText = `"${quote.t}"`;
-                authorEl.innerText = quote.a;
-                textEl.style.opacity = 1;
+                document.getElementById('text').innerText = `"${q.t}"`;
+                document.getElementById('author').innerText = q.a;
+                document.getElementById('text').style.opacity = 1;
+                document.getElementById('num').innerText = seenIndices.length;
             }, 300);
+
+            // Color Logic
+            colorIdx = (colorIdx + 1) % colors.length;
+            document.documentElement.style.setProperty('--active', colors[colorIdx]);
         }
     </script>
 </body>
