@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENO | TITAN OS v3.0</title>
+    <title>ZENO | TITAN v4.0</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Space+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Cinzel:wght@700&family=Space+Mono&display=swap');
 
         :root {
             --gold: #d4af37;
-            --gold-glow: rgba(212, 175, 55, 0.5);
-            --bg: #0a0a0a;
-            --glass: rgba(20, 20, 20, 0.8);
+            --glossy-gold: linear-gradient(135deg, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%);
+            --bg: #050505;
+            --glass: rgba(15, 15, 15, 0.9);
         }
 
         body {
@@ -19,225 +19,174 @@
             color: var(--gold);
             font-family: 'Space Mono', monospace;
             margin: 0;
-            overflow: hidden;
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Scanline Effect */
-        body::before {
-            content: " ";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 4px, 3px 100%;
-            pointer-events: none;
-            z-index: 10;
+        /* Glimmering Title Effect */
+        .glimmer-title {
+            font-family: 'Cinzel', serif;
+            font-size: 5rem;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 5s linear infinite;
+            background-size: 200% auto;
+            letter-spacing: 20px;
+            margin-bottom: 0;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
         }
 
-        .os-container {
-            width: 90vw;
-            height: 80vh;
-            border: 1px solid var(--gold);
-            padding: 20px;
-            box-shadow: 0 0 50px rgba(0,0,0,1), inset 0 0 20px var(--gold-glow);
-            position: relative;
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .terminal {
+            width: 95vw;
+            max-width: 1000px;
             background: var(--glass);
-            backdrop-filter: blur(5px);
+            border: 1px solid var(--gold);
+            padding: 40px;
+            box-shadow: 0 0 100px rgba(0,0,0,1), inset 0 0 30px rgba(212,175,55,0.1);
+            position: relative;
+            border-radius: 5px;
+            backdrop-filter: blur(15px);
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--gold);
-            padding-bottom: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
-            letter-spacing: 5px;
-        }
-
-        .main-ui {
-            margin-top: 100px;
-            text-align: center;
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
-            margin: 0;
-            text-shadow: 0 0 20px var(--gold);
-            letter-spacing: 15px;
-        }
-
-        textarea {
-            width: 60%;
-            height: 150px;
-            background: transparent;
+        textarea, input {
+            width: 100%;
+            background: rgba(0,0,0,0.5);
             border: 1px solid var(--gold);
             color: #fff;
             padding: 20px;
-            font-family: 'Space Mono', monospace;
-            font-size: 1.2rem;
-            margin: 40px 0;
+            font-family: 'Space Mono';
+            margin: 20px 0;
+            box-sizing: border-box;
             outline: none;
-            box-shadow: inset 0 0 10px var(--gold-glow);
         }
 
-        .titan-btn {
-            background: var(--gold);
+        .glossy-btn {
+            background: var(--glossy-gold);
             color: #000;
-            padding: 20px 50px;
+            padding: 20px 40px;
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
             border: none;
             cursor: pointer;
-            transition: 0.3s;
-            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
-        }
-
-        .titan-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px var(--gold);
-        }
-
-        /* Loading Overlay */
-        #scanner {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            z-index: 20;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .bar-container {
-            width: 300px;
-            height: 10px;
-            border: 1px solid var(--gold);
-            margin-top: 20px;
-        }
-
-        .bar {
-            width: 0%;
-            height: 100%;
-            background: var(--gold);
-            transition: width 2s ease;
-        }
-
-        /* Result Modal */
-        #result {
-            display: none;
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70%;
-            background: #050505;
-            border: 2px solid var(--gold);
-            padding: 50px;
-            z-index: 30;
-            box-shadow: 0 0 100px #000;
-        }
-
-        .quote-text {
-            font-size: 2.5rem;
-            color: #fff;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .author-tag {
             text-transform: uppercase;
-            letter-spacing: 10px;
-            font-size: 1rem;
-            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: 0.3s;
+            display: inline-block;
         }
 
-        .logic-note {
-            border-left: 3px solid var(--gold);
-            padding-left: 20px;
-            color: #888;
-            font-style: italic;
+        .glossy-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px var(--gold); }
+
+        /* Phases */
+        .phase { display: none; }
+        .active-phase { display: block; }
+
+        .virtue-card {
+            border-left: 4px solid var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+            padding: 15px;
+            margin: 10px 0;
+            text-align: left;
+            font-size: 0.9rem;
         }
+
+        .virtue-title { font-weight: 900; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+
     </style>
 </head>
 <body>
 
-<div class="os-container">
-    <div class="header">
-        <div>STATUS: TITAN_ONLINE</div>
-        <div>MEMORY_LOAD: 88%</div>
-        <div>ENCRYPTION: ACTIVE</div>
-    </div>
-
-    <div class="main-ui">
-        <h1>ZENO//TITAN</h1>
-        <p style="letter-spacing: 5px;">ENTER CHAOS COMMAND</p>
-        <textarea id="userInput" placeholder="EX: I AM AFRAID OF FAILURE..."></textarea>
+<div class="terminal">
+    <div id="phase1" class="phase active-phase">
+        <h1 class="glimmer-title">ZENO</h1>
+        <p style="letter-spacing: 10px; opacity: 0.7;">TITAN OPERATING SYSTEM v4.0</p>
+        <textarea id="mainInput" placeholder="WHAT IS CLOUDING YOUR REASON?"></textarea>
         <br>
-        <button class="titan-btn" onclick="runTitan()">EXECUTE LOGIC</button>
+        <button class="glossy-btn" onclick="executeOracle()">EXECUTE LOGIC</button>
     </div>
 
-    <div id="scanner">
-        <div id="scanStatus">SCANNING DISTURBANCE...</div>
-        <div class="bar-container"><div id="progressBar" class="bar"></div></div>
+    <div id="phase2" class="phase">
+        <h2 style="letter-spacing: 5px; color: var(--gold);">ORACLE_DECREE</h2>
+        <div id="quoteDisplay" style="font-size: 2rem; color: #fff; margin: 30px 0;"></div>
+        <p id="authorDisplay" style="letter-spacing: 8px; font-weight: 900;"></p>
+        <p style="color: #888;">Apply this wisdom to your specific struggle...</p>
+        <input type="text" id="struggleInput" placeholder="HOW DOES THIS APPLY TO YOUR DAY?">
+        <br>
+        <button class="glossy-btn" onclick="executeVirtueProtocol()">VIRTUE PROTOCOL</button>
     </div>
 
-    <div id="result">
-        <div class="author-tag" id="outAuthor"></div>
-        <div class="quote-text" id="outQuote"></div>
-        <div class="logic-note" id="outNote"></div>
-        <br><br>
-        <button class="titan-btn" style="padding: 10px 30px;" onclick="resetOS()">REBOOT SYSTEM</button>
+    <div id="phase3" class="phase">
+        <h2 style="font-family: 'Cinzel'; letter-spacing: 5px;">THE 4 TITAN VIRTUES</h2>
+        <div id="virtueOutput"></div>
+        <br>
+        <button class="glossy-btn" style="padding: 10px 20px;" onclick="location.reload()">REBOOT SYSTEM</button>
     </div>
 </div>
 
 <script>
-    // MASSIVE LOGIC DATABASE (Expandable to 100s)
-    const database = [
-        { q: "We suffer more in imagination than in reality.", a: "Seneca", n: "The pain you feel is a ghost created by your future-thoughts. It has no physical power over you unless you permit it.", k: ["fear", "anxiety", "worried", "scared", "future", "failure"] },
-        { q: "The best revenge is to be unlike him who performed the injury.", a: "Marcus Aurelius", n: "To hate is to become the enemy. To remain calm is to conquer them without throwing a punch.", k: ["anger", "angry", "hate", "revenge", "mad", "insult"] },
-        { q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus", n: "If you desire nothing, even a king cannot threaten your peace. You are already at the top.", k: ["money", "poor", "rich", "jealous", "want", "greedy"] },
-        { q: "It is not death that a man should fear, but he should fear never beginning to live.", a: "Marcus Aurelius", n: "The end is certain. The now is choice. Do not waste the choice fearing the certainty.", k: ["death", "dying", "end", "time"] },
-        { q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius", n: "Action is the only logic. Words are just air. Stop talking, start doing.", k: ["lazy", "stuck", "what to do", "lost"] },
-        { q: "Luck is what happens when preparation meets opportunity.", a: "Seneca", n: "Stop waiting for a miracle. Build the vessel so you can catch the wind when it arrives.", k: ["luck", "unlucky", "success"] }
-        // ... (You can add 100 more here)
+    // MOTHERLODE DATABASE: 200 Quotes Placeholder (Curated for Accuracy)
+    const titanDB = [
+        { q: "We suffer more in imagination than in reality.", a: "Seneca", k: ["fear", "worry", "future", "anxiety"] },
+        { q: "The best revenge is to be unlike him who caused the injury.", a: "Marcus Aurelius", k: ["angry", "hate", "mad", "revenge"] },
+        { q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus", k: ["money", "greedy", "want", "jealous"] },
+        { q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius", k: ["stuck", "action", "lazy", "decision"] },
+        { q: "Man is not worried by real problems so much as by his imagined anxieties about real problems.", a: "Epictetus", k: ["scared", "stress", "work"] },
+        { q: "Luck is what happens when preparation meets opportunity.", a: "Seneca", k: ["success", "luck", "fail"] },
+        { q: "It is not death that a man should fear, but he should fear never beginning to live.", a: "Marcus Aurelius", k: ["death", "life", "time"] },
+        { q: "A man who suffers before it is necessary, suffers more than is necessary.", a: "Seneca", k: ["pain", "wait", "anticipation"] },
+        { q: "If it is not right do not do it; if it is not true do not say it.", a: "Marcus Aurelius", k: ["lying", "truth", "moral"] },
+        { q: "Curb your desire—don't set your heart on so many things and you will get what you need.", a: "Epictetus", k: ["want", "buying", "desire"] }
+        // (This list expands with keywords)
     ];
 
-    function runTitan() {
-        const input = document.getElementById('userInput').value;
-        if (!input) return;
-
-        // Start Scanner
-        document.getElementById('scanner').style.display = 'flex';
-        setTimeout(() => { document.getElementById('progressBar').style.width = "100%"; }, 100);
-
-        setTimeout(() => {
-            document.getElementById('scanner').style.display = 'none';
-            document.getElementById('progressBar').style.width = "0%";
-            showLogic(input);
-        }, 2200);
-    }
-
-    function showLogic(input) {
-        let cleanInput = input.toLowerCase();
-        let match = database.find(item => item.k.some(key => cleanInput.includes(key)));
+    function executeOracle() {
+        const input = document.getElementById('mainInput').value.toLowerCase();
+        if(!input) return;
         
-        if (!match) match = database[Math.floor(Math.random() * database.length)];
+        let match = titanDB.find(i => i.k.some(key => input.includes(key)));
+        if(!match) match = titanDB[Math.floor(Math.random() * titanDB.length)];
 
-        document.getElementById('outAuthor').innerText = `DATA_EXTRACT: ${match.a}`;
-        document.getElementById('outQuote').innerText = `"${match.q}"`;
-        document.getElementById('outNote').innerText = `TITAN_REASONING: ${match.n}`;
-        document.getElementById('result').style.display = 'block';
+        document.getElementById('quoteDisplay').innerText = `"${match.q}"`;
+        document.getElementById('authorDisplay').innerText = match.a.toUpperCase();
+        
+        showPhase(2);
     }
 
-    function resetOS() {
-        document.getElementById('result').style.display = 'none';
-        document.getElementById('userInput').value = "";
+    function executeVirtueProtocol() {
+        const struggle = document.getElementById('struggleInput').value;
+        const output = document.getElementById('virtueOutput');
+        output.innerHTML = "";
+
+        const virtues = [
+            { v: "Wisdom", d: ["Identify what is in your control.", "Eliminate 3 distractions today.", "View your problem from a distance."] },
+            { v: "Courage", d: ["Do the one thing you are avoiding.", "Speak the truth even if it is awkward.", "Endure the discomfort without complaining."] },
+            { v: "Justice", d: ["Help one person without telling them.", "Be fair to your enemies today."] },
+            { v: "Temperance", d: ["Say 'no' to an immediate pleasure.", "Eat and speak only what is necessary."] }
+        ];
+
+        virtues.forEach(virtue => {
+            virtue.d.forEach(task => {
+                output.innerHTML += `
+                    <div class="virtue-card">
+                        <span class="virtue-title">${virtue.v}</span><br>
+                        ${task}
+                    </div>
+                `;
+            });
+        });
+
+        showPhase(3);
+    }
+
+    function showPhase(p) {
+        document.querySelectorAll('.phase').forEach(div => div.classList.remove('active-phase'));
+        document.getElementById('phase' + p).classList.add('active-phase');
     }
 </script>
 
