@@ -3,192 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENO | TITAN v4.0</title>
+    <title>ZENO | TITAN v6.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Cinzel:wght@400;900&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Cinzel:wght@700&family=Space+Mono&display=swap');
-
         :root {
             --gold: #d4af37;
-            --glossy-gold: linear-gradient(135deg, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%);
-            --bg: #050505;
-            --glass: rgba(15, 15, 15, 0.9);
+            --gold-glow: #fcf6ba;
+            --bg: #020202;
+            --glass: rgba(10, 10, 10, 0.9);
+            --accent: #1a1a1a;
         }
 
-        body {
-            background-color: var(--bg);
+        body, html {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
             color: var(--gold);
             font-family: 'Space Mono', monospace;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* Glimmering Title Effect */
-        .glimmer-title {
+        /* Particle Background Canvas */
+        #bgCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            z-index: -1;
+            filter: blur(1px);
+        }
+
+        .os-shell {
+            max-width: 1200px;
+            margin: 40px auto;
+            border: 1px solid var(--gold);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 100px rgba(0,0,0,1), inset 0 0 20px rgba(212,175,55,0.05);
+            padding: 40px;
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* High-End Glimmer Title */
+        .glimmer-header {
             font-family: 'Cinzel', serif;
             font-size: 5rem;
-            text-transform: uppercase;
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            text-align: center;
+            background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: shine 5s linear infinite;
             background-size: 200% auto;
-            letter-spacing: 20px;
-            margin-bottom: 0;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+            animation: shine 6s linear infinite;
+            letter-spacing: 25px;
+            margin: 0;
         }
 
         @keyframes shine { to { background-position: 200% center; } }
 
-        .terminal {
-            width: 95vw;
-            max-width: 1000px;
-            background: var(--glass);
-            border: 1px solid var(--gold);
-            padding: 40px;
-            box-shadow: 0 0 100px rgba(0,0,0,1), inset 0 0 30px rgba(212,175,55,0.1);
-            position: relative;
-            border-radius: 5px;
-            backdrop-filter: blur(15px);
+        /* Memento Mori Clock */
+        .memento-clock {
+            text-align: right;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            color: #555;
         }
 
-        textarea, input {
+        /* Layout */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+        }
+
+        /* Interaction Zone */
+        .main-deck {
+            border-right: 1px solid var(--accent);
+            padding-right: 30px;
+        }
+
+        textarea {
             width: 100%;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid var(--gold);
+            height: 180px;
+            background: #000;
+            border: 1px solid #333;
             color: #fff;
             padding: 20px;
             font-family: 'Space Mono';
+            font-size: 1.1rem;
             margin: 20px 0;
-            box-sizing: border-box;
             outline: none;
-        }
-
-        .glossy-btn {
-            background: var(--glossy-gold);
-            color: #000;
-            padding: 20px 40px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             transition: 0.3s;
-            display: inline-block;
         }
 
-        .glossy-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px var(--gold); }
-
-        /* Phases */
-        .phase { display: none; }
-        .active-phase { display: block; }
-
-        .virtue-card {
-            border-left: 4px solid var(--gold);
-            background: rgba(212, 175, 55, 0.05);
-            padding: 15px;
-            margin: 10px 0;
-            text-align: left;
-            font-size: 0.9rem;
-        }
-
-        .virtue-title { font-weight: 900; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
-
-    </style>
-</head>
-<body>
-
-<div class="terminal">
-    <div id="phase1" class="phase active-phase">
-        <h1 class="glimmer-title">ZENO</h1>
-        <p style="letter-spacing: 10px; opacity: 0.7;">TITAN OPERATING SYSTEM v4.0</p>
-        <textarea id="mainInput" placeholder="WHAT IS CLOUDING YOUR REASON?"></textarea>
-        <br>
-        <button class="glossy-btn" onclick="executeOracle()">EXECUTE LOGIC</button>
-    </div>
-
-    <div id="phase2" class="phase">
-        <h2 style="letter-spacing: 5px; color: var(--gold);">ORACLE_DECREE</h2>
-        <div id="quoteDisplay" style="font-size: 2rem; color: #fff; margin: 30px 0;"></div>
-        <p id="authorDisplay" style="letter-spacing: 8px; font-weight: 900;"></p>
-        <p style="color: #888;">Apply this wisdom to your specific struggle...</p>
-        <input type="text" id="struggleInput" placeholder="HOW DOES THIS APPLY TO YOUR DAY?">
-        <br>
-        <button class="glossy-btn" onclick="executeVirtueProtocol()">VIRTUE PROTOCOL</button>
-    </div>
-
-    <div id="phase3" class="phase">
-        <h2 style="font-family: 'Cinzel'; letter-spacing: 5px;">THE 4 TITAN VIRTUES</h2>
-        <div id="virtueOutput"></div>
-        <br>
-        <button class="glossy-btn" style="padding: 10px 20px;" onclick="location.reload()">REBOOT SYSTEM</button>
-    </div>
-</div>
-
-<script>
-    // MOTHERLODE DATABASE: 200 Quotes Placeholder (Curated for Accuracy)
-    const titanDB = [
-        { q: "We suffer more in imagination than in reality.", a: "Seneca", k: ["fear", "worry", "future", "anxiety"] },
-        { q: "The best revenge is to be unlike him who caused the injury.", a: "Marcus Aurelius", k: ["angry", "hate", "mad", "revenge"] },
-        { q: "Wealth consists not in having great possessions, but in having few wants.", a: "Epictetus", k: ["money", "greedy", "want", "jealous"] },
-        { q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius", k: ["stuck", "action", "lazy", "decision"] },
-        { q: "Man is not worried by real problems so much as by his imagined anxieties about real problems.", a: "Epictetus", k: ["scared", "stress", "work"] },
-        { q: "Luck is what happens when preparation meets opportunity.", a: "Seneca", k: ["success", "luck", "fail"] },
-        { q: "It is not death that a man should fear, but he should fear never beginning to live.", a: "Marcus Aurelius", k: ["death", "life", "time"] },
-        { q: "A man who suffers before it is necessary, suffers more than is necessary.", a: "Seneca", k: ["pain", "wait", "anticipation"] },
-        { q: "If it is not right do not do it; if it is not true do not say it.", a: "Marcus Aurelius", k: ["lying", "truth", "moral"] },
-        { q: "Curb your desire—don't set your heart on so many things and you will get what you need.", a: "Epictetus", k: ["want", "buying", "desire"] }
-        // (This list expands with keywords)
-    ];
-
-    function executeOracle() {
-        const input = document.getElementById('mainInput').value.toLowerCase();
-        if(!input) return;
-        
-        let match = titanDB.find(i => i.k.some(key => input.includes(key)));
-        if(!match) match = titanDB[Math.floor(Math.random() * titanDB.length)];
-
-        document.getElementById('quoteDisplay').innerText = `"${match.q}"`;
-        document.getElementById('authorDisplay').innerText = match.a.toUpperCase();
-        
-        showPhase(2);
-    }
-
-    function executeVirtueProtocol() {
-        const struggle = document.getElementById('struggleInput').value;
-        const output = document.getElementById('virtueOutput');
-        output.innerHTML = "";
-
-        const virtues = [
-            { v: "Wisdom", d: ["Identify what is in your control.", "Eliminate 3 distractions today.", "View your problem from a distance."] },
-            { v: "Courage", d: ["Do the one thing you are avoiding.", "Speak the truth even if it is awkward.", "Endure the discomfort without complaining."] },
-            { v: "Justice", d: ["Help one person without telling them.", "Be fair to your enemies today."] },
-            { v: "Temperance", d: ["Say 'no' to an immediate pleasure.", "Eat and speak only what is necessary."] }
-        ];
-
-        virtues.forEach(virtue => {
-            virtue.d.forEach(task => {
-                output.innerHTML += `
-                    <div class="virtue-card">
-                        <span class="virtue-title">${virtue.v}</span><br>
-                        ${task}
-                    </div>
-                `;
-            });
-        });
-
-        showPhase(3);
-    }
-
-    function showPhase(p) {
-        document.querySelectorAll('.phase').forEach(div => div.classList.remove('active-phase'));
-        document.getElementById('phase' + p).classList.add('active-phase');
-    }
-</script>
-
-</body>
-</html>
+        textarea:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(212,175,55,
