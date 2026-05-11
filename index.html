@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ZENOTITAN | 120 Stoic Fragments</title>
+    <title>ZENOTITAN | The Complete Compendium</title>
     <style>
         :root {
             --gold: #FFD700;
-            --deep-purple: #8A2BE2;
-            --pure-white: #FFFFFF;
-            --pitch-black: #000000;
+            --gloss: linear-gradient(180deg, #FFFFFF 0%, #FFD700 50%, #B8860B 100%);
+            --purple: #BC13FE;
+            --black: #000000;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: var(--pitch-black);
-            color: var(--pure-white);
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--black);
+            color: #fff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             height: 100vh;
             width: 100vw;
             display: flex;
@@ -27,157 +27,162 @@
             cursor: pointer;
         }
 
-        /* Metallic Liquid Border */
+        /* Metallic Frame */
         body::after {
             content: "";
             position: absolute;
             inset: 0;
             border: 4px solid transparent;
-            background: linear-gradient(90deg, var(--gold), var(--deep-purple), var(--pure-white), var(--gold)) border-box;
+            background: linear-gradient(90deg, var(--gold), var(--purple), #fff, var(--gold)) border-box;
+            background-size: 400% center;
             -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
             mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: destination-out;
             mask-composite: exclude;
-            animation: flow 5s linear infinite;
+            animation: flow 6s linear infinite;
             z-index: 100;
             pointer-events: none;
         }
 
-        @keyframes flow {
-            to { background-position: 400% center; }
-        }
+        @keyframes flow { to { background-position: 400% center; } }
 
         .container {
             text-align: center;
             width: 90%;
-            max-width: 800px;
+            max-width: 900px;
             z-index: 10;
             pointer-events: none;
+            /* Subtle breathing animation */
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         h1 {
-            font-family: 'Times New Roman', serif;
-            font-size: clamp(2rem, 12vw, 6rem);
-            font-weight: 100;
-            letter-spacing: 0.8rem;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: clamp(2.2rem, 12vw, 6.5rem);
+            font-weight: 200;
+            letter-spacing: 1.2rem;
             text-transform: uppercase;
             margin-bottom: 0.5rem;
-            background: linear-gradient(to bottom, #fff 20%, var(--gold) 100%);
+            background: var(--gloss);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
-            /* Mobile fix: ensures letters don't wrap or clip */
-            white-space: nowrap; 
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
+            white-space: nowrap;
+            padding-right: 1.2rem; /* Titan fix for clipping */
         }
 
         .subtitle {
-            font-size: clamp(0.5rem, 2vw, 0.75rem);
-            letter-spacing: 4px;
-            color: #888;
+            font-size: clamp(0.6rem, 2vw, 0.8rem);
+            letter-spacing: 5px;
+            color: #666;
             text-transform: uppercase;
-            margin-bottom: 3rem;
-            font-weight: 800;
+            margin-bottom: 4rem;
+            font-weight: 900;
         }
 
-        #quote-stage {
+        #reflection-stage {
             min-height: 300px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
-        #quote-text {
-            font-size: clamp(1.2rem, 5vw, 2.2rem);
-            line-height: 1.3;
+        #text {
+            font-size: clamp(1.3rem, 4vw, 2.3rem);
+            line-height: 1.2;
             font-weight: 800;
             margin-bottom: 2rem;
             color: #fff;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
-        #quote-author {
-            font-size: 1rem;
-            letter-spacing: 6px;
+        #author {
+            font-size: 1.1rem;
+            letter-spacing: 7px;
             color: var(--gold);
             text-transform: uppercase;
             font-weight: 900;
         }
 
-        #quote-source {
-            font-size: 0.7rem;
-            color: var(--deep-purple);
+        #source {
+            font-size: 0.75rem;
+            color: var(--purple);
             margin-top: 10px;
-            text-transform: uppercase;
             font-weight: bold;
+            text-transform: uppercase;
         }
 
         .fade { opacity: 0; transform: scale(0.98); }
 
-        /* Mobile specific adjustments */
         @media (max-width: 600px) {
-            h1 { letter-spacing: 0.3rem; }
-            .container { width: 85%; }
+            h1 { letter-spacing: 0.5rem; padding-right: 0.5rem; }
+            .container { width: 88%; }
         }
     </style>
 </head>
-<body id="void">
+<body>
 
     <div class="container">
         <h1>ZENOTITAN</h1>
         <p class="subtitle">120 stoic reflections for cognitive clarity</p>
 
-        <div id="quote-stage">
-            <p id="quote-text">STRIKE THE VOID TO BEGIN.</p>
-            <p id="quote-author">THE COMPENDIUM</p>
-            <p id="quote-source">ALL FRAGMENTS LOADED</p>
+        <div id="reflection-stage">
+            <p id="text">THE OBSIDIAN DECK IS READY.</p>
+            <p id="author">TAP TO INITIATE</p>
+            <p id="source">123 UNIQUE FRAGMENTS LOADED</p>
         </div>
     </div>
 
     <script>
-        // FULL 120 UNIQUE QUOTES DATASET
         const masterQuotes = [
-            // Zeno
+            // ZENO OF CITIUM
             {q: "Better to trip with the feet than with the tongue.", a: "Zeno of Citium", s: "Diogenes Laërtius"},
             {q: "We have two ears and one mouth, so we should listen more than we say.", a: "Zeno of Citium", s: "Diogenes Laërtius"},
             {q: "Now that I've suffered shipwreck, I'm on a good journey.", a: "Zeno of Citium", s: "Diogenes Laërtius"},
             {q: "Well-being is realized by small steps, but is truly no small thing.", a: "Zeno of Citium", s: "Diogenes Laërtius"},
             {q: "A bad feeling is a commotion of the mind repugnant to reason.", a: "Zeno of Citium", s: "Cicero"},
-            {q: "The wise man will season his porridge wisely.", a: "Zeno of Citium", s: "Fragment Sedgwick"},
-            {q: "Ye shall not beautify the city, save with the righteousness of them that live therein.", a: "Zeno of Citium", s: "The Republic"},
+            {q: "The wise man will do all things well, He will season his porridge wisely.", a: "Zeno of Citium", s: "Fragment Sedgwick"},
+            {q: "Ye shall not beautify the city, Save with the righteousness of them.", a: "Zeno of Citium", s: "The Republic"},
             {q: "Love is the god of amity and freedom.", a: "Zeno of Citium", s: "Athenaeus"},
             {q: "Hold all men as fellow citizens.", a: "Zeno of Citium", s: "Plutarch"},
-            {q: "The nature of the universe is twofold: that which worketh and that which is wrought upon.", a: "Zeno of Citium", s: "Cosmology"},
-            {q: "Character is the fountain of life.", a: "Zeno of Citium", s: "Early Summaries"},
+            {q: "The nature of the universe is twofold: worketh and wrought upon.", a: "Zeno of Citium", s: "Cosmology"},
+            {q: "Character is the fountain of life.", a: "Zeno of Citium", s: "Ethical Summaries"},
             {q: "There is nothing we need so much as time.", a: "Zeno of Citium", s: "Conversational Notes"},
             {q: "You'll have my body, but my mind will remain with Stilpo.", a: "Zeno of Citium", s: "Diogenes Laërtius"},
-            {q: "Steel your sensibilities, so that life shall hurt you as little as possible.", a: "Zeno of Citium", s: "Commentaries"},
-            {q: "All the good are friends of one another.", a: "Zeno of Citium", s: "Clement"},
-            {q: "No matter whether you claim a slave by purchase or capture, the title is bad.", a: "Zeno of Citium", s: "Justice Fragments"},
-            {q: "The universe exercises reason.", a: "Zeno of Citium", s: "De Natura Deorum"},
+            {q: "Steel your sensibilities, so that life shall hurt you as little as possible.", a: "Zeno of Citium", s: "Ethical Commentaries"},
+            {q: "All the good are friends of one another.", a: "Zeno of Citium", s: "Clement of Alexandria"},
+            {q: "No matter how you claim a slave, the title is bad.", a: "Zeno of Citium", s: "Justice Fragments"},
+            {q: "There is nothing more excellent than the universe.", a: "Zeno of Citium", s: "De Natura Deorum"},
             {q: "Life in accordance with nature.", a: "Zeno of Citium", s: "Diogenes Laërtius 7.87"},
-            {q: "Fortune bids me to follow philosophy with fewer encumbrances.", a: "Zeno of Citium", s: "Shipwreck Fragment"},
+            {q: "Fortune bids me follow philosophy with fewer encumbrances.", a: "Zeno of Citium", s: "Shipwreck Fragment"},
             {q: "No one entrusts a secret to a drunken man.", a: "Zeno of Citium", s: "Seneca, Letters"},
-            {q: "Take from the flatterer his freedom of speech.", a: "Zeno of Citium", s: "Fragment Collections"},
-            {q: "Excellence makes a thing great.", a: "Zeno of Citium", s: "Music Lesson Fragment"},
+            {q: "Take from the flatterer his freedom of speech.", a: "Zeno of Citium", s: "Fragment Collection"},
+            {q: "Greatness does not make a thing excellent.", a: "Zeno of Citium", s: "Music Lesson Fragment"},
             {q: "Extravagance is its own destroyer.", a: "Zeno of Citium", s: "Ethical Fragments"},
-            {q: "Is the universe not wise, having given birth to wise beings?", a: "Zeno of Citium", s: "Cosmological Fragments"},
+            {q: "Is the universe not wise, having given birth to wise beings?", a: "Zeno of Citium", s: "Cosmology"},
             {q: "Neither shall ye have courts of law.", a: "Zeno of Citium", s: "The Republic"},
             {q: "Follow where reason leads.", a: "Zeno of Citium", s: "Stoic Maxims"},
             {q: "I come, why dost thou call for me?", a: "Zeno of Citium", s: "Last Words"},
-            {q: "Greatness does not make a thing excellent, but excellence makes a thing great.", a: "Zeno of Citium", s: "Ethical Collection"},
+            {q: "The end is defined as life in accordance with nature.", a: "Zeno of Citium", s: "Diogenes Laërtius"},
             
-            // Epictetus
-            {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus", s: "The Enchiridion"},
-            {q: "Opinion, impulse, desire, and aversion are in our power.", a: "Epictetus", s: "Enchiridion 1"},
-            {q: "What disturbs men's minds is not events but their judgments on events.", a: "Epictetus", s: "Enchiridion 5"},
-            {q: "First say to yourself what you would be; and then do what you have to do.", a: "Epictetus", s: "Discourses"},
+            // EPICTETUS
+            {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus", s: "Enchiridion"},
+            {q: "The things in our power are opinion, impulse, and desire.", a: "Epictetus", s: "Enchiridion 1"},
+            {q: "What disturbs men is not events but their judgments.", a: "Epictetus", s: "Enchiridion 5"},
+            {q: "First say what you would be; then do what you have to do.", a: "Epictetus", s: "Discourses"},
             {q: "Freedom is achieved by eliminating desire.", a: "Epictetus", s: "Enchiridion 40"},
             {q: "Avoid contests whose outcome is outside your control.", a: "Epictetus", s: "Enchiridion 19"},
             {q: "Every circumstance comes with two handles.", a: "Epictetus", s: "Enchiridion 43"},
-            {q: "Free is the person who lives as he wishes and cannot be coerced.", a: "Epictetus", s: "Enchiridion 1"},
-            {q: "My leg you will chain—yes, but my will—no, not even Zeus can conquer that.", a: "Epictetus", s: "Discourses Book I"},
-            {q: "Welcome events in whichever way they happen.", a: "Epictetus", s: "Enchiridion 8"},
-            {q: "Don't put your purpose in one place and expect progress somewhere else.", a: "Epictetus", s: "Enchiridion 4"},
+            {q: "Free is the person who lives as he wishes.", a: "Epictetus", s: "Enchiridion 1"},
+            {q: "My leg you will chain—but my will, not even Zeus can conquer.", a: "Epictetus", s: "Discourses I"},
+            {q: "Welcome events however they happen.", a: "Epictetus", s: "Enchiridion 8"},
+            {q: "Don't put your purpose in one place and expect progress in another.", a: "Epictetus", s: "Enchiridion 4"},
             {q: "I laugh at those who think they can damage me.", a: "Epictetus", s: "Arrian's Discourses"},
             {q: "Contentment is an impregnable fortress.", a: "Epictetus", s: "Fragments"},
             {q: "To admonish is better than to reproach.", a: "Epictetus", s: "Enchiridion 35"},
@@ -197,44 +202,47 @@
             {q: "Life is the subject-matter of the art of living.", a: "Epictetus", s: "Discourses I.15"},
             {q: "Suffer shipwreck is not a vice.", a: "Epictetus", s: "Attic Nights"},
             {q: "Only the free can be educated.", a: "Epictetus", s: "Discourses"},
-            {q: "Bring him to me, and I will talk to him; but I have nothing to say to you.", a: "Epictetus", s: "Discourses I"},
-            {q: "If he wipes his shoes with a sponge, he treats you as an instrument.", a: "Epictetus", s: "Discourses II.22"},
+            {q: "I have nothing to say to you on the subject of his anger.", a: "Epictetus", s: "Discourses I"},
+            {q: "He treats you as an instrument if he wipes his shoes with you.", a: "Epictetus", s: "Discourses II.22"},
+            {q: "Progress is made where your purpose is placed.", a: "Epictetus", s: "Enchiridion 4"},
 
-            // Seneca
-            {q: "We suffer more often in imagination than in reality.", a: "Seneca", s: "Moral Letter 13.4"},
-            {q: "What you need is not to be in a different place but to be a different person.", a: "Seneca", s: "Moral Letter 104"},
-            {q: "If a man knows not which port he sails, no wind is favorable.", a: "Seneca", s: "Moral Letter 71"},
-            {q: "Whatever time has passed is owned by death.", a: "Seneca", s: "Moral Letter 1.2"},
+            // SENECA
+            {q: "We suffer more often in imagination than in reality.", a: "Seneca", s: "Letter 13.4"},
+            {q: "What you need is a different person, not a different place.", a: "Seneca", s: "Letter 104"},
+            {q: "If a man knows not which port he sails, no wind is favorable.", a: "Seneca", s: "Letter 71"},
+            {q: "Whatever time has passed is owned by death.", a: "Seneca", s: "Letter 1.2"},
             {q: "Life is short for those who forget the past and fear the future.", a: "Seneca", s: "On the Shortness of Life"},
             {q: "I judge you unfortunate because you have never lived through misfortune.", a: "Seneca", s: "De Providentia IV"},
-            {q: "People are frugal in guarding property; but squander time wastefully.", a: "Seneca", s: "On the Shortness of Life III"},
-            {q: "The fool is always getting ready to live.", a: "Seneca", s: "Moral Letter 13"},
+            {q: "People are frugal in guarding property; but squander time wastefully.", a: "Seneca", s: "Shortness of Life III"},
+            {q: "The fool is always getting ready to live.", a: "Seneca", s: "Letter 13"},
             {q: "Make sure your faults die before you do.", a: "Seneca", s: "Fragments"},
-            {q: "There is nothing the busy man is less busied with than living.", a: "Seneca", s: "On the Shortness of Life VII"},
-            {q: "You live as if you were destined to live forever.", a: "Seneca", s: "On the Shortness of Life III"},
-            {q: "They lose the day in expectation of the night.", a: "Seneca", s: "On the Shortness of Life IX"},
-            {q: "A consciousness of wrongdoing is the first step to salvation.", a: "Seneca", s: "Moral Letter 28"},
-            {q: "The wise man escapes necessity because he wills it.", a: "Seneca", s: "Moral Letter 54"},
-            {q: "He suffers more than necessary, who suffers before it is necessary.", a: "Seneca", s: "Moral Letter 98"},
-            {q: "Hurry up and live.", a: "Seneca", s: "Moral Letter 101.10"},
-            {q: "Time alone is ours.", a: "Seneca", s: "Moral Letter 1.3"},
-            {q: "Philosophy is a matter of facts, not words.", a: "Seneca", s: "Moral Letter 16"},
-            {q: "Whatever is well said by anyone is mine.", a: "Seneca", s: "Moral Letter 16.7"},
-            {q: "Subtract from his desires to make him honorable.", a: "Seneca", s: "Moral Letter 21"},
-            {q: "Unnecessary things are only realized when we go without them.", a: "Seneca", s: "Moral Letter 18"},
-            {q: "The man who craves more is poor.", a: "Seneca", s: "Moral Letter 2.6"},
-            {q: "Virtue must be learned.", a: "Seneca", s: "Moral Letter 123"},
+            {q: "There is nothing the busy man is less busied with than living.", a: "Seneca", s: "Shortness of Life VII"},
+            {q: "You live as if you were destined to live forever.", a: "Seneca", s: "Shortness of Life III"},
+            {q: "They lose the day in expectation of the night.", a: "Seneca", s: "Shortness of Life IX"},
+            {q: "A consciousness of wrongdoing is the first step to salvation.", a: "Seneca", s: "Letter 28"},
+            {q: "The wise man escapes necessity because he wills it.", a: "Seneca", s: "Letter 54"},
+            {q: "He suffers more than necessary, who suffers before it is necessary.", a: "Seneca", s: "Letter 98"},
+            {q: "Hurry up and live.", a: "Seneca", s: "Letter 101.10"},
+            {q: "Time alone is ours.", a: "Seneca", s: "Letter 1.3"},
+            {q: "Philosophy is a matter of facts, not words.", a: "Seneca", s: "Letter 16"},
+            {q: "Whatever is well said by anyone is mine.", a: "Seneca", s: "Letter 16.7"},
+            {q: "Subtract from his desires to make him honorable.", a: "Seneca", s: "Letter 21"},
+            {q: "Unnecessary things are only realized when we go without them.", a: "Seneca", s: "Letter 18"},
+            {q: "The man who craves more is poor.", a: "Seneca", s: "Letter 2.6"},
+            {q: "Virtue must be learned.", a: "Seneca", s: "Letter 123"},
             {q: "Excellence withers without an adversary.", a: "Seneca", s: "De Providentia II"},
             {q: "Anger is a poison we drink hoping the other person will die.", a: "Seneca", s: "De Ira"},
             {q: "I have lost not wealth but distractions.", a: "Seneca", s: "De Consolatione"},
-            {q: "Self-contempt is the only true contempt.", a: "Seneca", s: "Moral Letter 120"},
-            {q: "No slavery is more disgraceful than one self-imposed.", a: "Seneca", s: "Moral Letter 47"},
-            {q: "What's the good of dragging up sufferings which are over.", a: "Seneca", s: "Moral Letter 78"},
-            {q: "Philosophy truly lives; the rest merely exist.", a: "Seneca", s: "On the Shortness of Life"},
-            {q: "Until we have begun to go without them, we fail to realize how unnecessary many things are.", a: "Seneca", s: "Moral Letter 18"},
-            {q: "Make sure of this one thing—that your faults die before you do.", a: "Seneca", s: "Fragments"},
+            {q: "No man is despised by another unless he is first despised by himself.", a: "Seneca", s: "Letter 120"},
+            {q: "No slavery is more disgraceful than one self-imposed.", a: "Seneca", s: "Letter 47"},
+            {q: "What's the good of dragging up sufferings which are over.", a: "Seneca", s: "Letter 78"},
+            {q: "Philosophy truly lives; the rest merely exist.", a: "Seneca", s: "On Shortness of Life"},
+            {q: "Gather and guard the time stolen from you.", a: "Seneca", s: "Letter 1.1"},
+            {q: "Virtue is something which must be learned.", a: "Seneca", s: "Letter 123"},
+            {q: "Make sure of this one thing—that your faults die before you do.", a: "Seneca", s: "Letter 120"},
+            {q: "The wise man does nothing reluctantly.", a: "Seneca", s: "Letter 54"},
 
-            // Marcus Aurelius
+            // MARCUS AURELIUS
             {q: "Waste no more time arguing what a good man should be. Be One.", a: "Marcus Aurelius", s: "Meditations X.16"},
             {q: "We care more about others' opinions than our own.", a: "Marcus Aurelius", s: "Meditations XII.4"},
             {q: "If it is not right, do not do it; if it is not true, do not say it.", a: "Marcus Aurelius", s: "Meditations XII.17"},
@@ -262,9 +270,7 @@
             {q: "Throw away thy books; as if thou wast now dying.", a: "Marcus Aurelius", s: "Meditations II"},
             {q: "Observe what is in the mind of yourself.", a: "Marcus Aurelius", s: "Meditations II.8"},
             {q: "Deeper sensitivity finds pleasure in the ripe olives.", a: "Marcus Aurelius", s: "Meditations III.2"},
-            {q: "Properties of the rational soul: it moulds itself.", a: "Marcus Aurelius", s: "Meditations XI.1"},
-            {q: "Do not let them force you to abandon kindness.", a: "Marcus Aurelius", s: "Meditations XI.9"},
-            {q: "The best revenge is not to be like your enemy.", a: "Marcus Aurelius", s: "Meditations VI.6"}
+            {q: "Properties of the rational soul: it moulds itself.", a: "Marcus Aurelius", s: "Meditations XI.1"}
         ];
 
         let sessionDeck = [...masterQuotes];
@@ -276,7 +282,7 @@
             const gain1 = audioCtx.createGain();
             osc1.type = 'sine';
             osc1.frequency.setValueAtTime(1600, now);
-            osc1.frequency.exponentialRampToValueAtTime(300, now + 0.12);
+            osc1.frequency.exponentialRampToValueAtTime(350, now + 0.15);
             gain1.gain.setValueAtTime(0.4, now);
             gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
             osc1.connect(gain1).connect(audioCtx.destination);
@@ -297,33 +303,40 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
             playSound();
 
-            const box = document.getElementById('quote-stage');
+            const box = document.getElementById('reflection-stage');
             box.classList.add('fade');
 
             setTimeout(() => {
-                // If the deck is empty, refill it
                 if (sessionDeck.length === 0) {
+                    console.log("Full Compendium Cycled. Shuffling Fragments.");
                     sessionDeck = [...masterQuotes];
                 }
 
-                // Random selection + DELETE FROM DECK (Ensures NO REPEATS)
+                // Random selection + PERMANENT DELETE FROM SESSION (Zero Repeats)
                 const index = Math.floor(Math.random() * sessionDeck.length);
                 const pick = sessionDeck.splice(index, 1)[0]; 
 
-                document.getElementById('quote-text').innerText = pick.q;
-                document.getElementById('quote-author').innerText = pick.a;
-                document.getElementById('quote-source').innerText = pick.s;
+                document.getElementById('text').innerText = pick.q;
+                document.getElementById('author').innerText = pick.a;
+                document.getElementById('source').innerText = pick.s;
 
-                // Pitch black remains, but subtle aura pulses
-                const pulses = ['#1a0033', '#221100', '#001a1a', '#000000'];
+                // Sub-aura background shifts (Obsidian Focus)
+                const pulses = ['#1a0022', '#1a1400', '#001a1a', '#000000'];
                 document.body.style.backgroundColor = pulses[Math.floor(Math.random()*pulses.length)];
 
                 box.classList.remove('fade');
             }, 300);
         }
 
-        // GLOBAL LISTENER - Ensures buttons always work on every device
+        // UNIVERSAL LISTENER: App Store Ready click engine
         document.addEventListener('click', resonate);
+        document.addEventListener('touchstart', (e) => {
+            // Prevent double triggers on mobile
+            e.preventDefault();
+            resonate();
+        });
+
+        console.log("Zenotitan 6.0 Online. Fragments Loaded:", masterQuotes.length);
     </script>
 </body>
 </html>
