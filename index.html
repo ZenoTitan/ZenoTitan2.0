@@ -294,4 +294,36 @@
         }
 
         function resonate() {
-            if (
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            playSound();
+
+            const box = document.getElementById('quote-stage');
+            box.classList.add('fade');
+
+            setTimeout(() => {
+                // If the deck is empty, refill it
+                if (sessionDeck.length === 0) {
+                    sessionDeck = [...masterQuotes];
+                }
+
+                // Random selection + DELETE FROM DECK (Ensures NO REPEATS)
+                const index = Math.floor(Math.random() * sessionDeck.length);
+                const pick = sessionDeck.splice(index, 1)[0]; 
+
+                document.getElementById('quote-text').innerText = pick.q;
+                document.getElementById('quote-author').innerText = pick.a;
+                document.getElementById('quote-source').innerText = pick.s;
+
+                // Pitch black remains, but subtle aura pulses
+                const pulses = ['#1a0033', '#221100', '#001a1a', '#000000'];
+                document.body.style.backgroundColor = pulses[Math.floor(Math.random()*pulses.length)];
+
+                box.classList.remove('fade');
+            }, 300);
+        }
+
+        // GLOBAL LISTENER - Ensures buttons always work on every device
+        document.addEventListener('click', resonate);
+    </script>
+</body>
+</html>
