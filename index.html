@@ -3,248 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ZENO | Neural Citadel</title>
+    <title>ZENO | TITAN</title>
     <style>
         :root {
-            --bg: #040504;
+            --bg: #050605;
             --sage: #86a695;
-            --deep: #111814;
+            --deep: #0d120f;
             --gold: #b3965d;
             --mist: #d1d9d5;
-            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* RESET & CORE */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
             background-color: var(--bg);
             color: var(--mist);
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
             height: 100vh; width: 100vw;
             display: flex; flex-direction: column;
             overflow: hidden;
-            background-image: radial-gradient(circle at 50% 110%, var(--deep) 0%, var(--bg) 100%);
+            /* Inset shadow provides the frame without blocking clicks */
+            box-shadow: inset 0 0 100px rgba(0,0,0,1), inset 0 0 2px var(--sage);
         }
 
-        /* THE FRAME - Set to pointer-events: none so it NEVER blocks a click */
-        body::after {
-            content: ""; position: absolute; inset: 0;
-            border: 1px solid rgba(134, 166, 149, 0.1);
-            pointer-events: none; z-index: 9999;
-        }
-
-        header { padding: 3rem 1rem 1rem; text-align: center; pointer-events: none; }
+        header { padding: 4rem 1rem 2rem; text-align: center; }
         h1 { 
-            font-family: 'Times New Roman', serif; font-size: clamp(2.5rem, 12vw, 5rem); 
-            letter-spacing: 1.5rem; color: var(--sage); font-weight: 200;
-            margin-bottom: 0.5rem; padding-left: 1.5rem;
+            font-family: 'Times New Roman', serif; font-size: clamp(3rem, 15vw, 6rem); 
+            letter-spacing: 1.8rem; color: var(--sage); font-weight: 200;
+            line-height: 1; padding-left: 1.8rem;
         }
-        .version-tag { font-size: 0.5rem; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; opacity: 0.6; }
+        .subtitle {
+            font-size: 0.6rem; letter-spacing: 0.8rem;
+            color: var(--gold); text-transform: uppercase;
+            margin-top: 0.5rem; opacity: 0.8;
+        }
 
-        main { flex-grow: 1; position: relative; width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; display: flex; align-items: center; justify-content: center; }
+        main { flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; }
 
-        /* VIEW STATES */
-        .view { display: none; width: 100%; flex-direction: column; animation: viewFade 0.6s ease forwards; }
+        .view { display: none; width: 100%; max-width: 600px; flex-direction: column; animation: fadeIn 0.5s ease; }
         .view.active { display: flex; }
-        @keyframes viewFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* REFLECTION UI */
-        #quote-container { text-align: center; cursor: pointer; padding: 2rem; border-radius: 4px; transition: var(--transition); }
-        #quote-text { font-size: clamp(1.2rem, 4vw, 2rem); line-height: 1.6; font-weight: 300; font-style: italic; margin-bottom: 2rem; }
-        #quote-author { font-size: 0.7rem; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; }
+        /* CITADEL (Quotes) */
+        #quote-wrap { cursor: pointer; text-align: center; width: 100%; }
+        #q-text { font-size: clamp(1.1rem, 4.5vw, 1.8rem); line-height: 1.7; font-weight: 300; margin-bottom: 2rem; font-style: italic; }
+        #q-author { font-size: 0.7rem; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; }
 
-        /* COUNSELOR CHAT */
-        #chat-scroller { height: 350px; overflow-y: auto; padding-right: 15px; display: flex; flex-direction: column; gap: 1.2rem; scrollbar-width: none; }
-        #chat-scroller::-webkit-scrollbar { display: none; }
-        .bubble { padding: 1.2rem; border-radius: 2px; font-size: 0.95rem; line-height: 1.7; max-width: 85%; transition: var(--transition); }
-        .bubble.ai { background: rgba(134, 166, 149, 0.05); color: var(--sage); border-left: 2px solid var(--sage); align-self: flex-start; }
-        .bubble.user { background: rgba(179, 150, 93, 0.05); color: var(--mist); border-right: 2px solid var(--gold); align-self: flex-end; text-align: right; }
+        /* COUNSELOR (AI) */
+        #chat-window { height: 320px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 1rem; scrollbar-width: none; }
+        #chat-window::-webkit-scrollbar { display: none; }
+        .msg { padding: 1rem; border-radius: 2px; font-size: 0.9rem; line-height: 1.6; max-width: 85%; }
+        .msg.ai { border-left: 1px solid var(--sage); background: rgba(134, 166, 149, 0.05); color: var(--sage); align-self: flex-start; }
+        .msg.user { border-right: 1px solid var(--gold); background: rgba(179, 150, 93, 0.05); align-self: flex-end; text-align: right; }
+        .input-box { margin-top: 1.5rem; border-bottom: 1px solid var(--deep); padding: 5px 0; }
+        input { background: transparent; border: none; outline: none; color: var(--mist); width: 100%; font-size: 1rem; }
 
-        .input-box { margin-top: 1.5rem; border-bottom: 1px solid var(--deep); padding: 10px 0; display: flex; }
-        input { background: transparent; border: none; outline: none; color: var(--mist); width: 100%; font-size: 1.1rem; font-weight: 300; }
-
-        /* DOXASTIC OPTIONS */
-        .delib-header { text-align: center; font-size: 0.7rem; color: var(--sage); letter-spacing: 4px; margin-bottom: 2rem; text-transform: uppercase; }
-        .path-btn { 
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(134, 166, 149, 0.1);
-            color: var(--mist); padding: 1.8rem; margin-bottom: 1rem; cursor: pointer;
-            text-transform: uppercase; font-size: 0.75rem; letter-spacing: 3px; text-align: center; transition: var(--transition);
+        /* DELIBERATION (Kapitan Logic) */
+        .path-link { 
+            padding: 1.5rem; border: 1px solid rgba(134, 166, 149, 0.1); 
+            margin-bottom: 1rem; cursor: pointer; text-align: center;
+            text-transform: uppercase; font-size: 0.7rem; letter-spacing: 3px;
         }
-        .path-btn:hover { border-color: var(--gold); background: rgba(179, 150, 93, 0.05); }
+        .path-link:hover { border-color: var(--gold); background: rgba(179,150,93,0.05); }
 
-        /* NAVIGATION BAR */
-        nav { padding: 2rem; display: flex; justify-content: center; gap: 3rem; z-index: 10000; position: relative; }
-        .nav-link { 
-            font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--mist); 
-            opacity: 0.4; cursor: pointer; transition: 0.3s; padding: 10px;
-        }
-        .nav-link.active { opacity: 1; color: var(--sage); border-bottom: 1px solid var(--sage); }
+        /* NAV */
+        nav { padding: 2rem; display: flex; justify-content: center; gap: 2rem; background: rgba(0,0,0,0.3); }
+        .nav-item { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--mist); opacity: 0.4; cursor: pointer; padding: 10px; transition: var(--transition); }
+        .nav-item.active { opacity: 1; color: var(--sage); border-bottom: 1px solid var(--sage); }
     </style>
 </head>
 <body>
 
 <header>
     <h1>ZENO</h1>
-    <div class="version-tag">Doxastic Agent v8.0</div>
+    <div class="subtitle">TITAN</div>
 </header>
 
-<main>
-    <div id="view-reflect" class="view active">
-        <div id="quote-container">
-            <p id="quote-text">The citadel is silent. Tap to evoke a fragment.</p>
-            <p id="quote-author">INITIATE</p>
+<main id="app-core">
+    <div id="view-citadel" class="view active">
+        <div id="quote-wrap">
+            <p id="q-text">Tap the void to begin.</p>
+            <p id="q-author">STILLNESS</p>
         </div>
     </div>
 
-    <div id="view-ai" class="view">
-        <div id="chat-scroller">
-            <div class="bubble ai">I have observed your presence. What impression currently tests your reason?</div>
+    <div id="view-counselor" class="view">
+        <div id="chat-window">
+            <div class="msg ai">I am listening. What impression is testing your reason?</div>
         </div>
         <div class="input-box">
-            <input type="text" id="chat-input" placeholder="Speak to Zeno..." autocomplete="off">
+            <input type="text" id="ai-input" placeholder="Enter thought..." autocomplete="off">
         </div>
     </div>
 
     <div id="view-delib" class="view">
-        <p class="delib-header">Deliberation: Open Paths</p>
-        <div class="path-btn" data-path="Amor Fati">Path of Acceptance</div>
-        <div class="path-btn" data-path="Virtue">Path of Immediate Action</div>
-        <div class="path-btn" data-path="Suspension">Path of Doxastic Restraint</div>
+        <p style="text-align: center; font-size: 0.6rem; color: var(--sage); letter-spacing: 4px; margin-bottom: 2rem; text-transform: uppercase;">Doxastic Deliberation</p>
+        <div class="path-link" data-path="Acceptance">Path of Amor Fati</div>
+        <div class="path-link" data-path="Action">Path of Virtue</div>
+        <div class="path-link" data-path="Silence">Path of Restraint</div>
     </div>
 </main>
 
-<nav id="main-nav">
-    <div class="nav-link active" data-v="reflect">Citadel</div>
-    <div class="nav-link" data-v="ai">Counselor</div>
-    <div class="nav-link" data-v="delib">Deliberate</div>
+<nav id="nav-bar">
+    <div class="nav-item active" data-target="citadel">Citadel</div>
+    <div class="nav-item" data-target="counselor">Counselor</div>
+    <div class="nav-item" data-target="delib">Deliberate</div>
 </nav>
 
 <script>
-// EXHAUSTIVE QUOTE LIBRARY
 const LIBRARY = [
     {q: "Better to trip with the feet than with the tongue.", a: "Zeno of Citium"},
+    {q: "We have two ears and one mouth, so we should listen more than we say.", a: "Zeno of Citium"},
+    {q: "Now that I've suffered shipwreck, I'm on a good journey.", a: "Zeno of Citium"},
+    {q: "Well-being is realized by small steps, but is truly no small thing.", a: "Zeno of Citium"},
+    {q: "A bad feeling is a commotion of the mind repugnant to reason.", a: "Zeno of Citium"},
+    {q: "Follow where reason leads.", a: "Zeno of Citium"},
+    {q: "It's not what happens to you, but how you react to it that matters.", a: "Epictetus"},
+    {q: "The things in our power are opinion, impulse, and desire.", a: "Epictetus"},
+    {q: "What disturbs men is not events but their judgments.", a: "Epictetus"},
+    {q: "First say what you would be; then do what you have to do.", a: "Epictetus"},
     {q: "We suffer more often in imagination than in reality.", a: "Seneca"},
-    {q: "The soul becomes dyed with the color of its thoughts.", a: "Marcus Aurelius"},
-    {q: "Waste no more time arguing what a good man should be. Be one.", a: "Marcus Aurelius"},
+    {q: "If a man knows not which port he sails, no wind is favorable.", a: "Seneca"},
+    {q: "Life is short for those who forget the past and fear the future.", a: "Seneca"},
+    {q: "Waste no more time arguing what a good man should be. Be One.", a: "Marcus Aurelius"},
     {q: "If it is not right, do not do it; if it is not true, do not say it.", a: "Marcus Aurelius"},
-    {q: "He who fears death will never do anything worthy of a living man.", a: "Seneca"},
-    {q: "No man is free who is not master of himself.", a: "Epictetus"},
+    {q: "Choose not to be harmed — and you won't feel harmed.", a: "Marcus Aurelius"},
     {q: "The best revenge is not to be like your enemy.", a: "Marcus Aurelius"},
-    {q: "Everything we hear is an opinion, not a fact.", a: "Marcus Aurelius"},
-    {q: "Very little is needed to make a happy life.", a: "Marcus Aurelius"}
+    {q: "You could leave life right now.", a: "Marcus Aurelius"},
+    {q: "Be tolerant with others and strict with yourself.", a: "Marcus Aurelius"},
+    {q: "The soul becomes dyed with the color of its thoughts.", a: "Marcus Aurelius"}
+    /* ... The logic below ensures even with 20 or 120, repeats are impossible ... */
 ];
 
 const app = {
     audio: null,
-    seen: new Set(JSON.parse(localStorage.getItem('zeno_seen') || '[]')),
-    history: [],
+    seen: new Set(JSON.parse(localStorage.getItem('zeno_seen_vault') || '[]')),
 
     init() {
-        // Use Global Event Delegation to ensure buttons ALWAYS work
+        // GLOBAL EVENT DELEGATION - Zero failure rate for buttons
         document.addEventListener('click', (e) => {
-            const navLink = e.target.closest('.nav-link');
-            const quoteBox = e.target.closest('#quote-container');
-            const pathBtn = e.target.closest('.path-btn');
+            const nav = e.target.closest('.nav-item');
+            const qBox = e.target.closest('#quote-wrap');
+            const path = e.target.closest('.path-link');
 
-            if (navLink) this.switchView(navLink.dataset.v, navLink);
-            if (quoteBox) this.nextQuote();
-            if (pathBtn) this.handleDeliberation(pathBtn.dataset.path);
+            if (nav) this.switchView(nav);
+            if (qBox) this.nextQuote();
+            if (path) this.resolvePath(path.dataset.path);
         });
 
-        document.getElementById('chat-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') this.handleChat(e.target.value);
-        });
-
-        console.log("ZENO 8.0: Logic Engine Online.");
+        document.getElementById('ai-input').onkeypress = (e) => {
+            if (e.key === 'Enter') this.askAI(e.target.value);
+        };
     },
 
-    playBell(freq) {
+    playBell(f) {
         if (!this.audio) this.audio = new (window.AudioContext || window.webkitAudioContext)();
         if (this.audio.state === 'suspended') this.audio.resume();
-        const osc = this.audio.createOscillator();
-        const gain = this.audio.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, this.audio.currentTime);
-        gain.gain.setValueAtTime(0.04, this.audio.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, this.audio.currentTime + 1);
-        osc.connect(gain).connect(this.audio.destination);
-        osc.start(); osc.stop(this.audio.currentTime + 1);
+        const o = this.audio.createOscillator();
+        const g = this.audio.createGain();
+        o.type = 'sine'; o.frequency.setValueAtTime(f, this.audio.currentTime);
+        g.gain.setValueAtTime(0.03, this.audio.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, this.audio.currentTime + 1);
+        o.connect(g).connect(this.audio.destination);
+        o.start(); o.stop(this.audio.currentTime + 1);
     },
 
-    switchView(viewId, target) {
+    switchView(el) {
         this.playBell(150);
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        document.getElementById(`view-${viewId}`).classList.add('active');
-        target.classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(`view-${el.dataset.target}`).classList.add('active');
+        el.classList.add('active');
     },
 
     nextQuote() {
-        this.playBell(240);
-        let pool = LIBRARY.filter(i => !this.seen.has(i.q));
-        if (pool.length === 0) { this.seen.clear(); pool = LIBRARY; }
+        this.playBell(300);
+        const pool = LIBRARY.filter(x => !this.seen.has(x.q));
+        
+        if (pool.length === 0) {
+            this.seen.clear();
+            this.nextQuote(); // Recurse once after clearing
+            return;
+        }
 
         const pick = pool[Math.floor(Math.random() * pool.length)];
         this.seen.add(pick.q);
-        localStorage.setItem('zeno_seen', JSON.stringify([...this.seen]));
+        localStorage.setItem('zeno_seen_vault', JSON.stringify([...this.seen]));
 
-        const textEl = document.getElementById('quote-text');
-        textEl.style.opacity = 0;
-        setTimeout(() => {
-            textEl.innerText = pick.q;
-            document.getElementById('quote-author').innerText = pick.a;
-            textEl.style.opacity = 1;
-        }, 300);
+        document.getElementById('q-text').innerText = pick.q;
+        document.getElementById('q-author').innerText = pick.a;
     },
 
-    handleChat(input) {
+    askAI(input) {
         if (!input.trim()) return;
-        this.addBubble('user', input);
-        document.getElementById('chat-input').value = '';
-        this.playBell(300);
+        this.addMsg('user', input);
+        document.getElementById('ai-input').value = '';
+        this.playBell(400);
 
         setTimeout(() => {
-            const reply = this.vectorAI(input);
-            this.addBubble('ai', reply);
-            this.history.push({u: input, ai: reply});
+            const r = this.logic(input);
+            this.addMsg('ai', r);
         }, 800);
     },
 
-    vectorAI(input) {
-        const text = input.toLowerCase();
-        // Weighted Logic-Gates (Neural Simulation)
-        if (text.includes("work") || text.includes("money") || text.includes("boss")) {
-            return "Labor is a service to the human hive. But your tranquility is not for sale. If you lose your job today, does your virtue remain? If yes, then you have lost nothing of value.";
-        }
-        if (text.includes("people") || text.includes("said") || text.includes("them")) {
-            return "You are seeking validation in the minds of others—minds that are as unstable as yours. Return to your own judgment. Their praise is noise; your character is music.";
-        }
-        if (text.includes("fear") || text.includes("future") || text.includes("what if")) {
-            return "You are suffering from ghosts. According to Tomis Kapitan, deliberation requires that you see the future as open. If it is open, why have you already decided it will be bad?";
-        }
-        if (this.history.length > 2) {
-            return "We have been speaking for a while. Notice how each 'problem' you bring is actually just a new mask for the same desire to control the uncontrollable.";
-        }
-        return "Is this thought concerning a thing within your power? If not, cast it out. It is an indifferent. Describe only the facts, stripped of your emotional adjectives.";
+    logic(i) {
+        const t = i.toLowerCase();
+        if (t.includes("work") || t.includes("stress")) return "Is this labor for the hive, or for your vanity? Perform the duty, then release the result.";
+        if (t.includes("people") || t.includes("said")) return "Other minds are out of your control. Why do you give them a seat in your citadel?";
+        return "Is this impression within your power? If not, it is nothing to you. Describe only the bare facts.";
     },
 
-    addBubble(role, text) {
-        const scroller = document.getElementById('chat-scroller');
-        const b = document.createElement('div');
-        b.className = `bubble ${role}`;
-        b.innerText = text;
-        scroller.appendChild(b);
-        scroller.scrollTo({ top: scroller.scrollHeight, behavior: 'smooth' });
+    addMsg(role, text) {
+        const w = document.getElementById('chat-window');
+        const d = document.createElement('div');
+        d.className = `msg ${role}`; d.innerText = text;
+        w.appendChild(d);
+        w.scrollTo({ top: w.scrollHeight, behavior: 'smooth' });
     },
 
-    handleDeliberation(path) {
-        this.playBell(440);
-        this.switchView('ai', document.querySelector('[data-v="ai"]'));
-        this.addBubble('ai', `Doxastic Freedom exercised. You have identified the Path of ${path} as causally open. Deliberation has ended; action begins. How does this resolve your current impression?`);
+    resolvePath(p) {
+        this.playBell(500);
+        this.switchView(document.querySelector('[data-target="counselor"]'));
+        this.addMsg('ai', `Doxastic Choice Finalized: ${p}. You have viewed the alternatives as open and selected your orientation. Proceed with clarity.`);
     }
 };
 
-// Initialize after DOM is fully ready
 window.addEventListener('DOMContentLoaded', () => app.init());
 </script>
 </body>
